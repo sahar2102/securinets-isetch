@@ -51,11 +51,15 @@ const globalForDb = globalThis as unknown as { __sntPool?: PgPool; __sntInit?: P
 async function pool(): Promise<PgPool> {
   if (globalForDb.__sntPool) return globalForDb.__sntPool;
   const { Pool } = await import("pg");
+  const isSsl =
+    process.env.DATABASE_URL?.includes("sslmode=require") ||
+    process.env.DATABASE_URL?.includes("supabase.com") ||
+    process.env.DATABASE_URL?.includes("pooler.supabase.com") ||
+    process.env.NODE_ENV === "production";
+
   const p = new Pool({
     connectionString: process.env.DATABASE_URL,
-    ssl: process.env.DATABASE_URL?.includes("sslmode=require")
-      ? { rejectUnauthorized: false }
-      : undefined,
+    ssl: isSsl ? { rejectUnauthorized: false } : undefined,
     max: 5,
   });
   globalForDb.__sntPool = p as unknown as PgPool;
@@ -503,3 +507,18 @@ export async function countRegistrations(): Promise<number> {
   }
   return (await readStore()).registrations.length;
 }
+
+export async function pingDb(): Promise<{ ok: boolean; dialect: "postgres" | "file"; error?: string }> {
+  if (hasDatabase) {
+    try {
+      await ready();
+      const p = await pool();
+      await p.query("SELECT 1");
+      return { ok: true, dialect: "postgres" };
+    } catch (err: unknown) {
+      return { ok: false, dialect: "postgres", error: err instanceof Error ? err.message : String(err) };
+    }
+  }
+  return { ok: true, dialect: "file" };
+}
+
