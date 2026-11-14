@@ -39,6 +39,7 @@ export default async function AdminPage() {
       id: u.id,
       name: u.name,
       email: u.email,
+      profile: u.profile ?? {},
       role: u.role,
       solves: mine.length,
       score: mine.reduce((sum, solve) => sum + solve.points - (solve.hintCost ?? 0), 0),

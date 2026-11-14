@@ -13,6 +13,10 @@ const schema = z.object({
   name: z.string().trim().min(2).max(80),
   email: z.string().trim().email().max(160),
   password: z.string().min(8).max(128),
+  university: z.string().trim().min(2).max(120),
+  year: z.string().trim().min(1).max(40),
+  field: z.string().trim().min(2).max(120),
+  motivation: z.string().trim().min(20).max(1200),
 });
 
 export async function POST(req: Request) {
@@ -42,6 +46,12 @@ export async function POST(req: Request) {
       email: parsed.data.email,
       passwordHash,
       role: approved ? "member" : "pending",
+      profile: {
+        university: parsed.data.university,
+        year: parsed.data.year,
+        field: parsed.data.field,
+        motivation: parsed.data.motivation,
+      },
     });
   } catch (error) {
     if ((error as Error).message === "EMAIL_TAKEN") {

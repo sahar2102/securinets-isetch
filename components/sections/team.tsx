@@ -164,7 +164,7 @@ export function TeamPage({ members }: { members: TeamMember[] }) {
               <h2 className="font-display text-xl font-semibold tracking-tight text-ink">{t.team.joinTitle}</h2>
               <p className="mt-1.5 text-[13.5px] text-muted">{t.team.joinBody}</p>
             </div>
-            <Link href="/join" className="btn-primary shrink-0">
+            <Link href="/register" className="btn-primary shrink-0">
               {t.team.joinCta}
               <Icon name="arrowRight" size={15} />
             </Link>

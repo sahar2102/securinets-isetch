@@ -13,7 +13,7 @@ export const en = {
     leaderboard: "Leaderboard",
     team: "Team",
     contact: "Contact",
-    join: "Join the club",
+    join: "Create account",
     login: "Log in",
     logout: "Log out",
     account: "My account",

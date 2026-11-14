@@ -48,7 +48,7 @@ export function EventsPage({ events }: { events: EventItem[] }) {
         intro={t.events.intro}
         actions={
           <>
-            <Link href="/join" className="btn-primary">
+            <Link href="/register" className="btn-primary">
               {t.events.register}
               <Icon name="arrowRight" size={15} />
             </Link>
@@ -391,7 +391,7 @@ function UpcomingCard({ event }: { event: EventItem }) {
               {t.events.registrationClosed}
             </span>
           ) : (
-            <Link href={event.registrationUrl ?? "/join"} className="btn-primary w-full !py-2.5 !text-[13px]">
+            <Link href={event.registrationUrl ?? "/register"} className="btn-primary w-full !py-2.5 !text-[13px]">
               {t.events.register}
               <Icon name="arrowRight" size={15} />
             </Link>

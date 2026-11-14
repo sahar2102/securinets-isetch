@@ -69,7 +69,7 @@ export function Footer() {
             </h3>
             <ul className="mt-5 space-y-3">
               <li>
-                <Link href="/join" className="link-underline text-[13.5px] text-muted hover:text-ink">
+                <Link href="/register" className="link-underline text-[13.5px] text-muted hover:text-ink">
                   {t.nav.join}
                 </Link>
               </li>
@@ -111,7 +111,7 @@ export function Footer() {
             </h3>
             <p className="mt-4 text-[13px] leading-relaxed text-muted">{t.footer.joinNote}</p>
             <div className="mt-5 flex flex-wrap gap-3">
-              <Link href="/join" className="btn-primary !px-5 !py-2.5 text-[13px]">
+              <Link href="/register" className="btn-primary !px-5 !py-2.5 text-[13px]">
                 {t.nav.join}
                 <Icon name="arrowRight" size={15} />
               </Link>

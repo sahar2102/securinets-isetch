@@ -44,6 +44,12 @@ interface Props {
     solves: number;
     score: number;
     lastSolve: string | null;
+    profile?: {
+      university?: string;
+      year?: string;
+      field?: string;
+      motivation?: string;
+    };
   }[];
   challenges: ChallengeRecord[];
   events: EventItem[];
@@ -493,6 +499,16 @@ export function AdminDashboard({ user, players, challenges, events, team, announ
                         <td className="px-5 py-3">
                           <p className="font-medium text-ink">{p.name}</p>
                           <p className="font-mono text-[10.5px] text-muted">{p.email}</p>
+                          {p.profile?.university ? (
+                            <p className="mt-1 max-w-[280px] text-[11px] leading-snug text-muted/80">
+                              {p.profile.university} · {p.profile.year} · {p.profile.field}
+                            </p>
+                          ) : null}
+                          {p.profile?.motivation ? (
+                            <p className="mt-1 max-w-[300px] text-[11px] leading-snug text-muted/60">
+                              “{p.profile.motivation}”
+                            </p>
+                          ) : null}
                         </td>
                         <td className="px-3 py-3">
                           <span

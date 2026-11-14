@@ -233,7 +233,7 @@ export function Navbar() {
             )}
 
             {!user ? (
-              <Link href="/join" className="btn-primary hidden whitespace-nowrap !px-4 !py-2 text-[13px] sm:inline-flex">
+              <Link href="/register" className="btn-primary hidden whitespace-nowrap !px-4 !py-2 text-[13px] sm:inline-flex">
                 {t.nav.join}
                 <Icon name="arrowRight" size={15} />
               </Link>
@@ -347,7 +347,7 @@ export function Navbar() {
                   </div>
                 ) : (
                   <div className="flex items-center gap-3">
-                    <Link href="/join" onClick={() => setOpen(false)} className="btn-primary flex-1">
+                    <Link href="/register" onClick={() => setOpen(false)} className="btn-primary flex-1">
                       {t.nav.join}
                       <Icon name="arrowRight" size={16} />
                     </Link>

@@ -18,6 +18,10 @@ export function AuthForm({ mode }: { mode: "login" | "register" }) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [university, setUniversity] = useState("");
+  const [year, setYear] = useState("");
+  const [field, setField] = useState("");
+  const [motivation, setMotivation] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -34,10 +38,30 @@ export function AuthForm({ mode }: { mode: "login" | "register" }) {
           setError(t.auth.weakPassword);
           return;
         }
+        if (university.trim().length < 2 || field.trim().length < 2) {
+          setError("Add your university and field of study.");
+          return;
+        }
+        if (!year) {
+          setError("Pick your year of study.");
+          return;
+        }
+        if (motivation.trim().length < 20) {
+          setError("Tell us in one or two sentences why you want to join (20 characters minimum).");
+          return;
+        }
         const res = await fetch("/api/register", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ name, email, password }),
+          body: JSON.stringify({
+            name,
+            email,
+            password,
+            university,
+            year,
+            field,
+            motivation,
+          }),
         });
         const data = await res.json().catch(() => ({}));
         if (!res.ok) {
@@ -106,19 +130,85 @@ export function AuthForm({ mode }: { mode: "login" | "register" }) {
 
             <form onSubmit={submit} className="mt-7 space-y-4">
               {mode === "register" ? (
-                <div>
-                  <label className="label" htmlFor="name">
-                    {t.auth.name}
-                  </label>
-                  <input
-                    id="name"
-                    required
-                    className="input"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    autoComplete="name"
-                  />
-                </div>
+                <>
+                  <div>
+                    <label className="label" htmlFor="name">
+                      {t.auth.name}
+                    </label>
+                    <input
+                      id="name"
+                      required
+                      className="input"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      autoComplete="name"
+                    />
+                  </div>
+                  <div className="grid gap-4 sm:grid-cols-2">
+                    <div>
+                      <label className="label" htmlFor="university">
+                        University / school
+                      </label>
+                      <input
+                        id="university"
+                        required
+                        className="input"
+                        placeholder="ISET Charguia"
+                        value={university}
+                        onChange={(e) => setUniversity(e.target.value)}
+                      />
+                    </div>
+                    <div>
+                      <label className="label" htmlFor="year">
+                        Year
+                      </label>
+                      <select
+                        id="year"
+                        required
+                        className="input"
+                        value={year}
+                        onChange={(e) => setYear(e.target.value)}
+                      >
+                        <option value="">Select</option>
+                        <option>1st year</option>
+                        <option>2nd year</option>
+                        <option>3rd year</option>
+                        <option>Master</option>
+                        <option>Engineering</option>
+                        <option>Alumni</option>
+                        <option>Other</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div>
+                    <label className="label" htmlFor="field">
+                      Field of study
+                    </label>
+                    <input
+                      id="field"
+                      required
+                      className="input"
+                      placeholder="Networks & telecommunications"
+                      value={field}
+                      onChange={(e) => setField(e.target.value)}
+                    />
+                  </div>
+                  <div>
+                    <label className="label" htmlFor="motivation">
+                      Why do you want to join?
+                    </label>
+                    <textarea
+                      id="motivation"
+                      required
+                      rows={3}
+                      minLength={20}
+                      className="input resize-none"
+                      placeholder="What you want to learn, what brought you here."
+                      value={motivation}
+                      onChange={(e) => setMotivation(e.target.value)}
+                    />
+                  </div>
+                </>
               ) : null}
 
               <div>

@@ -71,8 +71,10 @@ CREATE TABLE IF NOT EXISTS users (
   name TEXT NOT NULL,
   password_hash TEXT NOT NULL,
   role TEXT NOT NULL DEFAULT 'member',
+  profile JSONB NOT NULL DEFAULT '{}'::jsonb,
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
+ALTER TABLE users ADD COLUMN IF NOT EXISTS profile JSONB NOT NULL DEFAULT '{}'::jsonb;
 CREATE TABLE IF NOT EXISTS solves (
   user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
   challenge_slug TEXT NOT NULL,
@@ -195,6 +197,7 @@ export async function findUserByEmail(email: string): Promise<User | null> {
       passwordHash: String(r.password_hash),
       role: r.role === "admin" ? "admin" : r.role === "pending" ? "pending" : "member",
       createdAt: iso(r.created_at),
+      profile: (r.profile ?? {}) as User["profile"],
     };
   }
   const store = await readStore();
@@ -215,6 +218,7 @@ export async function getUserById(id: string): Promise<User | null> {
       passwordHash: String(r.password_hash),
       role: r.role === "admin" ? "admin" : r.role === "pending" ? "pending" : "member",
       createdAt: iso(r.created_at),
+      profile: (r.profile ?? {}) as User["profile"],
     };
   }
   const store = await readStore();
@@ -233,6 +237,7 @@ export async function listUsers(): Promise<User[]> {
       passwordHash: String(r.password_hash),
       role: r.role === "admin" ? "admin" : r.role === "pending" ? "pending" : "member",
       createdAt: iso(r.created_at),
+      profile: (r.profile ?? {}) as User["profile"],
     }));
   }
   return (await readStore()).users;
@@ -279,6 +284,7 @@ export async function createUser(input: {
   name: string;
   passwordHash: string;
   role?: "pending" | "member" | "admin";
+  profile?: User["profile"];
 }): Promise<User> {
   const user: User = {
     id: uuid(),
@@ -287,14 +293,15 @@ export async function createUser(input: {
     passwordHash: input.passwordHash,
     role: input.role ?? "member",
     createdAt: new Date().toISOString(),
+    profile: input.profile ?? {},
   };
 
   if (hasDatabase) {
     await ready();
     const p = await pool();
     await p.query(
-      "INSERT INTO users (id, email, name, password_hash, role) VALUES ($1,$2,$3,$4,$5)",
-      [user.id, user.email, user.name, user.passwordHash, user.role],
+      "INSERT INTO users (id, email, name, password_hash, role, profile) VALUES ($1,$2,$3,$4,$5,$6)",
+      [user.id, user.email, user.name, user.passwordHash, user.role, JSON.stringify(user.profile ?? {})],
     );
     return user;
   }

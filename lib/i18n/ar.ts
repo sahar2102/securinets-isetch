@@ -23,7 +23,7 @@ export const ar: DeepPartial<Dictionary> = {
     leaderboard: "الترتيب",
     team: "الفريق",
     contact: "اتصل بنا",
-    join: "انضم إلينا",
+    join: "إنشاء حساب",
     login: "تسجيل الدخول",
     logout: "تسجيل الخروج",
     account: "حسابي",
