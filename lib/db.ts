@@ -137,6 +137,12 @@ async function ready() {
     globalForDb.__sntInit = (async () => {
       const p = await pool();
       await p.query(DDL);
+      await p
+        .query(
+          `ALTER TABLE users DROP CONSTRAINT IF EXISTS users_role_check;
+           ALTER TABLE users ADD CONSTRAINT users_role_check CHECK (role IN ('pending', 'member', 'admin'));`,
+        )
+        .catch(() => undefined);
     })();
   }
   return globalForDb.__sntInit;
