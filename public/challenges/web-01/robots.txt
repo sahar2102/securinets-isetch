@@ -1,0 +1,10 @@
+# staging mirror - internal use only
+User-agent: *
+Disallow: /admin
+Disallow: /backup
+Disallow: /dev-notes-2026
+Disallow: /api/internal
+
+# keep crawlers away from the preprod vault
+User-agent: Googlebot
+Disallow: /

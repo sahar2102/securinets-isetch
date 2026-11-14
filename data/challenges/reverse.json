@@ -1,0 +1,153 @@
+{
+  "challenges": [
+    {
+      "id": "reverse-01",
+      "slug": "strings-attached",
+      "title": "Strings Attached",
+      "category": "reverse",
+      "difficulty": "beginner",
+      "points": 60,
+      "solves": 198,
+      "author": "Mehdi Khelifi",
+      "tags": [
+        "strings",
+        "static analysis",
+        "ELF"
+      ],
+      "date": "2026-10-04",
+      "featured": true,
+      "description": "A tiny licensing binary asks for a key. The author was proud of the obfuscation, which consisted of compiling with `-O0` and hoping nobody would look inside.\n\n**Goal:** recover the key without running the binary.",
+      "files": [
+        {
+          "name": "license_check",
+          "size": "15.8 KB",
+          "href": "/challenges/reverse-01/license_check"
+        }
+      ],
+      "hints": [
+        {
+          "text": "`strings` is not cheating. It is the first five minutes of every reverse challenge.",
+          "cost": 10
+        },
+        {
+          "text": "Filter for the `SNT{` prefix directly.",
+          "cost": 15
+        }
+      ],
+      "flag": "SNT{str1ng5_4r3_ch34p}"
+    },
+    {
+      "id": "reverse-02",
+      "slug": "flag-checker-101",
+      "title": "Flag Checker 101",
+      "category": "reverse",
+      "difficulty": "beginner",
+      "points": 90,
+      "solves": 112,
+      "author": "Mehdi Khelifi",
+      "tags": [
+        "objdump",
+        "gdb",
+        "comparison"
+      ],
+      "date": "2026-10-11",
+      "featured": false,
+      "description": "The checker compares your input against an array of bytes, one at a time, and exits on the first mismatch. The array is not stored as a readable string.\n\n**Goal:** recover the expected input. Static analysis is enough; a debugger makes it pleasant.",
+      "files": [
+        {
+          "name": "checker",
+          "size": "15.9 KB",
+          "href": "/challenges/reverse-02/checker"
+        },
+        {
+          "name": "checker.c",
+          "size": "670 B",
+          "href": "/challenges/reverse-02/checker.c"
+        }
+      ],
+      "hints": [
+        {
+          "text": "Find the comparison loop in `objdump -d` and look at what it loads.",
+          "cost": 20
+        },
+        {
+          "text": "Each byte is XOR-ed with 0x2a before comparison. Reverse it.",
+          "cost": 35
+        }
+      ],
+      "flag": "SNT{ch4r_by_ch4r}"
+    },
+    {
+      "id": "reverse-03",
+      "slug": "xor-loop",
+      "title": "XOR Loop",
+      "category": "reverse",
+      "difficulty": "intermediate",
+      "points": 200,
+      "solves": 52,
+      "author": "Wael Hammami",
+      "tags": [
+        "rolling xor",
+        "ghidra",
+        "key schedule"
+      ],
+      "date": "2026-10-18",
+      "featured": true,
+      "description": "This one decrypts an embedded blob with a rolling XOR key derived from a four-byte seed, then compares the result with your input.\n\nThe seed is computed at runtime from a constant you can see in the disassembly. Reimplement the loop in Python and let it decrypt for you.\n\n**Goal:** recover the accepted input.",
+      "files": [
+        {
+          "name": "vault",
+          "size": "16.0 KB",
+          "href": "/challenges/reverse-03/vault"
+        }
+      ],
+      "hints": [
+        {
+          "text": "Ignore `main`. Find the function that writes to a buffer in a loop and follow the key index.",
+          "cost": 40
+        },
+        {
+          "text": "The key index increments modulo 4. The seed is 0x53 0x4e 0x54 0x21.",
+          "cost": 70
+        }
+      ],
+      "flag": "SNT{r0ll1ng_x0r_k3y}"
+    },
+    {
+      "id": "reverse-04",
+      "slug": "anti-debug-maze",
+      "title": "Anti-Debug Maze",
+      "category": "reverse",
+      "difficulty": "expert",
+      "points": 600,
+      "solves": 7,
+      "author": "Wael Hammami",
+      "tags": [
+        "ptrace",
+        "self-modifying",
+        "obfuscation"
+      ],
+      "date": "2026-10-29",
+      "featured": false,
+      "description": "The binary refuses to cooperate under a debugger: `ptrace` at startup, a timing check, and a decryption routine that patches itself while running.\n\nEverything is still deterministic. You do not need to defeat the anti-debug — you need to replicate the maths it performs after the checks pass.\n\n**Goal:** recover the flag by static analysis or by patching the checks out.",
+      "files": [
+        {
+          "name": "maze",
+          "size": "16.0 KB",
+          "href": "/challenges/reverse-04/maze"
+        }
+      ],
+      "hints": [
+        {
+          "text": "Patch the `ptrace` call to return 0, or set a breakpoint after it.",
+          "cost": 80
+        },
+        {
+          "text": "The self-modifying stage XORs the next 32 bytes with the previous output byte. Emulate it instruction by instruction.",
+          "cost": 150
+        }
+      ],
+      "flag": "SNT{ptrc4_1s_w4tch1ng_y0u}"
+    }
+  ]
+}

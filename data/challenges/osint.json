@@ -1,0 +1,148 @@
+{
+  "challenges": [
+    {
+      "id": "osint-01",
+      "slug": "handle-hunter",
+      "title": "Handle Hunter",
+      "category": "osint",
+      "difficulty": "beginner",
+      "points": 60,
+      "solves": 151,
+      "author": "Nour Gharbi",
+      "tags": [
+        "username",
+        "enumeration",
+        "pivoting"
+      ],
+      "date": "2026-10-06",
+      "featured": true,
+      "description": "A club member uses the same handle everywhere. One of their profiles has a bio that was never meant to be public.\n\nAll evidence is a set of offline HTML snapshots attached below — no real accounts, no live lookups, nothing to report.\n\n**Goal:** find the profile that leaks the flag.",
+      "files": [
+        {
+          "name": "snapshots.zip",
+          "size": "908 B",
+          "href": "/challenges/osint-01/snapshots.zip"
+        }
+      ],
+      "hints": [
+        {
+          "text": "Search the handle, not the person.",
+          "cost": 10
+        },
+        {
+          "text": "Check the profile the member made for a throwaway project — the bio field is the giveaway.",
+          "cost": 20
+        }
+      ],
+      "flag": "SNT{s4m3_h4ndl3_3v3rywh3r3}"
+    },
+    {
+      "id": "osint-02",
+      "slug": "where-in-tunis",
+      "title": "Where in Tunis?",
+      "category": "osint",
+      "difficulty": "beginner",
+      "points": 80,
+      "solves": 103,
+      "author": "Omar Ben Amor",
+      "tags": [
+        "geolocation",
+        "landmarks",
+        "reasoning"
+      ],
+      "date": "2026-10-10",
+      "featured": false,
+      "description": "A photo posted by a partner club, with the location stripped. You get the image description, the visible shopfronts and the shadows.\n\nEverything needed is in the attached evidence sheet.\n\n**Goal:** identify the café. The flag is `SNT{<cafe-name-lowercase-hyphenated>}`.",
+      "files": [
+        {
+          "name": "evidence.md",
+          "size": "896 B",
+          "href": "/challenges/osint-02/evidence.md"
+        }
+      ],
+      "hints": [
+        {
+          "text": "One of the shopfronts is a chain with only three branches in the city.",
+          "cost": 20
+        },
+        {
+          "text": "Compare the shadow direction with the stated capture time to work out which side of the street it faces.",
+          "cost": 35
+        }
+      ],
+      "flag": "SNT{cafe-des-delices}"
+    },
+    {
+      "id": "osint-03",
+      "slug": "archive-dive",
+      "title": "Archive Dive",
+      "category": "osint",
+      "difficulty": "intermediate",
+      "points": 170,
+      "solves": 68,
+      "author": "Nour Gharbi",
+      "tags": [
+        "wayback",
+        "archives",
+        "deleted pages"
+      ],
+      "date": "2026-10-19",
+      "featured": true,
+      "description": "A partner organisation removed a page after a security incident. The page is gone from the live site; the archive is less forgetful.\n\nThe attachment contains three archived snapshots of the domain from 2024, 2025 and 2026.\n\n**Goal:** find the removed page and the flag that was left in its HTML comment.",
+      "files": [
+        {
+          "name": "archive-snapshots.zip",
+          "size": "1.1 KB",
+          "href": "/challenges/osint-03/archive-snapshots.zip"
+        }
+      ],
+      "hints": [
+        {
+          "text": "Diff the 2025 and 2026 sitemaps. Something disappeared.",
+          "cost": 30
+        },
+        {
+          "text": "The removed page is still referenced by an old RSS feed.",
+          "cost": 55
+        }
+      ],
+      "flag": "SNT{th3_p4st_1s_publ1c}"
+    },
+    {
+      "id": "osint-04",
+      "slug": "the-alias-graph",
+      "title": "The Alias Graph",
+      "category": "osint",
+      "difficulty": "advanced",
+      "points": 330,
+      "solves": 21,
+      "author": "Nour Gharbi",
+      "tags": [
+        "pivoting",
+        "correlation",
+        "identity"
+      ],
+      "date": "2026-10-27",
+      "featured": false,
+      "description": "Three personas, one human. A forum account, a freelance profile and a GitHub organisation, all carefully separated — except for the details people forget: a timezone, a reused avatar hash, a package name.\n\nAll data is synthetic and bundled offline.\n\n**Goal:** connect the three personas and recover the flag hidden in the earliest commit message of the shared repository.",
+      "files": [
+        {
+          "name": "personas.zip",
+          "size": "1006 B",
+          "href": "/challenges/osint-04/personas.zip"
+        }
+      ],
+      "hints": [
+        {
+          "text": "Start from image reuse: compare avatar hashes across platforms.",
+          "cost": 55
+        },
+        {
+          "text": "The forum signature mentions a city; the freelance profile lists a working hour overlap; the repo has one contributor in that timezone.",
+          "cost": 95
+        }
+      ],
+      "flag": "SNT{p1v0t_p1v0t_p1v0t}"
+    }
+  ]
+}

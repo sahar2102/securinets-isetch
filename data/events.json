@@ -1,0 +1,110 @@
+{
+  "events": [
+    {
+      "id": "ev-2026-10-02",
+      "slug": "introduction-a-la-cybersecurite",
+      "title": "Introduction à la Cybersécurité",
+      "titleEn": "Introduction to Cybersecurity",
+      "kind": "workshop",
+      "status": "past",
+      "date": "2026-10-02",
+      "endDate": "2026-10-02",
+      "time": "14:00",
+      "location": "ISET Charguia · Salle 4C, 3e étage",
+      "language": "FR",
+      "level": "Beginner",
+      "speakers": [
+        "Sahar Tababi",
+        "Tasnim Mabrouk"
+      ],
+      "summary": "Notre premier atelier : le paysage des menaces, les métiers de la cybersécurité et une première démonstration de CTF.",
+      "summaryEn": "Our first workshop: the threat landscape, careers in cybersecurity, and a first CTF demonstration.",
+      "tags": [
+        "Beginner",
+        "Online",
+        "Cybersecurity"
+      ],
+      "registrationOpen": false
+    },
+    {
+      "id": "ev-2026-10-07",
+      "slug": "introduction-a-linux",
+      "title": "Introduction à Linux",
+      "titleEn": "Introduction to Linux",
+      "kind": "workshop",
+      "status": "past",
+      "date": "2026-10-07",
+      "time": "14:00",
+      "location": "ISET Charguia · Salle 4C, 3e étage",
+      "language": "FR",
+      "level": "Beginner",
+      "speakers": [
+        "Tasnim Mabrouk",
+        "Imen Cherif"
+      ],
+      "summary": "Deuxième workshop : le terminal, les permissions, les pipes et les commandes de base.",
+      "summaryEn": "Second workshop: the shell, permissions, pipes and the essential commands.",
+      "tags": [
+        "Linux",
+        "Beginner",
+        "Hands-on"
+      ],
+      "registrationOpen": false
+    },
+    {
+      "id": "ev-2026-10-14",
+      "slug": "introduction-au-ctf",
+      "title": "Introduction to CTF",
+      "titleEn": "Introduction to CTF",
+      "kind": "ctf",
+      "status": "past",
+      "date": "2026-10-14",
+      "time": "14:00",
+      "location": "ISET Charguia · Salle 4C, 3e étage",
+      "language": "EN / FR",
+      "level": "Beginner",
+      "speakers": [
+        "Tasnim Mabrouk",
+        "Sahar Tababi"
+      ],
+      "summary": "Troisième workshop : les catégories de challenges, comment lire un énoncé, et un mini-CTF joué en équipes.",
+      "summaryEn": "Third workshop: the challenge categories, how to read a brief, and a mini-CTF played in teams.",
+      "tags": [
+        "CTF",
+        "Teams",
+        "Beginner"
+      ],
+      "registrationOpen": false
+    },
+    {
+      "id": "ev-2026-11-25",
+      "slug": "internal-ctf-november",
+      "title": "Internal CTF — November",
+      "titleEn": "Internal CTF — November",
+      "kind": "ctf",
+      "status": "upcoming",
+      "date": "2026-11-25",
+      "endDate": "2026-11-25",
+      "time": "14:00",
+      "location": "ISET Charguia · Salle 4C, 3e étage",
+      "language": "EN / FR",
+      "level": "All levels",
+      "speakers": [
+        "Tasnim Mabrouk",
+        "Sahar Tababi"
+      ],
+      "summary": "CTF interne réservé aux membres : plusieurs catégories, classement en direct, dans la salle 4C au 3e étage. Début à 14h, fin libre.",
+      "summaryEn": "Members-only internal CTF: several categories, live scoreboard, Salle 4C on the 3rd floor. Starts at 14:00, no fixed end time.",
+      "capacity": 60,
+      "registered": 0,
+      "registrationOpen": true,
+      "registrationUrl": "/join?intent=ctf",
+      "tags": [
+        "CTF",
+        "Members only",
+        "On campus"
+      ],
+      "featured": true
+    }
+  ]
+}

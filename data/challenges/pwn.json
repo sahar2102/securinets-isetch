@@ -1,0 +1,204 @@
+{
+  "challenges": [
+    {
+      "id": "pwn-01",
+      "slug": "stack-peek",
+      "title": "Stack Peek",
+      "category": "pwn",
+      "difficulty": "beginner",
+      "points": 100,
+      "solves": 84,
+      "author": "Wael Hammami",
+      "tags": [
+        "stack layout",
+        "variables",
+        "gets"
+      ],
+      "date": "2026-10-07",
+      "featured": true,
+      "description": "Your first look at how local variables sit next to each other in memory.\n\nThe program reads your name into a 32-byte buffer, then checks a separate integer. Overflow the buffer just enough to overwrite that integer and the program prints the flag.\n\n**Goal:** make the check pass. Source and binary are provided; run it locally.",
+      "files": [
+        {
+          "name": "stack_peek",
+          "size": "15.7 KB",
+          "href": "/challenges/pwn-01/stack_peek"
+        },
+        {
+          "name": "stack_peek.c",
+          "size": "543 B",
+          "href": "/challenges/pwn-01/stack_peek.c"
+        }
+      ],
+      "hints": [
+        {
+          "text": "Draw the stack: buffer first, then the integer, then the saved frame pointer.",
+          "cost": 20
+        },
+        {
+          "text": "You need 32 bytes of padding plus the little-endian value the check expects.",
+          "cost": 35
+        }
+      ],
+      "flag": "SNT{st4ck5_4r3_ju5t_m3m0ry}"
+    },
+    {
+      "id": "pwn-02",
+      "slug": "buffer-overflow-baby",
+      "title": "Buffer Overflow Baby",
+      "category": "pwn",
+      "difficulty": "intermediate",
+      "points": 180,
+      "solves": 61,
+      "author": "Wael Hammami",
+      "tags": [
+        "ret2win",
+        "eip control",
+        "cyclic pattern"
+      ],
+      "date": "2026-10-13",
+      "featured": true,
+      "description": "No canary, no PIE, NX enabled, and a `win()` function that prints the flag but is never called.\n\nClassic setup: find the offset to the saved return address, then point it at `win`.\n\n**Goal:** redirect execution. `pwntools` recommended.",
+      "files": [
+        {
+          "name": "baby",
+          "size": "15.6 KB",
+          "href": "/challenges/pwn-02/baby"
+        },
+        {
+          "name": "baby.c",
+          "size": "559 B",
+          "href": "/challenges/pwn-02/baby.c"
+        }
+      ],
+      "hints": [
+        {
+          "text": "Generate a cyclic pattern, crash it, read the offset from the fault address.",
+          "cost": 35
+        },
+        {
+          "text": "`win` is at a fixed address because PIE is off. Check `objdump -d`.",
+          "cost": 50
+        }
+      ],
+      "flag": "SNT{41_byt35_t00_m4ny}"
+    },
+    {
+      "id": "pwn-03",
+      "slug": "format-string-warmup",
+      "title": "Format String Warmup",
+      "category": "pwn",
+      "difficulty": "intermediate",
+      "points": 220,
+      "solves": 47,
+      "author": "Salma Ferchichi",
+      "tags": [
+        "format string",
+        "leak",
+        "printf"
+      ],
+      "date": "2026-10-17",
+      "featured": false,
+      "description": "The program does `printf(user_input)` with no format constant. The flag is loaded into a local buffer that never gets printed.\n\n**Goal:** use `%p` and positional specifiers to walk the stack until you find the flag, then make `printf` print it as a string.",
+      "files": [
+        {
+          "name": "fmt",
+          "size": "15.6 KB",
+          "href": "/challenges/pwn-03/fmt"
+        },
+        {
+          "name": "fmt.c",
+          "size": "364 B",
+          "href": "/challenges/pwn-03/fmt.c"
+        }
+      ],
+      "hints": [
+        {
+          "text": "`%p %p %p %p %p %p %p %p` prints eight stack slots at a time.",
+          "cost": 40
+        },
+        {
+          "text": "Once you find the index of the flag, `%<index>$s` prints it as a string.",
+          "cost": 70
+        }
+      ],
+      "flag": "SNT{%p_%p_%p_l34k5}"
+    },
+    {
+      "id": "pwn-04",
+      "slug": "ret2win-with-a-twist",
+      "title": "ret2win, with a Twist",
+      "category": "pwn",
+      "difficulty": "advanced",
+      "points": 320,
+      "solves": 26,
+      "author": "Wael Hammami",
+      "tags": [
+        "rop",
+        "stack alignment",
+        "arguments"
+      ],
+      "date": "2026-10-24",
+      "featured": false,
+      "description": "`win()` now takes two arguments, and the binary has exactly one usable gadget: `pop rdi; pop rsi; ret`. PIE is off, NX is on, and there is still no canary.\n\n**Goal:** build a ROP chain that calls `win(0x1337, 0x2026)` and prints the flag.",
+      "files": [
+        {
+          "name": "twist",
+          "size": "15.6 KB",
+          "href": "/challenges/pwn-04/twist"
+        },
+        {
+          "name": "twist.c",
+          "size": "690 B",
+          "href": "/challenges/pwn-04/twist.c"
+        }
+      ],
+      "hints": [
+        {
+          "text": "Find the gadget with `ROPgadget --binary twist | grep \"pop rdi\"`.",
+          "cost": 60
+        },
+        {
+          "text": "The stack layout is 64 bytes of buffer, 8 bytes of saved rbp, then the return address. Two arguments follow the gadget address.",
+          "cost": 100
+        }
+      ],
+      "flag": "SNT{r3t2w1n_1s_4_g4t3w4y}"
+    },
+    {
+      "id": "pwn-05",
+      "slug": "one-byte-at-a-time",
+      "title": "One Byte at a Time",
+      "category": "pwn",
+      "difficulty": "expert",
+      "points": 650,
+      "solves": 6,
+      "author": "Wael Hammami",
+      "tags": [
+        "timing",
+        "oracle",
+        "scripting"
+      ],
+      "date": "2026-11-01",
+      "featured": false,
+      "description": "A service compares your guess to the flag with an early-exit loop and answers in constant time — almost. The comparison itself leaks a few microseconds per matching prefix.\n\nA Python harness that simulates the service locally is provided, including a calibrated noise model. No network target is involved.\n\n**Goal:** recover the flag with a statistically sound timing attack.",
+      "files": [
+        {
+          "name": "oracle.py",
+          "size": "878 B",
+          "href": "/challenges/pwn-05/oracle.py"
+        }
+      ],
+      "hints": [
+        {
+          "text": "Average hundreds of samples per candidate byte; the signal is smaller than the noise.",
+          "cost": 90
+        },
+        {
+          "text": "Compare candidate timings against the current best, not against an absolute threshold.",
+          "cost": 160
+        }
+      ],
+      "flag": "SNT{0n3_byt3_4t_4_t1m3}"
+    }
+  ]
+}

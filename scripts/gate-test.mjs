@@ -1,0 +1,17 @@
+import puppeteer from "puppeteer-core";
+const b = await puppeteer.launch({ executablePath: "/usr/bin/google-chrome", headless: "new", args: ["--no-sandbox"] });
+const p = await b.newPage();
+await p.setViewport({ width: 1440, height: 950 });
+await p.goto("http://localhost:3000/challenges", { waitUntil: "domcontentloaded" });
+await new Promise(r => setTimeout(r, 1200));
+console.log("guest:", (await p.evaluate(() => document.body.innerText)).includes("Members only") ? "GATE OK" : "NO GATE");
+await p.goto("http://localhost:3000/login", { waitUntil: "domcontentloaded" });
+await new Promise(r => setTimeout(r, 800));
+await p.type('input[type="email"]', "securinetsisetch26@gmail.com");
+await p.type('input[type="password"]', "Snt-e5d8719d03!26");
+await p.click('button[type="submit"]');
+await new Promise(r => setTimeout(r, 3500));
+const txt = await p.evaluate(() => document.body.innerText);
+console.log("after login url:", p.url());
+console.log("challenges visible:", txt.includes("The range is open") ? "YES" : "NO");
+await b.close();

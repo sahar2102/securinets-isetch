@@ -1,0 +1,153 @@
+{
+  "challenges": [
+    {
+      "id": "network-01",
+      "slug": "port-scan-stories",
+      "title": "Port Scan Stories",
+      "category": "network",
+      "difficulty": "beginner",
+      "points": 60,
+      "solves": 158,
+      "author": "Farah Zouari",
+      "tags": [
+        "pcap",
+        "tcp",
+        "nmap"
+      ],
+      "date": "2026-10-05",
+      "featured": true,
+      "description": "A 30-second capture from a small office network. Somebody scanned one host, found one open port, and immediately closed the connection.\n\n**Goal:** find the open port and the service banner sent after the handshake. The flag is in the banner.",
+      "files": [
+        {
+          "name": "office.pcap",
+          "size": "1.3 KB",
+          "href": "/challenges/network-01/office.pcap"
+        }
+      ],
+      "hints": [
+        {
+          "text": "Filter `tcp.flags.syn == 1 && tcp.flags.ack == 0` to see the scan attempts.",
+          "cost": 15
+        },
+        {
+          "text": "The one port that answered with SYN/ACK is the one you want. Follow its stream.",
+          "cost": 25
+        }
+      ],
+      "flag": "SNT{sc4n_sl0wly_l1ttl3_b0t}"
+    },
+    {
+      "id": "network-02",
+      "slug": "follow-the-stream",
+      "title": "Follow the Stream",
+      "category": "network",
+      "difficulty": "beginner",
+      "points": 80,
+      "solves": 126,
+      "author": "Farah Zouari",
+      "tags": [
+        "http",
+        "pcap",
+        "cleartext"
+      ],
+      "date": "2026-10-08",
+      "featured": false,
+      "description": "A developer swears the API only accepts encrypted traffic. The capture says otherwise — one request went out over plain HTTP, including a header that should never have left the machine.\n\n**Goal:** reconstruct the request and read the flag from the custom header.",
+      "files": [
+        {
+          "name": "capture.pcap",
+          "size": "390 B",
+          "href": "/challenges/network-02/capture.pcap"
+        }
+      ],
+      "hints": [
+        {
+          "text": "Filter `http.request` and follow the TCP stream.",
+          "cost": 15
+        },
+        {
+          "text": "Look at `X-Debug-Token`. Production would never send that.",
+          "cost": 25
+        }
+      ],
+      "flag": "SNT{http_1s_pl41n_t3xt}"
+    },
+    {
+      "id": "network-03",
+      "slug": "dns-tunneling-101",
+      "title": "DNS Tunneling 101",
+      "category": "network",
+      "difficulty": "intermediate",
+      "points": 210,
+      "solves": 59,
+      "author": "Farah Zouari",
+      "tags": [
+        "dns",
+        "exfiltration",
+        "base32"
+      ],
+      "date": "2026-10-18",
+      "featured": true,
+      "description": "The firewall allows DNS because DNS is always allowed. A workstation has been making a lot of very long queries to one domain, each with a different subdomain.\n\n**Goal:** extract the encoded chunks in query order, decode them, and rebuild the exfiltrated file.",
+      "files": [
+        {
+          "name": "dns-exfil.pcap",
+          "size": "358 B",
+          "href": "/challenges/network-03/dns-exfil.pcap"
+        }
+      ],
+      "hints": [
+        {
+          "text": "Filter `dns.qry.name contains \"tunnel\"`. Sort by frame time, not frame number.",
+          "cost": 35
+        },
+        {
+          "text": "The first label is base32, the second label is the sequence number in hex.",
+          "cost": 65
+        }
+      ],
+      "flag": "SNT{dns_1s_4_tr4nsp0rt}"
+    },
+    {
+      "id": "network-04",
+      "slug": "covert-channel",
+      "title": "Covert Channel",
+      "category": "network",
+      "difficulty": "expert",
+      "points": 540,
+      "solves": 9,
+      "author": "Wael Hammami",
+      "tags": [
+        "icmp",
+        "covert channel",
+        "extraction"
+      ],
+      "date": "2026-11-02",
+      "featured": false,
+      "description": "No TCP, no UDP, no DNS — just ICMP echo requests with suspiciously consistent payloads. Each request carries one byte of the message, XOR-ed with that packet's TTL.\n\n**Goal:** rebuild the transmitted payload. The first sixteen packets are a synchronisation header; the encoding is documented in the attached analyst note.",
+      "files": [
+        {
+          "name": "icmp.pcap",
+          "size": "2.7 KB",
+          "href": "/challenges/network-04/icmp.pcap"
+        },
+        {
+          "name": "analyst-note.md",
+          "size": "858 B",
+          "href": "/challenges/network-04/analyst-note.md"
+        }
+      ],
+      "hints": [
+        {
+          "text": "Read the analyst note before writing a single line of code.",
+          "cost": 70
+        },
+        {
+          "text": "Payload bytes are XOR-ed with the TTL field. The first 16 packets are a sync header you can discard.",
+          "cost": 140
+        }
+      ],
+      "flag": "SNT{1c0ut_0ut_0f_b4nd}"
+    }
+  ]
+}

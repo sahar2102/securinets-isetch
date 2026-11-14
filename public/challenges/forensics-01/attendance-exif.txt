@@ -1,0 +1,17 @@
+$ exiftool attendance.jpg
+ExifTool Version Number         : 12.76
+File Name                       : attendance.jpg
+File Size                       : 486 kB
+MIME Type                       : image/jpeg
+Image Width                     : 4032
+Image Height                    : 3024
+Make                            : samsung
+Camera Model Name               : SM-A536B
+Date/Time Original              : 2026:10:02 18:41:07
+GPS Latitude Ref                : N
+GPS Latitude                    : 36 deg 50' 24.61"
+GPS Longitude Ref               : E
+GPS Longitude                   : 10 deg 16' 12.08"
+GPS Altitude                    : 12.4 m Above Sea Level
+User Comment                    : SNT{3x1f_n3v3r_l13s}
+Software                        : S26-Exif-Proof

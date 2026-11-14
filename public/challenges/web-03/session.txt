@@ -1,0 +1,7 @@
+# Captured from the dashboard after logging in as a student
+# Cookie header sent to /dashboard
+session=eyJ1c2VyIjoic3R1ZGVudCIsInJvbGUiOiJ1c2VyIn0=
+
+# Decoded structure (for reference):
+# {"user":"student","role":"user"}
+# The server signs nothing. It only base64-decodes.

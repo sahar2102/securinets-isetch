@@ -1,0 +1,8 @@
+# RSA licence server — public parameters (toy key, 60-bit modulus)
+n = 1000000016000000063
+e = 3
+
+# ciphertext for one licence blob, decimal
+c = 45768507852483041
+
+# The blob is ASCII and shorter than 32 bytes. No padding was used.

@@ -1,0 +1,7 @@
+# GET /api/v1/me  ->  Authorization: Bearer <token>
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJzdHVkZW50LTEwNDIiLCJyb2xlIjoidXNlciIsImlhdCI6MTc5MzQ5MTIwMCwiZXhwIjoxODI1MDI3MjAwLCJpc3MiOiJzbnQtaXNldGNoLWFwaSJ9.ZmFrZS1zaWduYXR1cmU
+
+# API contract
+#   GET /api/v1/me            -> 200, returns your profile
+#   GET /api/v1/admin/flag    -> 200 only when role == 'admin'
+#   Verification library: jwt-decode-any v0.4.2 (accepts alg 'none')

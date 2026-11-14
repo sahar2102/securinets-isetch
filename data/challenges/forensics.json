@@ -1,0 +1,230 @@
+{
+  "challenges": [
+    {
+      "id": "forensics-01",
+      "slug": "selfie-evidence",
+      "title": "Selfie Evidence",
+      "category": "forensics",
+      "difficulty": "beginner",
+      "points": 60,
+      "solves": 164,
+      "author": "Salma Ferchichi",
+      "tags": [
+        "exif",
+        "metadata",
+        "gps"
+      ],
+      "date": "2026-10-03",
+      "featured": true,
+      "description": "A \"proof of attendance\" photo was posted in the club group chat. It was taken on a phone that still tags everything.\n\nNo pixel analysis required — the file knows more than the photographer.\n\n**Goal:** recover the coordinates embedded in the image and use them to find the flag stored in the location field of the note.",
+      "files": [
+        {
+          "name": "attendance-exif.txt",
+          "href": "/challenges/forensics-01/attendance-exif.txt",
+          "size": "755 B"
+        }
+      ],
+      "hints": [
+        {
+          "text": "`exiftool attendance.jpg` is the whole beginning and end of this challenge.",
+          "cost": 10
+        },
+        {
+          "text": "Look for GPSLatitude, GPSLongitude and UserComment.",
+          "cost": 20
+        }
+      ],
+      "flag": "SNT{3x1f_n3v3r_l13s}"
+    },
+    {
+      "id": "forensics-02",
+      "slug": "deleted-but-not-gone",
+      "title": "Deleted but Not Gone",
+      "category": "forensics",
+      "difficulty": "beginner",
+      "points": 90,
+      "solves": 98,
+      "author": "Salma Ferchichi",
+      "tags": [
+        "carving",
+        "fat32",
+        "strings"
+      ],
+      "date": "2026-10-09",
+      "featured": false,
+      "description": "A 4 MB disk image from a club laptop. The previous owner deleted a text file, emptied the trash, and called it a day.\n\nOn FAT32, deleting a file only clears the directory entry. The clusters are still there until something overwrites them.\n\n**Goal:** carve the deleted file and read it.",
+      "files": [
+        {
+          "name": "laptop.img",
+          "size": "256.0 KB",
+          "href": "/challenges/forensics-02/laptop.img"
+        }
+      ],
+      "hints": [
+        {
+          "text": "Try `strings` first, then `binwalk -e`, then a real carving tool.",
+          "cost": 20
+        },
+        {
+          "text": "The file signature you are looking for is plain ASCII text at the start of a cluster.",
+          "cost": 35
+        }
+      ],
+      "flag": "SNT{un4ll0c4t3d_sp4c3_sp34ks}"
+    },
+    {
+      "id": "forensics-03",
+      "slug": "broken-zip",
+      "title": "Broken ZIP",
+      "category": "forensics",
+      "difficulty": "intermediate",
+      "points": 180,
+      "solves": 71,
+      "author": "Mehdi Khelifi",
+      "tags": [
+        "file signatures",
+        "hex",
+        "repair"
+      ],
+      "date": "2026-10-15",
+      "featured": true,
+      "description": "The archive downloaded from the club drive refuses to open: `End-of-central-directory signature not found`.\n\nIt is not encrypted. It is not corrupt beyond repair. The first four bytes were overwritten by an over-eager transfer script.\n\n**Goal:** restore the magic bytes and extract the flag.",
+      "files": [
+        {
+          "name": "evidence.zip",
+          "size": "338 B",
+          "href": "/challenges/forensics-03/evidence.zip"
+        }
+      ],
+      "hints": [
+        {
+          "text": "A ZIP local file header starts with `PK\\x03\\x04`.",
+          "cost": 25
+        },
+        {
+          "text": "Fix the first four bytes only. `zip -FF` can rebuild the central directory afterwards.",
+          "cost": 45
+        }
+      ],
+      "flag": "SNT{ffd8_1s_n0t_4_z1p}"
+    },
+    {
+      "id": "forensics-04",
+      "slug": "memory-lane",
+      "title": "Memory Lane",
+      "category": "forensics",
+      "difficulty": "intermediate",
+      "points": 200,
+      "solves": 55,
+      "author": "Farah Zouari",
+      "tags": [
+        "memory",
+        "volatility",
+        "processes"
+      ],
+      "date": "2026-10-21",
+      "featured": false,
+      "description": "A workstation was imaged after a suspected intrusion. The disk was clean; the RAM was not.\n\n**Goal:** identify the suspicious process, dump its memory region, and recover the flag the operator typed into it.",
+      "files": [
+        {
+          "name": "workstation.raw",
+          "size": "384.0 KB",
+          "href": "/challenges/forensics-04/workstation.raw"
+        }
+      ],
+      "hints": [
+        {
+          "text": "Start with `vol -f workstation.raw windows.pslist` and look for a process with no parent.",
+          "cost": 35
+        },
+        {
+          "text": "`windows.memmap --dump --pid <pid>` then `strings` the dump.",
+          "cost": 60
+        }
+      ],
+      "flag": "SNT{pr0c355_l1st_d0nt_l13}"
+    },
+    {
+      "id": "forensics-05",
+      "slug": "timeline-tangle",
+      "title": "Timeline Tangle",
+      "category": "forensics",
+      "difficulty": "advanced",
+      "points": 340,
+      "solves": 23,
+      "author": "Farah Zouari",
+      "tags": [
+        "logs",
+        "timeline",
+        "timezones"
+      ],
+      "date": "2026-10-25",
+      "featured": false,
+      "description": "Three log sources, three timezones, one incident. The web server logs in UTC, the firewall in local Tunis time, and the VPN in whatever the vendor felt like.\n\n**Goal:** build a single timeline and identify the exact minute the attacker moved laterally. The flag is the timestamp of that event, in ISO-8601 UTC, wrapped as `SNT{...}`.",
+      "files": [
+        {
+          "name": "access.log",
+          "size": "24.8 KB",
+          "href": "/challenges/forensics-05/access.log"
+        },
+        {
+          "name": "firewall.csv",
+          "size": "3.0 KB",
+          "href": "/challenges/forensics-05/firewall.csv"
+        },
+        {
+          "name": "vpn.log",
+          "size": "113 B",
+          "href": "/challenges/forensics-05/vpn.log"
+        }
+      ],
+      "hints": [
+        {
+          "text": "Tunisia is UTC+1 all year — no daylight saving since 2008.",
+          "cost": 45
+        },
+        {
+          "text": "The lateral movement is the first successful SMB connection from a VPN-assigned address.",
+          "cost": 80
+        }
+      ],
+      "flag": "SNT{t1m3z0n3s_4r3_4_w34p0n}"
+    },
+    {
+      "id": "forensics-06",
+      "slug": "ransom-notes",
+      "title": "Ransom Notes",
+      "category": "forensics",
+      "difficulty": "expert",
+      "points": 500,
+      "solves": 11,
+      "author": "Wael Hammami",
+      "tags": [
+        "malware",
+        "string analysis",
+        "unpacking"
+      ],
+      "date": "2026-10-30",
+      "featured": false,
+      "description": "A ransomware sample was recovered from a quarantined endpoint. It is packed, but the packer is lazy and the decryption routine is a single-byte XOR over an embedded blob.\n\n**Goal:** statically recover the configuration — including the flag used as the campaign ID — without executing the sample.",
+      "files": [
+        {
+          "name": "sample.bin",
+          "size": "96.0 KB",
+          "href": "/challenges/forensics-06/sample.bin"
+        }
+      ],
+      "hints": [
+        {
+          "text": "Find high-entropy regions, then look for a short loop that XORs a buffer in place.",
+          "cost": 70
+        },
+        {
+          "text": "The key is derived from the first four bytes of the resource section. Brute force all 255 single-byte keys and grep for `SNT{`.",
+          "cost": 130
+        }
+      ],
+      "flag": "SNT{th3_n0t3_w4s_th3_clu3}"
+    }
+  ]
+}

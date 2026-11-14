@@ -1,0 +1,4 @@
+algorithm: sha256
+format: SHA256('SNT + word + ')
+digest: 009f228f4f604bb1d1dce47f2daf0ba194627ed6d1a9c1fece3e77e3d7f4103e
+word: six lowercase letters (a-z)

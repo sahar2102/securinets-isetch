@@ -1,0 +1,189 @@
+{
+  "challenges": [
+    {
+      "id": "stego-01",
+      "slug": "whitespace-whisper",
+      "title": "Whitespace Whisper",
+      "category": "stego",
+      "difficulty": "beginner",
+      "points": 50,
+      "solves": 172,
+      "author": "Ines Jaziri",
+      "tags": [
+        "zero-width",
+        "unicode",
+        "encoding"
+      ],
+      "date": "2026-10-04",
+      "featured": true,
+      "description": "A message that looks completely empty. It is not.\n\nThe file contains only invisible characters: zero-width spaces and zero-width joiners, encoding bits in pairs.\n\n**Goal:** decode the hidden text. A hex editor and patience are enough.",
+      "files": [
+        {
+          "name": "message.txt",
+          "size": "478 B",
+          "href": "/challenges/stego-01/message.txt"
+        }
+      ],
+      "hints": [
+        {
+          "text": "Two distinct invisible characters means binary. Map one to 0, the other to 1.",
+          "cost": 10
+        },
+        {
+          "text": "Group the bits in eights, then read ASCII.",
+          "cost": 20
+        }
+      ],
+      "flag": "SNT{sp4c3s_sp34k}"
+    },
+    {
+      "id": "stego-02",
+      "slug": "lsb-beginner",
+      "title": "LSB Beginner",
+      "category": "stego",
+      "difficulty": "beginner",
+      "points": 80,
+      "solves": 119,
+      "author": "Ines Jaziri",
+      "tags": [
+        "png",
+        "lsb",
+        "pixels"
+      ],
+      "date": "2026-10-09",
+      "featured": false,
+      "description": "A perfectly ordinary club poster. The least significant bit of every red channel spells something out — but only in the first row of pixels.\n\n**Goal:** extract the bit string and read the flag. `zsteg` will get you there; doing it with Python and Pillow teaches you more.",
+      "files": [
+        {
+          "name": "poster.png",
+          "size": "92.8 KB",
+          "href": "/challenges/stego-02/poster.png"
+        }
+      ],
+      "hints": [
+        {
+          "text": "Read the red channel only, from the top-left, left to right.",
+          "cost": 20
+        },
+        {
+          "text": "Every 8 bits form one character. Stop at the closing brace.",
+          "cost": 30
+        }
+      ],
+      "flag": "SNT{l34st_s1gn1f1c4nt_b1t}"
+    },
+    {
+      "id": "stego-03",
+      "slug": "audio-ghost",
+      "title": "Audio Ghost",
+      "category": "stego",
+      "difficulty": "intermediate",
+      "points": 190,
+      "solves": 57,
+      "author": "Omar Ben Amor",
+      "tags": [
+        "audio",
+        "morse",
+        "wav"
+      ],
+      "date": "2026-10-16",
+      "featured": true,
+      "description": "A 40-second recording of what sounds like a modem having a bad day. It is not a modem — it is Morse code, sent with two different tones.\n\n**Goal:** decode the transmission. Listen, or analyse the waveform and measure pulse lengths.",
+      "files": [
+        {
+          "name": "transmission.wav",
+          "size": "441.6 KB",
+          "href": "/challenges/stego-03/transmission.wav"
+        }
+      ],
+      "hints": [
+        {
+          "text": "Short pulses are dots, three times longer are dashes.",
+          "cost": 25
+        },
+        {
+          "text": "The decoded text is already in the flag format — wrap the words in `SNT{...}` with underscores.",
+          "cost": 45
+        }
+      ],
+      "flag": "SNT{s0und_1n_th3_n01s3}"
+    },
+    {
+      "id": "stego-04",
+      "slug": "polyglot-file",
+      "title": "Polyglot File",
+      "category": "stego",
+      "difficulty": "advanced",
+      "points": 330,
+      "solves": 28,
+      "author": "Mehdi Khelifi",
+      "tags": [
+        "polyglot",
+        "zip",
+        "magic bytes"
+      ],
+      "date": "2026-10-23",
+      "featured": false,
+      "description": "The image opens fine in every viewer. It is also a valid ZIP archive — the central directory lives after the image data, which is exactly why nobody noticed.\n\n**Goal:** treat the file as an archive, extract the flag, and explain to a friend why MIME sniffing is not a security control.",
+      "files": [
+        {
+          "name": "banner.png",
+          "size": "90.9 KB",
+          "href": "/challenges/stego-04/banner.png"
+        }
+      ],
+      "hints": [
+        {
+          "text": "`binwalk` will show you two file signatures in one file.",
+          "cost": 35
+        },
+        {
+          "text": "Copy the file to `.zip` and try opening it — or carve from the `PK\\x03\\x04` offset.",
+          "cost": 55
+        }
+      ],
+      "flag": "SNT{tw0_f1l3s_0n3_sh3ll}"
+    },
+    {
+      "id": "stego-05",
+      "slug": "pixel-prison",
+      "title": "Pixel Prison",
+      "category": "stego",
+      "difficulty": "expert",
+      "points": 520,
+      "solves": 8,
+      "author": "Mehdi Khelifi",
+      "tags": [
+        "bit planes",
+        "png",
+        "custom encoding"
+      ],
+      "date": "2026-10-31",
+      "featured": false,
+      "description": "The payload is spread across the red channel, four bit planes deep, one bit per pixel in raster order. The rest is noise.\n\n**Goal:** extract the bit stream and read the flag. The encoder that produced the image is attached — reading it is the intended path.",
+      "files": [
+        {
+          "name": "noise.png",
+          "size": "768.8 KB",
+          "href": "/challenges/stego-05/noise.png"
+        },
+        {
+          "name": "encoder.py",
+          "size": "603 B",
+          "href": "/challenges/stego-05/encoder.py"
+        }
+      ],
+      "hints": [
+        {
+          "text": "`zsteg -a noise.png` will list candidate bit planes.",
+          "cost": 70
+        },
+        {
+          "text": "Read `encoder.py`. It tells you the channel, the bit position and the scan order in four lines.",
+          "cost": 140
+        }
+      ],
+      "flag": "SNT{p1x3l_p3rf3ct_p4yl04d}"
+    }
+  ]
+}

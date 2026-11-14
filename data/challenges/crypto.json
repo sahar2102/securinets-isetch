@@ -1,0 +1,226 @@
+{
+  "challenges": [
+    {
+      "id": "crypto-01",
+      "slug": "caesars-last-words",
+      "title": "Caesar's Last Words",
+      "category": "crypto",
+      "difficulty": "beginner",
+      "points": 50,
+      "solves": 231,
+      "author": "Salma Ferchichi",
+      "tags": [
+        "classical",
+        "rot13",
+        "frequency"
+      ],
+      "date": "2026-10-02",
+      "featured": true,
+      "description": "A retired professor left one encrypted sentence on the club whiteboard before disappearing into the Tunisian summer.\n\n```\nFAG{p4r4g0n_0f_...}\n```\n\nIt looks almost like a flag, which is the point: classical ciphers preserve shape. Shift it back.",
+      "files": [
+        {
+          "name": "cipher.txt",
+          "size": "116 B",
+          "href": "/challenges/crypto-01/cipher.txt"
+        }
+      ],
+      "hints": [
+        {
+          "text": "The alphabet has 26 letters. Try 25 wrong answers quickly.",
+          "cost": 10
+        },
+        {
+          "text": "ROT13 is a Caesar shift with a very specific key.",
+          "cost": 15
+        }
+      ],
+      "flag": "SNT{c4es4r_w0uld_b3_pr0ud}"
+    },
+    {
+      "id": "crypto-02",
+      "slug": "base-instincts",
+      "title": "Base Instincts",
+      "category": "crypto",
+      "difficulty": "beginner",
+      "points": 60,
+      "solves": 176,
+      "author": "Salma Ferchichi",
+      "tags": [
+        "encoding",
+        "base64",
+        "base32",
+        "hex"
+      ],
+      "date": "2026-10-05",
+      "featured": false,
+      "description": "Encoding is not encryption. The club treasurer keeps forgetting this, and now the flag is wrapped in three layers of \"not encryption\".\n\nPeel them in the right order. CyberChef's Magic mode is allowed, but you'll learn more doing it by hand.",
+      "files": [
+        {
+          "name": "layers.txt",
+          "size": "247 B",
+          "href": "/challenges/crypto-02/layers.txt"
+        }
+      ],
+      "hints": [
+        {
+          "text": "Look at the character set and the padding to identify each layer.",
+          "cost": 10
+        },
+        {
+          "text": "Base32 uses A–Z and 2–7. Hex uses 0–9A–F. Base64 uses mixed case plus + and /.",
+          "cost": 20
+        }
+      ],
+      "flag": "SNT{b4s3_15_n0t_3ncrypt10n}"
+    },
+    {
+      "id": "crypto-03",
+      "slug": "xor-toddler",
+      "title": "XOR Toddler",
+      "category": "crypto",
+      "difficulty": "beginner",
+      "points": 80,
+      "solves": 121,
+      "author": "Mehdi Khelifi",
+      "tags": [
+        "xor",
+        "single-byte",
+        "known plaintext"
+      ],
+      "date": "2026-10-08",
+      "featured": true,
+      "description": "Every flag starts with `SNT{`. Every ciphertext here was produced by XOR-ing each byte with the same single-byte key.\n\nThat means you already know the first four bytes of the plaintext — and therefore the first four bytes of the key.\n\n**Goal:** recover the key, decrypt the message.",
+      "files": [
+        {
+          "name": "ciphertext.hex",
+          "size": "109 B",
+          "href": "/challenges/crypto-03/ciphertext.hex"
+        }
+      ],
+      "hints": [
+        {
+          "text": "XOR is its own inverse: ciphertext ⊕ key = plaintext.",
+          "cost": 15
+        },
+        {
+          "text": "'S' is 0x53. XOR it with the first ciphertext byte to get the key.",
+          "cost": 25
+        }
+      ],
+      "flag": "SNT{x0r_1s_r3v3r51bl3}"
+    },
+    {
+      "id": "crypto-04",
+      "slug": "nonce-sense",
+      "title": "Nonce Sense",
+      "category": "crypto",
+      "difficulty": "intermediate",
+      "points": 220,
+      "solves": 48,
+      "author": "Salma Ferchichi",
+      "tags": [
+        "AES-CTR",
+        "nonce reuse",
+        "keystream"
+      ],
+      "date": "2026-10-16",
+      "featured": true,
+      "description": "A backup tool encrypts every file with AES-256-CTR. It generates one random nonce at startup and reuses it for every file in the batch — because \"random is slow\".\n\nYou have two ciphertexts of different lengths, both starting with the same known header.\n\n**Goal:** recover the keystream and decrypt the second file.",
+      "files": [
+        {
+          "name": "file_a.enc",
+          "size": "256 B",
+          "href": "/challenges/crypto-04/file_a.enc"
+        },
+        {
+          "name": "file_b.enc",
+          "size": "256 B",
+          "href": "/challenges/crypto-04/file_b.enc"
+        }
+      ],
+      "hints": [
+        {
+          "text": "In CTR mode, C = P ⊕ keystream. Same nonce means same keystream.",
+          "cost": 30
+        },
+        {
+          "text": "C1 ⊕ C2 = P1 ⊕ P2. With a known P1, P2 falls out.",
+          "cost": 60
+        }
+      ],
+      "flag": "SNT{n0nc3_r3u53_br34k5_4e5}"
+    },
+    {
+      "id": "crypto-05",
+      "slug": "rsa-for-toddlers",
+      "title": "RSA for Toddlers",
+      "category": "crypto",
+      "difficulty": "advanced",
+      "points": 320,
+      "solves": 27,
+      "author": "Mehdi Khelifi",
+      "tags": [
+        "RSA",
+        "small exponent",
+        "no padding"
+      ],
+      "date": "2026-10-22",
+      "featured": false,
+      "description": "A home-made licence server signs with RSA and chose `e = 3` because \"smaller is faster\". Messages are short and unpadded.\n\nYou have the public key and one ciphertext. The math does not need a quantum computer.\n\n**Goal:** recover the plaintext without factoring the modulus.",
+      "files": [
+        {
+          "name": "public-key.txt",
+          "href": "/challenges/crypto-05/public-key.txt",
+          "size": "234 B"
+        }
+      ],
+      "hints": [
+        {
+          "text": "When m³ is smaller than n, the modulus never wraps. Take a cube root.",
+          "cost": 40
+        },
+        {
+          "text": "If it does wrap a little, search for m such that m³ mod n is the ciphertext.",
+          "cost": 70
+        }
+      ],
+      "flag": "SNT{sm4ll_3_5m4ll_m3ss4g3}"
+    },
+    {
+      "id": "crypto-06",
+      "slug": "padding-oracle-express",
+      "title": "Padding Oracle Express",
+      "category": "crypto",
+      "difficulty": "expert",
+      "points": 520,
+      "solves": 9,
+      "author": "Wael Hammami",
+      "tags": [
+        "AES-CBC",
+        "padding oracle",
+        "bit flipping"
+      ],
+      "date": "2026-10-28",
+      "featured": false,
+      "description": "The session cookie is AES-CBC encrypted, and the server answers with three different error messages depending on why decryption failed. That difference is a decryption oracle.\n\n**Goal:** decrypt an existing cookie byte by byte, then forge one whose plaintext contains `role=admin`. No key needed.",
+      "files": [
+        {
+          "name": "oracle-notes.md",
+          "size": "548 B",
+          "href": "/challenges/crypto-06/oracle-notes.md"
+        }
+      ],
+      "hints": [
+        {
+          "text": "Each byte of the previous block controls one byte of the next plaintext after decryption.",
+          "cost": 60
+        },
+        {
+          "text": "Aim for padding 0x01, then 0x02 0x02, and so on. 256 tries per byte at worst.",
+          "cost": 120
+        }
+      ],
+      "flag": "SNT{p4dd1ng_0r4cl3_0wn5_y0u}"
+    }
+  ]
+}

@@ -1,0 +1,189 @@
+{
+  "challenges": [
+    {
+      "id": "misc-01",
+      "slug": "encoding-matryoshka",
+      "title": "Encoding Matryoshka",
+      "category": "misc",
+      "difficulty": "beginner",
+      "points": 50,
+      "solves": 204,
+      "author": "Ines Jaziri",
+      "tags": [
+        "encoding",
+        "binary",
+        "ascii"
+      ],
+      "date": "2026-10-02",
+      "featured": true,
+      "description": "A doll inside a doll inside a doll. Six layers, all of them reversible encodings, none of them encryption.\n\nThe file tells you which layer comes next if you look at the alphabet.\n\n**Goal:** unwrap all six layers.",
+      "files": [
+        {
+          "name": "matryoshka.txt",
+          "size": "166 B",
+          "href": "/challenges/misc-01/matryoshka.txt"
+        }
+      ],
+      "hints": [
+        {
+          "text": "Binary → decimal → hex → base64 is a reasonable first guess.",
+          "cost": 10
+        },
+        {
+          "text": "CyberChef's Magic can detect the whole chain in one click.",
+          "cost": 15
+        }
+      ],
+      "flag": "SNT{0n3_l4y3r_4t_4_t1m3}"
+    },
+    {
+      "id": "misc-02",
+      "slug": "python-golf",
+      "title": "Python Golf",
+      "category": "misc",
+      "difficulty": "beginner",
+      "points": 80,
+      "solves": 128,
+      "author": "Salma Ferchichi",
+      "tags": [
+        "python",
+        "logic",
+        "reading code"
+      ],
+      "date": "2026-10-07",
+      "featured": false,
+      "description": "Eleven lines of aggressively golfed Python. It takes a string and returns `True` only for the flag.\n\n**Goal:** reverse the logic and recover the input. Running it with guesses is allowed but slow.",
+      "files": [
+        {
+          "name": "golf.py",
+          "size": "205 B",
+          "href": "/challenges/misc-02/golf.py"
+        }
+      ],
+      "hints": [
+        {
+          "text": "Rewrite it with real variable names. The obfuscation is cosmetic.",
+          "cost": 20
+        },
+        {
+          "text": "It checks pairs of characters against a rolling hash. Solve backwards from the known prefix `SNT{`.",
+          "cost": 40
+        }
+      ],
+      "flag": "SNT{r3v3r53_th3_0p3r4t0r}"
+    },
+    {
+      "id": "misc-03",
+      "slug": "regex-rumble",
+      "title": "Regex Rumble",
+      "category": "misc",
+      "difficulty": "intermediate",
+      "points": 160,
+      "solves": 74,
+      "author": "Salma Ferchichi",
+      "tags": [
+        "regex",
+        "log parsing",
+        "scripting"
+      ],
+      "date": "2026-10-14",
+      "featured": true,
+      "description": "A log file where exactly one line matches all six conditions listed in the attached rule sheet. The others match five.\n\n**Goal:** write the regex, extract the token, submit it as the flag. No guessing — the rules are precise.",
+      "files": [
+        {
+          "name": "haystack.log",
+          "size": "465.4 KB",
+          "href": "/challenges/misc-03/haystack.log"
+        },
+        {
+          "name": "rules.md",
+          "size": "321 B",
+          "href": "/challenges/misc-03/rules.md"
+        }
+      ],
+      "hints": [
+        {
+          "text": "Use lookaheads, or filter progressively with grep and check what survives.",
+          "cost": 25
+        },
+        {
+          "text": "The IP must be in 10.0.0.0/8 but not 10.0.1.0/24, and the status must not be 200.",
+          "cost": 45
+        }
+      ],
+      "flag": "SNT{r3g3x_1s_a_sup3rp0w3r}"
+    },
+    {
+      "id": "misc-04",
+      "slug": "hash-hunt",
+      "title": "Hash Hunt",
+      "category": "misc",
+      "difficulty": "intermediate",
+      "points": 190,
+      "solves": 66,
+      "author": "Mehdi Khelifi",
+      "tags": [
+        "hashing",
+        "brute force",
+        "scripting"
+      ],
+      "date": "2026-10-21",
+      "featured": false,
+      "description": "`SHA-256(\"SNT{\" + word + \"}\") == 6f3c...` — and the word is a six-letter lowercase English word.\n\n**Goal:** recover the word. A wordlist and ten lines of Python beat a GPU you do not have.",
+      "files": [
+        {
+          "name": "hash.txt",
+          "size": "157 B",
+          "href": "/challenges/misc-04/hash.txt"
+        }
+      ],
+      "hints": [
+        {
+          "text": "`rockyou.txt` has it. `hashcat -m 1400` works if you prefer.",
+          "cost": 30
+        },
+        {
+          "text": "The word starts with 's' and is security-adjacent.",
+          "cost": 55
+        }
+      ],
+      "flag": "SNT{shadow}"
+    },
+    {
+      "id": "misc-05",
+      "slug": "esolang-detour",
+      "title": "Esolang Detour",
+      "category": "misc",
+      "difficulty": "advanced",
+      "points": 320,
+      "solves": 24,
+      "author": "Aziz Trabelsi",
+      "tags": [
+        "brainfuck",
+        "esolang",
+        "decoding"
+      ],
+      "date": "2026-10-26",
+      "featured": false,
+      "description": "The challenge is a single line of punctuation. It is a valid Brainfuck program that prints exactly one string: the flag.\n\n**Goal:** run it (mentally or otherwise) and read the output. Then explain why the tape has 30,000 cells.",
+      "files": [
+        {
+          "name": "detour.bf",
+          "size": "2.0 KB",
+          "href": "/challenges/misc-05/detour.bf"
+        }
+      ],
+      "hints": [
+        {
+          "text": "Any Brainfuck interpreter will do — or write twelve lines of Python.",
+          "cost": 30
+        },
+        {
+          "text": "If you want to solve it statically, note that every run of `+` before a `.` is one character.",
+          "cost": 60
+        }
+      ],
+      "flag": "SNT{br41nf_4nd_b3y0nd}"
+    }
+  ]
+}

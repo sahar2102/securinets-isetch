@@ -1,0 +1,21 @@
+import puppeteer from "puppeteer-core";
+const b = await puppeteer.launch({ executablePath: "/usr/bin/google-chrome", headless: "new", args: ["--no-sandbox"] });
+const p = await b.newPage();
+await p.setViewport({ width: 1440, height: 1000 });
+await p.goto("http://localhost:3000/login", { waitUntil: "domcontentloaded" });
+await new Promise(r => setTimeout(r, 700));
+await p.type('input[type="email"]', "securinetsisetch26@gmail.com");
+await p.type('input[type="password"]', "Snt-e5d8719d03!26");
+await p.click('button[type="submit"]');
+await new Promise(r => setTimeout(r, 3000));
+await p.goto("http://localhost:3000/admin", { waitUntil: "domcontentloaded" });
+await new Promise(r => setTimeout(r, 1200));
+const clicked = await p.evaluate(() => {
+  const btn = [...document.querySelectorAll("button")].find((b) => b.textContent.trim().startsWith("Players"));
+  if (btn) { btn.click(); return true; } return false;
+});
+await new Promise(r => setTimeout(r, 700));
+console.log("players tab clicked:", clicked);
+console.log("rows:", await p.evaluate(() => document.querySelectorAll("table tbody tr").length));
+await p.screenshot({ path: ".shots/players.png" });
+await b.close();

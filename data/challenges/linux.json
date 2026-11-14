@@ -1,0 +1,189 @@
+{
+  "challenges": [
+    {
+      "id": "linux-01",
+      "slug": "permission-denied",
+      "title": "Permission Denied",
+      "category": "linux",
+      "difficulty": "beginner",
+      "points": 60,
+      "solves": 183,
+      "author": "Mehdi Khelifi",
+      "tags": [
+        "permissions",
+        "chmod",
+        "ownership"
+      ],
+      "date": "2026-10-03",
+      "featured": true,
+      "description": "You are `student` on a shared lab machine. The flag is in `/srv/backup/flag.txt` and you are told it is readable — but `cat` says otherwise.\n\nThe attached archive contains the directory listing and the lab's setup script.\n\n**Goal:** find the permission mistake and read the file without becoming root.",
+      "files": [
+        {
+          "name": "lab-listing.txt",
+          "size": "524 B",
+          "href": "/challenges/linux-01/lab-listing.txt"
+        }
+      ],
+      "hints": [
+        {
+          "text": "Check the directory permissions, not just the file's.",
+          "cost": 15
+        },
+        {
+          "text": "The backup group has read access to the directory. Are you in it?",
+          "cost": 25
+        }
+      ],
+      "flag": "SNT{chm0d_777_1s_n0t_s3cur3}"
+    },
+    {
+      "id": "linux-02",
+      "slug": "pipe-dreams",
+      "title": "Pipe Dreams",
+      "category": "linux",
+      "difficulty": "beginner",
+      "points": 70,
+      "solves": 147,
+      "author": "Mehdi Khelifi",
+      "tags": [
+        "pipes",
+        "grep",
+        "awk"
+      ],
+      "date": "2026-10-06",
+      "featured": false,
+      "description": "A 20,000-line log, one line that matters. You could read it. You should not.\n\nThe flag is split across three lines that share a request ID.\n\n**Goal:** find the request ID, then join the three fragments in order.",
+      "files": [
+        {
+          "name": "app.log",
+          "size": "1.1 MB",
+          "href": "/challenges/linux-02/app.log"
+        }
+      ],
+      "hints": [
+        {
+          "text": "`grep SNT app.log` is a start; the fragments are split, so the brace is not on one line.",
+          "cost": 15
+        },
+        {
+          "text": "Find the `req=` value that appears three times with `fragment=` markers.",
+          "cost": 25
+        }
+      ],
+      "flag": "SNT{p1p3_dr34ms_4r3_m4d3_0f_th15}"
+    },
+    {
+      "id": "linux-03",
+      "slug": "cron-job-snoop",
+      "title": "Cron Job Snoop",
+      "category": "linux",
+      "difficulty": "beginner",
+      "points": 80,
+      "solves": 134,
+      "author": "Rania Chaabane",
+      "tags": [
+        "cron",
+        "privesc",
+        "scheduling"
+      ],
+      "date": "2026-10-09",
+      "featured": true,
+      "description": "A web server runs a cleanup script every minute as root. The script lives in a directory the web user can write to.\n\nThe archive contains `/etc/crontab`, the script and `ls -la` output.\n\n**Goal:** identify the privilege-escalation path and the flag hidden in the script's backup copy.",
+      "files": [
+        {
+          "name": "cron-evidence.zip",
+          "size": "764 B",
+          "href": "/challenges/linux-03/cron-evidence.zip"
+        }
+      ],
+      "hints": [
+        {
+          "text": "A root cron job that executes a script from a world-writable directory is a shell waiting to happen.",
+          "cost": 20
+        },
+        {
+          "text": "Check the script's `.bak` — the flag is in the commented-out debug line.",
+          "cost": 35
+        }
+      ],
+      "flag": "SNT{cr0n_t4bs_4r3_w0rld_r34d4bl3}"
+    },
+    {
+      "id": "linux-04",
+      "slug": "suid-safari",
+      "title": "SUID Safari",
+      "category": "linux",
+      "difficulty": "intermediate",
+      "points": 200,
+      "solves": 62,
+      "author": "Mehdi Khelifi",
+      "tags": [
+        "suid",
+        "gtfobins",
+        "enumeration"
+      ],
+      "date": "2026-10-17",
+      "featured": false,
+      "description": "A deliberately vulnerable container. `find / -perm -4000 -type f 2>/dev/null` returns one binary that has no business being SUID.\n\n**Goal:** use it to read `/root/flag.txt`. The container image digest and a shell transcript are attached; the challenge is fully local.",
+      "files": [
+        {
+          "name": "transcript.txt",
+          "size": "537 B",
+          "href": "/challenges/linux-04/transcript.txt"
+        }
+      ],
+      "hints": [
+        {
+          "text": "Compare the SUID list against a clean install of the same image.",
+          "cost": 30
+        },
+        {
+          "text": "It is a standard utility with a documented GTFOBins escape. `-p` preserves the effective UID.",
+          "cost": 55
+        }
+      ],
+      "flag": "SNT{f1nd_p3rm_4000}"
+    },
+    {
+      "id": "linux-05",
+      "slug": "wildcard-injection",
+      "title": "Wildcard Injection",
+      "category": "linux",
+      "difficulty": "expert",
+      "points": 560,
+      "solves": 7,
+      "author": "Wael Hammami",
+      "tags": [
+        "tar",
+        "wildcards",
+        "root cron"
+      ],
+      "date": "2026-11-03",
+      "featured": false,
+      "description": "A root cron job runs `tar -czf /backup/site.tgz *` inside a directory owned by the web user. No quotes, no `--`, no `./` prefix.\n\n**Goal:** exploit the wildcard expansion to execute a command as root, then read the flag. Lab container provided as a Dockerfile — build it, break it, document it.",
+      "files": [
+        {
+          "name": "Dockerfile",
+          "size": "426 B",
+          "href": "/challenges/linux-05/Dockerfile"
+        },
+        {
+          "name": "backup.sh",
+          "size": "65 B",
+          "href": "/challenges/linux-05/backup.sh"
+        }
+      ],
+      "hints": [
+        {
+          "text": "Filenames starting with `--` are parsed as options by tar.",
+          "cost": 80
+        },
+        {
+          "text": "`--checkpoint=1` plus `--checkpoint-action=exec=sh shell.sh` gives you execution.",
+          "cost": 150
+        }
+      ],
+      "flag": "SNT{gl0bb1ng_1s_d4ng3r0u5}"
+    }
+  ]
+}

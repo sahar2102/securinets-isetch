@@ -1,0 +1,4 @@
+# Layer 1 (base64) -> Layer 2 (hex) -> Layer 3 (base32)
+# Peel in that order. Do not trust the order of the comment.
+
+NGI0ZTQ4NDY0OTM2MzM0NDQ3NTI1MzU4NDc0ZTQ0NTM0YzM1MzM1NDQxMzU0YzRkNGQ1MjUwNTc0NTRkMzIzNzRmNDI1YTQ0NDEzNTRjNDU1MDU1M2QzZDNkM2QzZDNk

@@ -1,0 +1,21 @@
+$ id
+uid=1002(student) gid=1002(student) groups=1002(student),1043(backup)
+
+$ ls -la /srv/backup/
+drwxr-x--- 2 root backup 4096 Nov 12 21:04 .
+drwxr-xr-x 6 root root   4096 Oct 30 11:22 ..
+-rw-r----- 1 root backup  124 Nov 12 21:03 flag.txt
+-rw-r----- 1 root backup  922 Nov 01 09:12 db-2026-10.sql.gz
+
+$ cat /srv/backup/flag.txt
+cat: /srv/backup/flag.txt: Permission denied
+
+$ getfacl /srv/backup/flag.txt
+# file: srv/backup/flag.txt
+# owner: root
+# group: backup
+user::rw-
+user:student:r--
+group::r--
+mask::r--
+other::---

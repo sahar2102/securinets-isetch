@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#111014"/><stop offset="0.55" stop-color="#0a0a0c"/><stop offset="1" stop-color="#2a0008"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.72" cy="0.28" r="0.6">
+      <stop offset="0" stop-color="#FF2D3D" stop-opacity="0.5"/><stop offset="1" stop-color="#FF2D3D" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="g" width="60" height="60" patternUnits="userSpaceOnUse">
+      <path d="M60 0H0V60" fill="none" stroke="#ffffff" stroke-opacity="0.06" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="1200" height="800" fill="url(#bg)"/>
+  <rect width="1200" height="800" fill="url(#g)"/>
+  <rect width="1200" height="800" fill="url(#glow)"/>
+  <g stroke="#FF2D3D" stroke-opacity="0.35" fill="none">
+    <circle cx="900" cy="250" r="190" stroke-dasharray="3 12"/>
+    <circle cx="900" cy="250" r="140" stroke-opacity="0.18"/>
+    <path d="M710 250h380M900 60v380" stroke-opacity="0.12"/>
+  </g>
+  <text x="72" y="104" font-family="DejaVu Sans Mono, monospace" fill="#FF5A66" font-size="18" letter-spacing="4">SECURINETS · ISET CHARGUIA</text>
+  <text x="70" y="470" font-family="DejaVu Sans, sans-serif" font-weight="bold" font-size="58" fill="#F3F1F5"><tspan x="70" dy="0">MINI-CTF DEBRIEF</tspan></text>
+  <text x="72" y="570" font-family="DejaVu Sans Mono, monospace" font-size="22" fill="#A09CA8">18.10.2026 · 17:00</text>
+  <text x="72" y="710" font-family="DejaVu Sans Mono, monospace" font-size="16" fill="#FF2D3D">&gt;_ 02 / 02</text>
+  <rect x="0" y="0" width="1200" height="3" fill="#FF2D3D"/>
+</svg>

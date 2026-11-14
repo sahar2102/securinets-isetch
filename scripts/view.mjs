@@ -1,0 +1,12 @@
+import puppeteer from "puppeteer-core";
+const [url = "http://localhost:3000", out = ".shots/view.png", w = "1440", h = "1000", theme = "dark"] = process.argv.slice(2);
+const browser = await puppeteer.launch({ executablePath: "/usr/bin/google-chrome", headless: "new", args: ["--no-sandbox"] });
+const page = await browser.newPage();
+await page.setViewport({ width: Number(w), height: Number(h) });
+await page.emulateMediaFeatures([{ name: "prefers-color-scheme", value: theme }]);
+await page.evaluateOnNewDocument((t) => localStorage.setItem("snt-theme", t), theme);
+await page.goto(url, { waitUntil: "domcontentloaded" });
+await new Promise((r) => setTimeout(r, 1800));
+await page.screenshot({ path: out });
+await browser.close();
+console.log("saved", out);

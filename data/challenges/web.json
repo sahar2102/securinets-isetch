@@ -1,0 +1,166 @@
+{
+  "challenges": [
+    {
+      "id": "web-01",
+      "slug": "robots-are-rude",
+      "title": "Robots Are Rude",
+      "category": "web",
+      "difficulty": "beginner",
+      "points": 50,
+      "solves": 214,
+      "author": "Aziz Trabelsi",
+      "tags": [
+        "recon",
+        "robots.txt",
+        "staging"
+      ],
+      "date": "2026-10-12",
+      "featured": true,
+      "description": "A student project went to production with the staging notes still attached.\n\nThe developers were kind enough to publish a `robots.txt` asking crawlers to stay away from the interesting parts. Search engines listen. You don't have to.\n\n**Target:** a local mirror is provided as an attachment — no live host is involved.",
+      "files": [
+        {
+          "name": "robots.txt",
+          "size": "215 B",
+          "href": "/challenges/web-01/robots.txt"
+        }
+      ],
+      "hints": [
+        {
+          "text": "Disallow rules are a map, not a lock.",
+          "cost": 10
+        },
+        {
+          "text": "Fetch the path that the file asks crawlers not to index.",
+          "cost": 20
+        }
+      ],
+      "flag": "SNT{r0b0ts_4r3_n0t_s3cur3}"
+    },
+    {
+      "id": "web-02",
+      "slug": "view-source-win-prize",
+      "title": "View Source, Win Prize",
+      "category": "web",
+      "difficulty": "beginner",
+      "points": 60,
+      "solves": 187,
+      "author": "Omar Ben Amor",
+      "tags": [
+        "html",
+        "comments",
+        "client-side"
+      ],
+      "date": "2026-10-12",
+      "featured": false,
+      "description": "The club's first landing page shipped in a hurry. The developer left a note for a colleague, then forgot it existed.\n\nBrowsers render what you see. They ship what you don't. Find the note.",
+      "hints": [
+        {
+          "text": "Ctrl+U is a tool, not a cheat.",
+          "cost": 10
+        }
+      ],
+      "flag": "SNT{comm3nts_4r3_publ1c}"
+    },
+    {
+      "id": "web-03",
+      "slug": "cookie-monsta",
+      "title": "Cookie Monsta",
+      "category": "web",
+      "difficulty": "beginner",
+      "points": 75,
+      "solves": 142,
+      "author": "Aziz Trabelsi",
+      "tags": [
+        "cookies",
+        "base64",
+        "access control"
+      ],
+      "date": "2026-10-14",
+      "featured": true,
+      "description": "The dashboard decides who you are by reading a cookie it wrote itself:\n\n```\nsession=eyJ1c2VyIjoic3R1ZGVudCIsInJvbGUiOiJ1c2VyIn0=\n```\n\nThe admin panel is at `/admin`. The app trusts the cookie completely — which is the whole problem.\n\n**Goal:** reconstruct a cookie that gets you the admin view and read the flag rendered there.",
+      "files": [
+        {
+          "name": "session.txt",
+          "size": "273 B",
+          "href": "/challenges/web-03/session.txt"
+        }
+      ],
+      "hints": [
+        {
+          "text": "That string is not encrypted, only encoded.",
+          "cost": 10
+        },
+        {
+          "text": "Change the role value, then re-encode the JSON exactly as the server expects it.",
+          "cost": 25
+        }
+      ],
+      "flag": "SNT{c00k13s_4r3_cl13nt_s1d3}"
+    },
+    {
+      "id": "web-04",
+      "slug": "injection-junction",
+      "title": "Injection Junction",
+      "category": "web",
+      "difficulty": "intermediate",
+      "points": 200,
+      "solves": 64,
+      "author": "Aziz Trabelsi",
+      "tags": [
+        "SQLi",
+        "auth bypass",
+        "union"
+      ],
+      "date": "2026-10-20",
+      "featured": true,
+      "description": "An internal staff portal still concatenates user input into its login query:\n\n```sql\nSELECT id, role FROM users WHERE email = '<input>' AND password = '<input>'\n```\n\nNo WAF, no prepared statements, and a very confident comment in the code review.\n\n**Goal:** authenticate as the first administrator, then read the flag from their profile.",
+      "hints": [
+        {
+          "text": "You do not need a password if the query never gets to check one.",
+          "cost": 20
+        },
+        {
+          "text": "Comment out the rest of the statement. In SQLite, `--` works.",
+          "cost": 40
+        }
+      ],
+      "flag": "SNT{un10n_s3l3ct_pwn3d}"
+    },
+    {
+      "id": "web-05",
+      "slug": "gatekeeper",
+      "title": "Gatekeeper",
+      "category": "web",
+      "difficulty": "advanced",
+      "points": 350,
+      "solves": 19,
+      "author": "Mehdi Khelifi",
+      "tags": [
+        "JWT",
+        "alg none",
+        "authorization"
+      ],
+      "date": "2026-10-26",
+      "featured": false,
+      "description": "Our internal API uses JSON Web Tokens. The verifier was written by a third-party library that supports the `none` algorithm for \"testing purposes\".\n\nYou are given a valid low-privilege token and the API contract. The flag lives behind `GET /api/v1/admin/flag`.\n\n**Goal:** forge a token with `role: admin` that the server accepts.",
+      "files": [
+        {
+          "name": "token.txt",
+          "size": "441 B",
+          "href": "/challenges/web-05/token.txt"
+        }
+      ],
+      "hints": [
+        {
+          "text": "Decode the three segments. The middle one is the claim set.",
+          "cost": 30
+        },
+        {
+          "text": "If the server accepts unsigned tokens, the signature segment can be empty.",
+          "cost": 60
+        }
+      ],
+      "flag": "SNT{4lg_n0n3_1s_n0t_4_l4ugh1ng_m4tt3r}"
+    }
+  ]
+}
