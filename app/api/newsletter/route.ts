@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { addSubscriber } from "@/lib/db";
+import { notifyAdmin } from "@/lib/notify";
 import { clientIp, hit } from "@/lib/rate-limit";
 
 export const runtime = "nodejs";
@@ -17,5 +18,8 @@ export async function POST(req: Request) {
   if (!parsed.success) return NextResponse.json({ error: "invalid_email" }, { status: 422 });
 
   await addSubscriber(parsed.data.email);
+  await notifyAdmin("New newsletter subscriber", [["Email", parsed.data.email]]).catch((error) =>
+    console.error("[notify] newsletter", error),
+  );
   return NextResponse.json({ ok: true });
 }

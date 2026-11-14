@@ -19,6 +19,7 @@ import {
   saveChallenge,
   saveEvent,
   saveMember,
+  resetUserPassword,
   setUserRole,
   type ActionResult,
 } from "@/app/admin/actions";
@@ -102,6 +103,16 @@ export function AdminDashboard({ user, players, challenges, events, team, announ
       count: players.filter((p) => p.role === "pending").length || undefined,
     },
   ];
+
+  const resetPassword = async (id: string, email: string) => {
+    const next = window.prompt(`New password for ${email} (min 8 characters).\nGive it to the member privately — it is shown only here.`);
+    if (!next) return;
+    if (next.length < 8) { setToast("Password must be at least 8 characters"); setTimeout(() => setToast(null), 3000); return; }
+    const result = await resetUserPassword(id, next);
+    setToast(result.ok ? `Password updated for ${email}` : "Could not update password");
+    setTimeout(() => setToast(null), 3500);
+    if (result.ok) router.refresh();
+  };
 
   return (
     <div className="container-x py-10">
@@ -512,13 +523,22 @@ export function AdminDashboard({ user, players, challenges, events, team, announ
                               Approve
                             </button>
                           ) : p.role === "member" ? (
-                            <button
-                              type="button"
-                              onClick={() => void approve(p.id, "pending")}
-                              className="text-[11.5px] text-muted underline-offset-4 hover:text-ink hover:underline"
-                            >
-                              Revoke
-                            </button>
+                            <div className="flex flex-wrap items-center justify-end gap-x-4 gap-y-1">
+                              <button
+                                type="button"
+                                onClick={() => void resetPassword(p.id, p.email)}
+                                className="text-[11.5px] text-muted underline-offset-4 hover:text-ink hover:underline"
+                              >
+                                Reset password
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => void approve(p.id, "pending")}
+                                className="text-[11.5px] text-muted underline-offset-4 hover:text-ink hover:underline"
+                              >
+                                Revoke
+                              </button>
+                            </div>
                           ) : (
                             <span className="text-[11px] text-muted">—</span>
                           )}
@@ -532,6 +552,7 @@ export function AdminDashboard({ user, players, challenges, events, team, announ
           ) : null}
 
           {tab === "applications" ? (
+
             <div className="overflow-hidden rounded-xl border border-line/10">
               {registrations.length === 0 ? (
                 <p className="p-8 text-center text-[13px] text-muted">No applications yet.</p>

@@ -2,7 +2,7 @@ import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
 import { z } from "zod";
-import { findUserByEmail } from "@/lib/db";
+import { findUserByEmail, getUserById } from "@/lib/db";
 import { ensureSeed } from "@/lib/seed";
 
 const credentialsSchema = z.object({
@@ -55,6 +55,14 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       return token;
     },
     async session({ session, token }) {
+      // A member approved while logged in keeps a "pending" token until they
+      // sign out. Re-read the role (only for pending users) so access opens
+      // immediately after an admin approves the account.
+      const uid = typeof token.uid === "string" ? token.uid : null;
+      if (uid && token.role === "pending") {
+        const fresh = await getUserById(uid).catch(() => null);
+        if (fresh && fresh.role !== "pending") token.role = fresh.role;
+      }
       if (session.user) {
         session.user.id = String(token.uid ?? "");
         session.user.role = token.role === "admin" ? "admin" : token.role === "pending" ? "pending" : "member";

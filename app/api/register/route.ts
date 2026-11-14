@@ -35,8 +35,9 @@ export async function POST(req: Request) {
   const invite = process.env.MEMBERSHIP_CODE;
   const approved = Boolean(invite) && parsed.data.code === invite;
   const passwordHash = await bcrypt.hash(parsed.data.password, 11);
+  let created: { id: string } | null = null;
   try {
-    await createUser({
+    created = await createUser({
       name: parsed.data.name,
       email: parsed.data.email,
       passwordHash,
@@ -48,6 +49,22 @@ export async function POST(req: Request) {
     }
     console.error("[register]", error);
     return NextResponse.json({ error: "server_error" }, { status: 500 });
+  }
+
+  if (!approved && created) {
+    const { createActionToken } = await import("@/lib/approve-token");
+    const { notifyAdmin } = await import("@/lib/notify");
+    const base = process.env.NEXT_PUBLIC_SITE_URL ?? new URL(req.url).origin;
+    const token = createActionToken("approve", created.id);
+    await notifyAdmin(
+      "New account awaiting approval",
+      [
+        ["Name", parsed.data.name],
+        ["Email", parsed.data.email],
+        ["Status", "pending"],
+      ],
+      { label: "Review and approve", url: `${base}/admin/approve?token=${token}` },
+    ).catch((error) => console.error("[notify] register", error));
   }
 
   return NextResponse.json({ ok: true, pending: !approved });

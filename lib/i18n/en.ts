@@ -215,6 +215,9 @@ export const en = {
     onCampus: "On campus",
   },
   challenges: {
+    lockedTitle: "Members only, for now.",
+    lockedIntro:
+      "The full range opens after your account is approved. Here are four challenges to show what is inside — and why it is worth joining.",
     gateTitle: "Members only",
     gateBody:
       "The challenge range is reserved for approved club members while we prepare the internal CTF. Sign in with your club account to continue.",
@@ -443,6 +446,7 @@ export const en = {
     note: "Certificates are issued within 7 days of an activity. Lost your number? Contact the board.",
   },
   auth: {
+    forgot: "Forgot password?",
     loginTitle: "Welcome back.",
     loginSubtitle: "Sign in to track progress and appear on the leaderboard.",
     registerTitle: "Create your account.",

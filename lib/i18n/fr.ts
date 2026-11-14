@@ -217,6 +217,9 @@ export const fr: Dictionary = {
     onCampus: "Sur le campus",
   },
   challenges: {
+    lockedTitle: "Réservé aux membres, pour le moment.",
+    lockedIntro:
+      "La plateforme complète s'ouvre dès que votre compte est validé. Voici quatre challenges pour montrer ce qui vous attend — et pourquoi ça vaut la peine.",
     gateTitle: "Réservé aux membres",
     gateBody:
       "La plateforme de challenges est réservée aux membres approuvés du club pendant la préparation du CTF interne. Connectez-vous avec votre compte du club pour continuer.",
@@ -447,6 +450,7 @@ export const fr: Dictionary = {
     note: "Les certificats sont délivrés sous 7 jours après une activité. Numéro perdu ? Contactez le bureau.",
   },
   auth: {
+    forgot: "Mot de passe oublié ?",
     loginTitle: "Content de vous revoir.",
     loginSubtitle: "Connectez-vous pour suivre votre progression et apparaître au classement.",
     registerTitle: "Créez votre compte.",

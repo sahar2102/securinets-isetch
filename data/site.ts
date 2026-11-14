@@ -63,8 +63,7 @@ export const nav = [
 export const stats = [
   { key: "members", value: 45, suffix: "+", label: "Active members" },
   { key: "challenges", value: 49, suffix: "", label: "Live challenges" },
-  { key: "events", value: 3, suffix: "", label: "Events & workshops" },
-  { key: "writeups", value: 0, suffix: "", label: "Writeups published" },
+  { key: "events", value: 4, suffix: "", label: "Events & workshops" },
 ] as const;
 
 /** Difficulty scale shared by the challenge hub and leaderboard badges. */

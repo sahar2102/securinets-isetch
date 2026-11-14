@@ -160,6 +160,14 @@ export function AuthForm({ mode }: { mode: "login" | "register" }) {
                 </p>
               ) : null}
 
+              {mode === "login" ? (
+                <p className="text-right text-[12.5px]">
+                  <Link href="/forgot-password" className="text-ember-text underline-offset-4 hover:underline">
+                    {t.auth.forgot}
+                  </Link>
+                </p>
+              ) : null}
+
               <button type="submit" disabled={loading} className="btn-primary w-full">
                 {loading ? t.common.loading : mode === "login" ? t.auth.login : t.auth.register}
                 <Icon name="arrowRight" size={15} />

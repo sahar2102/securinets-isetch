@@ -242,10 +242,10 @@ function StatsBar({ challengeCount }: { challengeCount: number }) {
   return (
     <section className="border-b border-line/10">
       <div className="container-x">
-        <dl className="grid grid-cols-2 divide-line/10 lg:grid-cols-4 lg:divide-x">
+        <dl className="grid divide-line/10 sm:grid-cols-3 sm:divide-x">
           {items.map((item, i) => (
             <Reveal key={item.label} delay={i * 0.06}>
-              <div className={cn("px-2 py-8 sm:px-6", i > 1 && "border-t border-line/10 lg:border-t-0")}>
+              <div className={cn("px-2 py-8 sm:px-6", i > 0 && "border-t border-line/10 sm:border-t-0")}>
                 <dt className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted">{item.label}</dt>
                 <dd className="mt-2 font-display text-4xl font-semibold tracking-tight text-ink sm:text-5xl">
                   <Counter value={item.value} suffix={item.suffix} />

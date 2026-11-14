@@ -84,3 +84,17 @@ CREATE TABLE IF NOT EXISTS subscribers (
 --
 -- Flags live in `content.data->>'flagHash'` for admin-created challenges and in
 -- data/challenges/*.json for seeded ones. Both are salted SHA-256 hashes.
+
+-- Performance: the range page and scoreboard count solves per challenge.
+CREATE INDEX IF NOT EXISTS solves_challenge_idx ON solves (challenge_slug);
+CREATE INDEX IF NOT EXISTS solves_user_idx ON solves (user_id);
+
+-- Password recovery (added Nov 2026)
+CREATE TABLE IF NOT EXISTS password_resets (
+  id BIGSERIAL PRIMARY KEY,
+  user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  token_hash TEXT NOT NULL UNIQUE,
+  expires_at TIMESTAMPTZ NOT NULL,
+  used BOOLEAN NOT NULL DEFAULT FALSE,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);

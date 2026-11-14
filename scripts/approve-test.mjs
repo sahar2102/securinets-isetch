@@ -1,0 +1,27 @@
+import puppeteer from "puppeteer-core";
+const b = await puppeteer.launch({ executablePath: "/usr/bin/google-chrome", headless: "new", args: ["--no-sandbox"] });
+const p = await b.newPage();
+p.on("console", (m) => { if (m.type() === "error") console.log("CONSOLE:", m.text().slice(0, 200)); });
+p.on("pageerror", (e) => console.log("PAGEERROR:", e.message.slice(0, 200)));
+p.on("response", (r) => { if (r.status() >= 400) console.log("HTTP", r.status(), r.url().slice(0, 90)); });
+await p.setViewport({ width: 1440, height: 1000 });
+await p.goto("http://localhost:3000/login", { waitUntil: "domcontentloaded" });
+await new Promise(r => setTimeout(r, 700));
+await p.type('input[type="email"]', "securinetsisetch26@gmail.com");
+await p.type('input[type="password"]', "Snt-e5d8719d03!26");
+await p.click('button[type="submit"]');
+await new Promise(r => setTimeout(r, 3000));
+await p.goto("http://localhost:3000/admin", { waitUntil: "domcontentloaded" });
+await new Promise(r => setTimeout(r, 1200));
+await p.evaluate(() => [...document.querySelectorAll("button")].find(b => b.textContent.trim().startsWith("Players"))?.click());
+await new Promise(r => setTimeout(r, 800));
+const before = await p.evaluate(() => document.body.innerText.includes("PENDING"));
+console.log("pending row visible:", before);
+const clicked = await p.evaluate(() => {
+  const btn = [...document.querySelectorAll("button")].find(b => b.textContent.trim() === "Approve");
+  if (btn) { btn.click(); return true; } return false;
+});
+console.log("approve clicked:", clicked);
+await new Promise(r => setTimeout(r, 2500));
+console.log("after:", await p.evaluate(() => document.body.innerText.match(/PENDING|MEMBER/g)?.slice(0,4)));
+await b.close();

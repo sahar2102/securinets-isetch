@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { addRegistration } from "@/lib/db";
+import { notifyAdmin } from "@/lib/notify";
 import { clientIp, hit } from "@/lib/rate-limit";
 
 export const runtime = "nodejs";
@@ -39,6 +40,20 @@ export async function POST(req: Request) {
 
   const { website: _honeypot, ...data } = parsed.data;
   await addRegistration({ ...data, createdAt: new Date().toISOString() });
+
+  const base = process.env.NEXT_PUBLIC_SITE_URL ?? new URL(req.url).origin;
+  await notifyAdmin(
+    "New membership application",
+    [
+      ["Name", data.name],
+      ["Email", data.email],
+      ["Year", data.year],
+      ["Field", data.field],
+      ["Interests", data.interests.join(", ") || "—"],
+      ["Motivation", data.motivation],
+    ],
+    { label: "Open the admin panel", url: `${base}/admin` },
+  ).catch((error) => console.error("[notify] join", error));
 
   return NextResponse.json({ ok: true });
 }

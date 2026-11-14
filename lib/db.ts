@@ -26,6 +26,7 @@ interface FileStore {
   hints: HintUnlock[];
   content: ContentRow[];
   registrations: Record<string, unknown>[];
+  resets: { userId: string; tokenHash: string; expiresAt: string; used: boolean }[];
   subscribers: { email: string; createdAt: string }[];
 }
 
@@ -35,6 +36,7 @@ const EMPTY: FileStore = {
   hints: [],
   content: [],
   registrations: [],
+  resets: [],
   subscribers: [],
 };
 
@@ -111,6 +113,18 @@ CREATE TABLE IF NOT EXISTS registrations (
   intent TEXT,
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
+CREATE INDEX IF NOT EXISTS solves_challenge_idx ON solves (challenge_slug);
+CREATE INDEX IF NOT EXISTS solves_user_idx ON solves (user_id);
+
+CREATE TABLE IF NOT EXISTS password_resets (
+  id BIGSERIAL PRIMARY KEY,
+  user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  token_hash TEXT NOT NULL UNIQUE,
+  expires_at TIMESTAMPTZ NOT NULL,
+  used BOOLEAN NOT NULL DEFAULT FALSE,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
 CREATE TABLE IF NOT EXISTS subscribers (
   email TEXT PRIMARY KEY,
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
@@ -226,6 +240,19 @@ export async function listUsers(): Promise<User[]> {
     }));
   }
   return (await readStore()).users;
+}
+
+export async function updateUserPassword(id: string, passwordHash: string): Promise<void> {
+  if (hasDatabase) {
+    await ready();
+    const p = await pool();
+    await p.query("UPDATE users SET password_hash = $1 WHERE id = $2", [passwordHash, id]);
+    return;
+  }
+  await mutate((store) => {
+    const user = store.users.find((u) => u.id === id);
+    if (user) user.passwordHash = passwordHash;
+  });
 }
 
 export async function updateUserRole(id: string, role: "pending" | "member" | "admin"): Promise<void> {
@@ -508,17 +535,45 @@ export async function countRegistrations(): Promise<number> {
   return (await readStore()).registrations.length;
 }
 
-export async function pingDb(): Promise<{ ok: boolean; dialect: "postgres" | "file"; error?: string }> {
+// ---------------------------------------------------------------- password resets
+
+export async function createPasswordReset(
+  userId: string,
+  tokenHash: string,
+  expiresAt: string,
+): Promise<void> {
   if (hasDatabase) {
-    try {
-      await ready();
-      const p = await pool();
-      await p.query("SELECT 1");
-      return { ok: true, dialect: "postgres" };
-    } catch (err: unknown) {
-      return { ok: false, dialect: "postgres", error: err instanceof Error ? err.message : String(err) };
-    }
+    await ready();
+    const p = await pool();
+    await p.query(
+      "INSERT INTO password_resets (user_id, token_hash, expires_at) VALUES ($1, $2, $3)",
+      [userId, tokenHash, expiresAt],
+    );
+    return;
   }
-  return { ok: true, dialect: "file" };
+  await mutate((store) => {
+    store.resets = store.resets.filter((r) => r.userId !== userId);
+    store.resets.push({ userId, tokenHash, expiresAt, used: false });
+  });
 }
 
+/** Returns the user id for a valid, unused, unexpired token and burns it. */
+export async function consumePasswordReset(tokenHash: string): Promise<string | null> {
+  if (hasDatabase) {
+    await ready();
+    const p = await pool();
+    const { rows } = await p.query(
+      `UPDATE password_resets SET used = TRUE
+       WHERE token_hash = $1 AND used = FALSE AND expires_at > NOW()
+       RETURNING user_id`,
+      [tokenHash],
+    );
+    return rows[0] ? String(rows[0].user_id) : null;
+  }
+  return mutate((store) => {
+    const row = store.resets.find((r) => r.tokenHash === tokenHash);
+    if (!row || row.used || new Date(row.expiresAt).getTime() < Date.now()) return null;
+    row.used = true;
+    return row.userId;
+  });
+}

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { getPublicChallenges } from "@/lib/challenges";
 import { ChallengeExplorer } from "@/components/challenges/explorer";
-import { MembersGate } from "@/components/challenges/members-gate";
+import { LockedRange } from "@/components/challenges/locked-range";
 import { canUseChallenges, getViewer } from "@/lib/access";
 
 export const revalidate = 120;
@@ -15,8 +15,13 @@ export const metadata: Metadata = {
 
 export default async function ChallengesPage() {
   const viewer = await getViewer();
+  const all = await getPublicChallenges();
+
   if (!canUseChallenges(viewer?.role)) {
-    return <MembersGate state={viewer ? "pending" : "guest"} />;
+    const preview = all
+      .filter((challenge) => challenge.difficulty === "beginner")
+      .slice(0, 4);
+    return <LockedRange state={viewer ? "pending" : "guest"} preview={preview} total={all.length} />;
   }
 
   const challenges = await getPublicChallenges();

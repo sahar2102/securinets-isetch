@@ -1,26 +1,29 @@
 import { NextResponse } from "next/server";
-import { pingDb, hasDatabase } from "@/lib/db";
+import { countUsers } from "@/lib/db";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
+/** Lightweight uptime probe: 200 when the app and the database answer. */
 export async function GET() {
-  const dbHealth = await pingDb();
-  const status = dbHealth.ok ? 200 : 503;
-  return NextResponse.json(
-    {
-      status: dbHealth.ok ? "healthy" : "unhealthy",
-      database: {
-        configured: hasDatabase,
-        dialect: dbHealth.dialect,
-        connected: dbHealth.ok,
-        error: dbHealth.error ?? null,
+  const started = Date.now();
+  try {
+    const users = await countUsers();
+    return NextResponse.json(
+      {
+        status: "ok",
+        database: "up",
+        users,
+        latencyMs: Date.now() - started,
+        timestamp: new Date().toISOString(),
       },
-      timestamp: new Date().toISOString(),
-    },
-    {
-      status,
-      headers: { "Cache-Control": "no-store" },
-    }
-  );
+      { headers: { "Cache-Control": "no-store" } },
+    );
+  } catch (error) {
+    console.error("[health]", error);
+    return NextResponse.json(
+      { status: "degraded", database: "down", timestamp: new Date().toISOString() },
+      { status: 503, headers: { "Cache-Control": "no-store" } },
+    );
+  }
 }
