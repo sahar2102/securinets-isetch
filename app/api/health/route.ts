@@ -13,6 +13,7 @@ export async function GET() {
       {
         status: "ok",
         database: "up",
+        mail: process.env.SMTP_USER && process.env.SMTP_PASS ? "configured" : "missing",
         users,
         latencyMs: Date.now() - started,
         timestamp: new Date().toISOString(),

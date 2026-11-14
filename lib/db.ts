@@ -53,15 +53,11 @@ const globalForDb = globalThis as unknown as { __sntPool?: PgPool; __sntInit?: P
 async function pool(): Promise<PgPool> {
   if (globalForDb.__sntPool) return globalForDb.__sntPool;
   const { Pool } = await import("pg");
-  const isSsl =
-    process.env.DATABASE_URL?.includes("sslmode=require") ||
-    process.env.DATABASE_URL?.includes("supabase.com") ||
-    process.env.DATABASE_URL?.includes("pooler.supabase.com") ||
-    process.env.NODE_ENV === "production";
-
   const p = new Pool({
     connectionString: process.env.DATABASE_URL,
-    ssl: isSsl ? { rejectUnauthorized: false } : undefined,
+    ssl: process.env.DATABASE_URL?.includes("sslmode=require")
+      ? { rejectUnauthorized: false }
+      : undefined,
     max: 5,
   });
   globalForDb.__sntPool = p as unknown as PgPool;
@@ -137,12 +133,6 @@ async function ready() {
     globalForDb.__sntInit = (async () => {
       const p = await pool();
       await p.query(DDL);
-      await p
-        .query(
-          `ALTER TABLE users DROP CONSTRAINT IF EXISTS users_role_check;
-           ALTER TABLE users ADD CONSTRAINT users_role_check CHECK (role IN ('pending', 'member', 'admin'));`,
-        )
-        .catch(() => undefined);
     })();
   }
   return globalForDb.__sntInit;

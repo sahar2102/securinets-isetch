@@ -10,13 +10,14 @@
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
     "flags:hash": "node scripts/hash-flags.mjs",
-    "db:backup": "node scripts/backup-db.mjs"
+    "db:backup": "node scripts/backup-db.mjs",
+    "mail:test": "node scripts/mail-test.mjs"
   },
   "dependencies": {
     "bcryptjs": "^3.0.2",
     "clsx": "^2.1.1",
     "framer-motion": "^12.23.12",
-    "next": "^15.5.29",
+    "next": "15.5.4",
     "next-auth": "5.0.0-beta.29",
     "nodemailer": "^6.10.1",
     "pg": "^8.16.3",

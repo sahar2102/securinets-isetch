@@ -5,7 +5,8 @@ import bcrypt from "bcryptjs";
 import { z } from "zod";
 import { auth } from "@/auth";
 import { makeFlagHash } from "@/lib/challenges";
-import { deleteContent, updateUserPassword, updateUserRole, upsertContent } from "@/lib/db";
+import { sendApproved } from "@/lib/notify";
+import { deleteContent, getUserById, updateUserPassword, updateUserRole, upsertContent } from "@/lib/db";
 import { categories, difficulties } from "@/data/site";
 
 export async function resetUserPassword(userId: string, newPassword: string) {
@@ -30,6 +31,10 @@ export async function setUserRole(userId: string, role: "pending" | "member" | "
   try {
     await requireAdmin();
     await updateUserRole(userId, role);
+    if (role === "member") {
+      const user = await getUserById(userId).catch(() => null);
+      if (user) await sendApproved(user.email, user.name).catch((error) => console.error("[mail] approved", error));
+    }
     refresh();
     return { ok: true as const };
   } catch {

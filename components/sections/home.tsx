@@ -13,7 +13,6 @@ import { Counter, Reveal, Stagger, StaggerItem } from "@/components/ui/motion";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { ChallengeCard } from "@/components/challenges/challenge-card";
 import { Icon, type IconName } from "@/components/ui/icons";
-import { NewsletterForm } from "@/components/layout/newsletter-form";
 import { cn, daysUntil, formatDate } from "@/lib/utils";
 
 interface HomeProps {
@@ -588,15 +587,19 @@ function FinalCta() {
           </div>
         </div>
 
-        <div className="mx-auto mt-16 max-w-3xl rounded-2xl border border-line/10 bg-elev/40 p-6 sm:p-8">
-          <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
-            <div>
-              <h3 className="font-display text-lg font-semibold text-ink">{t.home.newsletterTitle}</h3>
-              <p className="mt-1 text-[13px] text-muted">{t.home.newsletterBody}</p>
-            </div>
-            <div className="w-full sm:max-w-xs">
-              <NewsletterForm compact />
-            </div>
+        <div className="mx-auto mt-16 flex max-w-3xl flex-col items-center gap-5 rounded-2xl border border-line/10 bg-elev/40 p-7 text-center sm:flex-row sm:justify-between sm:text-left">
+          <div>
+            <h3 className="font-display text-lg font-semibold text-ink">{t.home.joinCardTitle}</h3>
+            <p className="mt-1.5 text-[13px] leading-relaxed text-muted">{t.home.joinCardNote}</p>
+          </div>
+          <div className="flex shrink-0 flex-wrap justify-center gap-3">
+            <Link href="/join" className="btn-primary !px-5 !py-2.5 text-[13px]">
+              {t.nav.join}
+              <Icon name="arrowRight" size={15} />
+            </Link>
+            <Link href="/login" className="btn-ghost !px-5 !py-2.5 text-[13px]">
+              {t.auth.login}
+            </Link>
           </div>
         </div>
       </div>

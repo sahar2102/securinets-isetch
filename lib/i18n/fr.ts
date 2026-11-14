@@ -69,6 +69,7 @@ export const fr: Dictionary = {
     insane: "Insane",
   },
   footer: {
+    joinNote: "L'adhésion est gratuite pour les étudiants de l'ISET Charguia. Une demande, une validation, et vous vous entraînez toute la saison.",
     tagline: "Branche Securinets à l'ISET Charguia. Apprendre l'offensive pour mieux défendre.",
     explore: "Explorer",
     club: "Le club",
@@ -87,6 +88,8 @@ export const fr: Dictionary = {
     backToTop: "Haut de page",
   },
   home: {
+    joinCardTitle: "Pas encore membre ?",
+    joinCardNote: "L'adhésion est gratuite pour les étudiants de l'ISET Charguia. Créez un compte, faites-vous approuver, et la plateforme s'ouvre.",
     badge: "Securinets · Tunis · Branche ISET Charguia",
     titleTop: "Casser des choses.",
     titleAccent: "Comprendre tout le reste.",
@@ -145,6 +148,7 @@ export const fr: Dictionary = {
     contactTitle: "Questions, sponsoring ou invitation à un atelier ?",
     contactBody: "Écrivez-nous. Un membre du bureau répond sous deux jours ouvrés.",
     contactCta: "Contacter le club",
+    newsletterNote: "Uniquement les annonces d'événements. Le compte membre est séparé : c'est lui qui ouvre les challenges.",
     newsletterTitle: "Un email par mois. Zéro blabla.",
     newsletterBody: "Dates d'ateliers, résultats CTF, nouveaux challenges et quelques writeups.",
   },

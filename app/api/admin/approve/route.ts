@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { verifyActionToken } from "@/lib/approve-token";
-import { updateUserRole } from "@/lib/db";
+import { getUserById, updateUserRole } from "@/lib/db";
+import { sendApproved } from "@/lib/notify";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";

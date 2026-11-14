@@ -67,6 +67,7 @@ export const en = {
     insane: "Insane",
   },
   footer: {
+    joinNote: "Membership is free for ISET Charguia students. Apply once, get approved, and train with us all season.",
     tagline: "A Securinets branch at ISET Charguia. Learn offence to build better defence.",
     explore: "Explore",
     club: "Club",
@@ -85,6 +86,8 @@ export const en = {
     backToTop: "Back to top",
   },
   home: {
+    joinCardTitle: "Not a member yet?",
+    joinCardNote: "Membership is free for ISET Charguia students. Create an account, get approved, and the full range opens.",
     badge: "Securinets · Tunis · Branch ISET Charguia",
     titleTop: "Break things.",
     titleAccent: "Understand everything.",
@@ -144,6 +147,7 @@ export const en = {
     contactBody: "Write to us. A human from the board answers within two working days.",
     contactCta: "Contact the club",
     newsletterTitle: "One email a month. Zero fluff.",
+    newsletterNote: "Event announcements only. A membership account is separate — it is what unlocks the challenges.",
     newsletterBody: "Workshop dates, CTF results, new challenges and the occasional writeup.",
   },
   about: {

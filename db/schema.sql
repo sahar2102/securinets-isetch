@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS users (
   email         TEXT UNIQUE NOT NULL,
   name          TEXT NOT NULL,
   password_hash TEXT NOT NULL,
-  role          TEXT NOT NULL DEFAULT 'member' CHECK (role IN ('pending', 'member', 'admin')),
+  role          TEXT NOT NULL DEFAULT 'member' CHECK (role IN ('member', 'admin')),
   created_at    TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
