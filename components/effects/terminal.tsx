@@ -106,7 +106,7 @@ export function Terminal({ className }: { className?: string }) {
         setTimeout(() => router.push("/arcade"), 450);
         break;
       case "join":
-        setTimeout(() => router.push("/join"), 400);
+        setTimeout(() => router.push("/register"), 400);
         push([{ kind: "out", text: "opening membership form…" }]);
         break;
       case "open":

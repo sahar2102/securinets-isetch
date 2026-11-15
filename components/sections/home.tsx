@@ -130,7 +130,7 @@ function Hero({ challengeCount }: { challengeCount: number }) {
               transition={{ duration: 0.7, delay: 0.26 }}
               className="mt-8 flex flex-wrap items-center gap-3"
             >
-              <Link href="/join" className="btn-primary group">
+              <Link href="/register" className="btn-primary group">
                 {t.home.ctaJoin}
                 <Icon name="arrowRight" size={16} className="transition-transform group-hover:translate-x-0.5" />
               </Link>
@@ -480,7 +480,7 @@ function UpcomingEvent({ event }: { event: EventItem }) {
                     {event.speakers.join(" · ")}
                   </p>
                   <Link
-                    href={event.registrationUrl ?? "/join"}
+                    href={event.registrationUrl ?? "/register"}
                     className="btn-primary mt-4 w-full !py-2.5 !text-[13px]"
                   >
                     {t.home.register}
@@ -591,7 +591,7 @@ function FinalCta() {
             {t.home.contactBody}
           </p>
           <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
-            <Link href="/join" className="btn-primary">
+            <Link href="/register" className="btn-primary">
               {t.nav.join}
               <Icon name="arrowRight" size={16} />
             </Link>

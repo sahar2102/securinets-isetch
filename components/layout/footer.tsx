@@ -70,7 +70,7 @@ export function Footer() {
             </h3>
             <ul className="mt-5 space-y-3">
               <li>
-                <Link href="/join" className="link-underline text-[13.5px] text-muted hover:text-ink">
+                <Link href="/register" className="link-underline text-[13.5px] text-muted hover:text-ink">
                   {t.nav.join}
                 </Link>
               </li>

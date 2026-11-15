@@ -57,7 +57,7 @@ export function TeaserRange({ preview, state = "guest" }: { preview: PublicChall
                 {t.auth.login}
                 <Icon name="arrowRight" size={13} />
               </Link>
-              <Link href="/join" className="btn-ghost !px-4 !py-2 !text-[11.5px]">
+              <Link href="/register" className="btn-ghost !px-4 !py-2 !text-[11.5px]">
                 {t.nav.join}
               </Link>
             </div>
