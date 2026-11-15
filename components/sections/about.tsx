@@ -161,7 +161,7 @@ export function AboutPage() {
               </h2>
               <p className="mt-4 text-[14px] leading-relaxed text-muted">{t.about.conductBody}</p>
               <div className="mt-7 flex flex-wrap gap-3">
-                <Link href="/register" className="btn-primary">
+                <Link href="/join" className="btn-primary">
                   {t.about.joinCta}
                   <Icon name="arrowRight" size={15} />
                 </Link>

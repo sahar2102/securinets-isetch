@@ -105,6 +105,81 @@
         "On campus"
       ],
       "featured": true
+    },
+    {
+      "id": "ev-2021-11-20",
+      "slug": "cybercamp-2021",
+      "title": "Cybercamp 2021",
+      "titleEn": "Cybercamp 2021",
+      "kind": "camp",
+      "status": "past",
+      "date": "2021-11-20",
+      "endDate": "2021-11-21",
+      "time": "—",
+      "location": "ISET Charguia",
+      "language": "FR",
+      "level": "All levels",
+      "speakers": [
+        "Securinets ISET Charguia"
+      ],
+      "summary": "Deux jours de workshops avec Google ISETCh et Club Artvibe ISETCh : blockchain et sécurité des smart contracts, forensique numérique, reverse engineering.",
+      "summaryEn": "Two days of workshops with Google ISETCh and Club Artvibe ISETCh: blockchain and smart-contract security, digital forensics, reverse engineering.",
+      "capacity": 0,
+      "registered": 0,
+      "registrationOpen": false,
+      "gallery": [],
+      "recording": "",
+      "prizes": []
+    },
+    {
+      "id": "ev-2021-11-24",
+      "slug": "linux-advanced-2021",
+      "title": "Linux avancé pour les membres",
+      "titleEn": "Advanced Linux for members",
+      "kind": "workshop",
+      "status": "past",
+      "date": "2021-11-24",
+      "endDate": "2021-11-24",
+      "time": "—",
+      "location": "ISET Charguia",
+      "language": "FR",
+      "level": "Intermediate",
+      "speakers": [
+        "Securinets ISET Charguia"
+      ],
+      "summary": "Automatisation, gestion des paquets, journaux et services, requêtes HTTP, puis room TryHackMe « VulnVersity ».",
+      "summaryEn": "Automation, package management, logs and services, HTTP requests, then the TryHackMe “VulnVersity” room.",
+      "capacity": 0,
+      "registered": 0,
+      "registrationOpen": false,
+      "gallery": [],
+      "recording": "",
+      "prizes": []
+    },
+    {
+      "id": "ev-2021-12-06",
+      "slug": "minictf-2021",
+      "title": "Mini-CTF de décembre",
+      "titleEn": "December mini-CTF",
+      "kind": "ctf",
+      "status": "past",
+      "date": "2021-12-06",
+      "endDate": "2021-12-06",
+      "time": "—",
+      "location": "ISET Charguia",
+      "language": "FR",
+      "level": "All levels",
+      "speakers": [
+        "Securinets ISET Charguia"
+      ],
+      "summary": "Compétition interne par équipes. Podium : PennyDreadful, Technopark Noobs, biraBiParkizl.",
+      "summaryEn": "Internal team competition. Podium: PennyDreadful, Technopark Noobs, biraBiParkizl.",
+      "capacity": 0,
+      "registered": 0,
+      "registrationOpen": false,
+      "gallery": [],
+      "recording": "",
+      "prizes": []
     }
   ]
 }

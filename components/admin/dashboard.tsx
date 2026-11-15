@@ -19,7 +19,6 @@ import {
   saveChallenge,
   saveEvent,
   saveMember,
-  resetUserPassword,
   setUserRole,
   type ActionResult,
 } from "@/app/admin/actions";
@@ -44,12 +43,6 @@ interface Props {
     solves: number;
     score: number;
     lastSolve: string | null;
-    profile?: {
-      university?: string;
-      year?: string;
-      field?: string;
-      motivation?: string;
-    };
   }[];
   challenges: ChallengeRecord[];
   events: EventItem[];
@@ -109,16 +102,6 @@ export function AdminDashboard({ user, players, challenges, events, team, announ
       count: players.filter((p) => p.role === "pending").length || undefined,
     },
   ];
-
-  const resetPassword = async (id: string, email: string) => {
-    const next = window.prompt(`New password for ${email} (min 8 characters).\nGive it to the member privately — it is shown only here.`);
-    if (!next) return;
-    if (next.length < 8) { setToast("Password must be at least 8 characters"); setTimeout(() => setToast(null), 3000); return; }
-    const result = await resetUserPassword(id, next);
-    setToast(result.ok ? `Password updated for ${email}` : "Could not update password");
-    setTimeout(() => setToast(null), 3500);
-    if (result.ok) router.refresh();
-  };
 
   return (
     <div className="container-x py-10">
@@ -499,16 +482,6 @@ export function AdminDashboard({ user, players, challenges, events, team, announ
                         <td className="px-5 py-3">
                           <p className="font-medium text-ink">{p.name}</p>
                           <p className="font-mono text-[10.5px] text-muted">{p.email}</p>
-                          {p.profile?.university ? (
-                            <p className="mt-1 max-w-[280px] text-[11px] leading-snug text-muted/80">
-                              {p.profile.university} · {p.profile.year} · {p.profile.field}
-                            </p>
-                          ) : null}
-                          {p.profile?.motivation ? (
-                            <p className="mt-1 max-w-[300px] text-[11px] leading-snug text-muted/60">
-                              “{p.profile.motivation}”
-                            </p>
-                          ) : null}
                         </td>
                         <td className="px-3 py-3">
                           <span
@@ -539,22 +512,13 @@ export function AdminDashboard({ user, players, challenges, events, team, announ
                               Approve
                             </button>
                           ) : p.role === "member" ? (
-                            <div className="flex flex-wrap items-center justify-end gap-x-4 gap-y-1">
-                              <button
-                                type="button"
-                                onClick={() => void resetPassword(p.id, p.email)}
-                                className="text-[11.5px] text-muted underline-offset-4 hover:text-ink hover:underline"
-                              >
-                                Reset password
-                              </button>
-                              <button
-                                type="button"
-                                onClick={() => void approve(p.id, "pending")}
-                                className="text-[11.5px] text-muted underline-offset-4 hover:text-ink hover:underline"
-                              >
-                                Revoke
-                              </button>
-                            </div>
+                            <button
+                              type="button"
+                              onClick={() => void approve(p.id, "pending")}
+                              className="text-[11.5px] text-muted underline-offset-4 hover:text-ink hover:underline"
+                            >
+                              Revoke
+                            </button>
                           ) : (
                             <span className="text-[11px] text-muted">—</span>
                           )}

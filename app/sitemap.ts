@@ -5,7 +5,7 @@ const base = process.env.NEXT_PUBLIC_SITE_URL ?? "https://securinets-isetch.tn";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const challenges = await getAllChallenges();
-  const pages = ["", "/about", "/challenges", "/events", "/learning", "/leaderboard", "/team", "/register", "/contact", "/verify"];
+  const pages = ["", "/about", "/challenges", "/events", "/learning", "/leaderboard", "/team", "/join", "/contact", "/verify"];
 
   return [
     ...pages.map((path) => ({

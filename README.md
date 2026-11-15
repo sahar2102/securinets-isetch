@@ -170,6 +170,13 @@ See **[docs/ADMIN-GUIDE.md](docs/ADMIN-GUIDE.md)**.
 
 ---
 
+## Arcade
+
+`/arcade` ships four self-contained browser games (cipher wheel, phishing inbox,
+port reflex, byte rebuild). Scores are stored in `localStorage`; there is no
+server write, so nothing to moderate. Embedded via `components/arcade/arcade.tsx`
+and linked from the home page ("Playground").
+
 ## Project structure
 
 ```
@@ -277,7 +284,7 @@ DATABASE_URL=… AUTH_SECRET=… npm start   # behind nginx/caddy
 
 - [ ] Social handles in `data/site.ts` (currently placeholder profile URLs).
 - [ ] Contact addresses (`contact@`, `partners@`, `security@`).
-- [ ] Team names, bios and photos (add `photo: "/team/name.jpg"` to a member).
+- [ ] Team names and bios (avatars are generated portraits in `public/images/team/`).
 - [ ] Event dates, galleries and attendance numbers.
 - [ ] **All 49 sample flags** — they are demo artefacts, not a real competition.
 - [ ] `ADMIN_PASSWORD`, `AUTH_SECRET`, then delete `.data/` if it was used.

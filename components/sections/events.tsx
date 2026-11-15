@@ -5,6 +5,8 @@ import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import type { EventItem } from "@/lib/types";
+import gallery from "@/data/gallery.json";
+import { Reel } from "./reel";
 import { useI18n } from "@/lib/i18n";
 import { PageHero } from "@/components/layout/page-hero";
 import { Icon } from "@/components/ui/icons";
@@ -48,7 +50,7 @@ export function EventsPage({ events }: { events: EventItem[] }) {
         intro={t.events.intro}
         actions={
           <>
-            <Link href="/register" className="btn-primary">
+            <Link href="/join" className="btn-primary">
               {t.events.register}
               <Icon name="arrowRight" size={15} />
             </Link>
@@ -70,6 +72,8 @@ export function EventsPage({ events }: { events: EventItem[] }) {
           </>
         }
       />
+
+      <Reel />
 
       <section className="section" id="calendar">
         <div className="container-x">
@@ -391,7 +395,7 @@ function UpcomingCard({ event }: { event: EventItem }) {
               {t.events.registrationClosed}
             </span>
           ) : (
-            <Link href={event.registrationUrl ?? "/register"} className="btn-primary w-full !py-2.5 !text-[13px]">
+            <Link href={event.registrationUrl ?? "/join"} className="btn-primary w-full !py-2.5 !text-[13px]">
               {t.events.register}
               <Icon name="arrowRight" size={15} />
             </Link>
@@ -461,6 +465,29 @@ function SeasonCalendar({ events }: { events: EventItem[] }) {
           </div>
         );
       })}
+
+      <section className="border-t border-line/10 py-16">
+        <div className="container-x">
+          <div className="flex flex-wrap items-end justify-between gap-3">
+            <div>
+              <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-ember">Gallery</p>
+              <h2 className="mt-3 font-display text-2xl font-semibold text-ink sm:text-3xl">
+                Straight from the room.
+              </h2>
+            </div>
+            <a href="/#archive" className="font-mono text-[10px] uppercase tracking-[0.14em] text-muted hover:text-ember">
+              full archive →
+            </a>
+          </div>
+          <div className="mt-6 grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4">
+            {gallery.photos.slice(0, 12).map((photo) => (
+              <div key={photo.src} className="relative aspect-[4/3] overflow-hidden rounded-lg border border-line/10">
+                <Image src={photo.src} alt="" fill sizes="(max-width: 640px) 50vw, 25vw" className="object-cover transition duration-500 hover:scale-105" />
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
     </div>
   );
 }

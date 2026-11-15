@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { getPublicChallenges } from "@/lib/challenges";
 import { ChallengeExplorer } from "@/components/challenges/explorer";
-import { LockedRange } from "@/components/challenges/locked-range";
+import { TeaserRange } from "@/components/challenges/teaser-range";
 import { canUseChallenges, getViewer } from "@/lib/access";
 
 export const revalidate = 120;
@@ -14,16 +14,25 @@ export const metadata: Metadata = {
 };
 
 export default async function ChallengesPage() {
+  const challenges = await getPublicChallenges();
   const viewer = await getViewer();
-  const all = await getPublicChallenges();
-
   if (!canUseChallenges(viewer?.role)) {
-    const preview = all
-      .filter((challenge) => challenge.difficulty === "beginner")
-      .slice(0, 4);
-    return <LockedRange state={viewer ? "pending" : "guest"} preview={preview} total={all.length} />;
+    return (
+      <main className="pt-24">
+        <div className="container-x pb-10 pt-10">
+          <p className="font-mono text-[10px] uppercase tracking-[0.26em] text-ember">Challenge hub</p>
+          <h1 className="mt-4 max-w-3xl text-balance font-display text-4xl font-semibold leading-[1.05] text-ink sm:text-5xl">
+            Most of the range is hidden.
+          </h1>
+          <p className="mt-4 max-w-xl text-[14px] leading-relaxed text-muted">
+            Two challenges are open as a preview. The other 47 unlock once an admin approves your
+            account — same rule for everyone, including the board.
+          </p>
+        </div>
+        <TeaserRange preview={challenges.slice(0, 2)} state={viewer ? "pending" : "guest"} />
+      </main>
+    );
   }
 
-  const challenges = await getPublicChallenges();
   return <ChallengeExplorer challenges={challenges} />;
 }

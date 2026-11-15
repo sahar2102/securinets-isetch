@@ -5,6 +5,7 @@ import { nav, site } from "@/data/site";
 import { useI18n } from "@/lib/i18n";
 import { Icon, type IconName } from "@/components/ui/icons";
 import { LogoMark, Wordmark } from "@/components/ui/brand";
+import { NewsletterForm } from "./newsletter-form";
 
 export function Footer() {
   const { t } = useI18n();
@@ -69,7 +70,7 @@ export function Footer() {
             </h3>
             <ul className="mt-5 space-y-3">
               <li>
-                <Link href="/register" className="link-underline text-[13.5px] text-muted hover:text-ink">
+                <Link href="/join" className="link-underline text-[13.5px] text-muted hover:text-ink">
                   {t.nav.join}
                 </Link>
               </li>
@@ -107,19 +108,13 @@ export function Footer() {
 
           <div>
             <h3 className="font-mono text-[10px] uppercase tracking-[0.24em] text-muted">
-              {t.nav.join}
+              {t.footer.newsletter}
             </h3>
-            <p className="mt-4 text-[13px] leading-relaxed text-muted">{t.footer.joinNote}</p>
-            <div className="mt-5 flex flex-wrap gap-3">
-              <Link href="/register" className="btn-primary !px-5 !py-2.5 text-[13px]">
-                {t.nav.join}
-                <Icon name="arrowRight" size={15} />
-              </Link>
-              <Link href="/login" className="btn-ghost !px-5 !py-2.5 text-[13px]">
-                {t.auth.login}
-              </Link>
+            <p className="mt-4 text-[13px] leading-relaxed text-muted">{t.footer.newsletterBody}</p>
+            <div className="mt-4">
+              <NewsletterForm compact />
             </div>
-            <p className="mt-4 font-mono text-[10px] text-muted/60">
+            <p className="mt-3 font-mono text-[10px] text-muted/60">
               {t.footer.rights} · {site.founded}
             </p>
           </div>

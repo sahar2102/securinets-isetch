@@ -3,6 +3,7 @@ const [url = "http://localhost:3000", out = ".shots/view.png", w = "1440", h = "
 const browser = await puppeteer.launch({ executablePath: "/usr/bin/google-chrome", headless: "new", args: ["--no-sandbox"] });
 const page = await browser.newPage();
 await page.setViewport({ width: Number(w), height: Number(h) });
+const scrollY = Number(process.argv[7] ?? 0);
 await page.emulateMediaFeatures([{ name: "prefers-color-scheme", value: theme }]);
 await page.evaluateOnNewDocument((t) => localStorage.setItem("snt-theme", t), theme);
 await page.goto(url, { waitUntil: "domcontentloaded" });

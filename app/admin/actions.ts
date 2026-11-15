@@ -1,40 +1,16 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import bcrypt from "bcryptjs";
 import { z } from "zod";
 import { auth } from "@/auth";
 import { makeFlagHash } from "@/lib/challenges";
-import { sendApproved } from "@/lib/notify";
-import { deleteContent, getUserById, updateUserPassword, updateUserRole, upsertContent } from "@/lib/db";
+import { deleteContent, updateUserRole, upsertContent } from "@/lib/db";
 import { categories, difficulties } from "@/data/site";
-
-export async function resetUserPassword(userId: string, newPassword: string) {
-  try {
-    await requireAdmin();
-    if (typeof newPassword !== "string" || newPassword.length < 8) {
-      return { ok: false as const, error: "password_too_short" };
-    }
-    if (newPassword.length > 128) {
-      return { ok: false as const, error: "password_too_long" };
-    }
-    const hash = await bcrypt.hash(newPassword, 11);
-    await updateUserPassword(userId, hash);
-    refresh();
-    return { ok: true as const };
-  } catch {
-    return { ok: false as const, error: "unauthorized" };
-  }
-}
 
 export async function setUserRole(userId: string, role: "pending" | "member" | "admin") {
   try {
     await requireAdmin();
     await updateUserRole(userId, role);
-    if (role === "member") {
-      const user = await getUserById(userId).catch(() => null);
-      if (user) await sendApproved(user.email, user.name).catch((error) => console.error("[mail] approved", error));
-    }
     refresh();
     return { ok: true as const };
   } catch {

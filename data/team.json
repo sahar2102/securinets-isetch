@@ -11,7 +11,7 @@
       "accent": "#FF2D3D",
       "linkedin": "",
       "github": "",
-      "photo": ""
+      "photo": "/images/team/hacker-f.png"
     },
     {
       "id": "m2",
@@ -24,7 +24,7 @@
       "accent": "#FB7A3C",
       "linkedin": "",
       "github": "",
-      "photo": ""
+      "photo": "/images/team/hacker-m.png"
     },
     {
       "id": "m3",
@@ -37,7 +37,7 @@
       "accent": "#A78BFA",
       "linkedin": "",
       "github": "",
-      "photo": ""
+      "photo": "/images/team/hacker-f.png"
     },
     {
       "id": "m4",
@@ -50,7 +50,7 @@
       "accent": "#F5A524",
       "linkedin": "",
       "github": "",
-      "photo": ""
+      "photo": "/images/team/hacker-m.png"
     },
     {
       "id": "m5",
@@ -63,7 +63,7 @@
       "accent": "#F472B6",
       "linkedin": "",
       "github": "",
-      "photo": ""
+      "photo": "/images/team/hacker-f.png"
     },
     {
       "id": "m6",
@@ -76,7 +76,7 @@
       "accent": "#F472B6",
       "linkedin": "",
       "github": "",
-      "photo": ""
+      "photo": "/images/team/hacker-f.png"
     },
     {
       "id": "m7",
@@ -89,7 +89,7 @@
       "accent": "#2FBF8F",
       "linkedin": "",
       "github": "",
-      "photo": ""
+      "photo": "/images/team/hacker-f.png"
     },
     {
       "id": "m8",
@@ -102,7 +102,7 @@
       "accent": "#2FBF8F",
       "linkedin": "",
       "github": "",
-      "photo": ""
+      "photo": "/images/team/hacker-f.png"
     },
     {
       "id": "m9",
@@ -115,7 +115,7 @@
       "accent": "#38BDF8",
       "linkedin": "",
       "github": "",
-      "photo": ""
+      "photo": "/images/team/hacker-f.png"
     },
     {
       "id": "m10",
@@ -128,7 +128,7 @@
       "accent": "#38BDF8",
       "linkedin": "",
       "github": "",
-      "photo": ""
+      "photo": "/images/team/hacker-f.png"
     },
     {
       "id": "m11",
@@ -141,7 +141,7 @@
       "accent": "#38BDF8",
       "linkedin": "",
       "github": "",
-      "photo": ""
+      "photo": "/images/team/hacker-m.png"
     },
     {
       "id": "m12",
@@ -154,7 +154,7 @@
       "accent": "#94A3B8",
       "linkedin": "",
       "github": "",
-      "photo": ""
+      "photo": "/images/team/hacker-m.png"
     },
     {
       "id": "m13",
@@ -167,7 +167,7 @@
       "accent": "#94A3B8",
       "linkedin": "",
       "github": "",
-      "photo": ""
+      "photo": "/images/team/hacker-f.png"
     }
   ]
 }

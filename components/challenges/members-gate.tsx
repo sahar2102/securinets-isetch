@@ -34,7 +34,7 @@ export function MembersGate({ state }: { state: "guest" | "pending" }) {
                   {t.challenges.gateCta}
                   <Icon name="arrowRight" size={15} />
                 </Link>
-                <Link href="/register" className="btn-ghost justify-center">
+                <Link href="/join" className="btn-ghost justify-center">
                   {t.nav.join}
                 </Link>
               </>

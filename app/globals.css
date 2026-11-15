@@ -328,3 +328,24 @@ body {
     text-shadow: 0 2px 60px rgb(179 0 27 / 0.35);
   }
 }
+
+/* --- real-photo wall ------------------------------------------------------ */
+@keyframes photo-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.photo-track {
+  animation: photo-scroll 80s linear infinite;
+}
+.photo-track.reverse {
+  animation-direction: reverse;
+}
+.photo-track:hover {
+  animation-play-state: paused;
+}
+.photo-mask {
+  mask-image: linear-gradient(to right, transparent, black 6%, black 94%, transparent);
+}
+@media (prefers-reduced-motion: reduce) {
+  .photo-track { animation: none; }
+}

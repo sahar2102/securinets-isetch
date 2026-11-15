@@ -4,6 +4,8 @@ import "./globals.css";
 import { Providers } from "@/components/providers";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
+import { CursorGlow } from "@/components/effects/cursor";
+import { Entrance } from "@/components/effects/entrance";
 import { themeScript } from "@/lib/theme";
 import { site } from "@/data/site";
 
@@ -139,6 +141,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             {children}
           </main>
           <Footer />
+        <CursorGlow />
+        <Entrance />
         </Providers>
         <div
           aria-hidden

@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
 import { categories, partners, pillars, site, stats, values } from "@/data/site";
@@ -13,6 +14,10 @@ import { Counter, Reveal, Stagger, StaggerItem } from "@/components/ui/motion";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { ChallengeCard } from "@/components/challenges/challenge-card";
 import { Icon, type IconName } from "@/components/ui/icons";
+import { NewsletterForm } from "@/components/layout/newsletter-form";
+import { PhotoWall } from "./photo-wall";
+
+import { Playground } from "./playground";
 import { cn, daysUntil, formatDate } from "@/lib/utils";
 
 interface HomeProps {
@@ -23,24 +28,41 @@ interface HomeProps {
   announcements: { id: string; title: string; body: string; tag: string; date: string }[];
 }
 
-export function HomeSections({ challenges, featured, nextEvent, counts, announcements }: HomeProps) {
+
+function OpsBar({ event }: { event: EventItem | null }) {
+  const [now, setNow] = useState(() => Date.now());
+  useEffect(() => {
+    const id = setInterval(() => setNow(Date.now()), 60_000);
+    return () => clearInterval(id);
+  }, []);
+  if (!event) return null;
+  const target = new Date(`${event.date}T14:00:00`).getTime();
+  const days = Math.max(0, Math.ceil((target - now) / 86_400_000));
   return (
-    <>
-      <Hero challengeCount={counts.total} />
-      <TrustStrip />
-      <NoticeBar items={announcements} />
-      <StatsBar challengeCount={counts.total} />
-      <AboutPreview />
-      <FeaturedChallenges challenges={featured} />
-      {nextEvent ? <UpcomingEvent event={nextEvent} /> : null}
-      <Values />
-      <Partners />
-      <FinalCta />
-    </>
+    <section className="border-y border-line/10 bg-ember/[0.04]">
+      <div className="container-x flex flex-wrap items-center gap-x-8 gap-y-3 py-4">
+        <span className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.2em] text-ember">
+          <span className="relative flex h-2 w-2">
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-ember/60" />
+            <span className="relative inline-flex h-2 w-2 rounded-full bg-ember" />
+          </span>
+          next operation
+        </span>
+        <span className="text-[13px] font-medium text-ink">{event.title}</span>
+        <span className="font-mono text-[11px] text-muted">
+          {formatDate(event.date)} · {event.time} · {event.location}
+        </span>
+        <span className="ms-auto font-mono text-[11px] uppercase tracking-[0.14em] text-ember">
+          {days === 0 ? "today" : `T-${days} days`}
+        </span>
+        <Link href="/events" className="font-mono text-[10.5px] uppercase tracking-[0.14em] text-ink/80 hover:text-ember">
+          briefing →
+        </Link>
+      </div>
+    </section>
   );
 }
 
-/* -------------------------------------------------------------------------- */
 
 function Hero({ challengeCount }: { challengeCount: number }) {
   const { t } = useI18n();
@@ -108,7 +130,7 @@ function Hero({ challengeCount }: { challengeCount: number }) {
               transition={{ duration: 0.7, delay: 0.26 }}
               className="mt-8 flex flex-wrap items-center gap-3"
             >
-              <Link href="/register" className="btn-primary group">
+              <Link href="/join" className="btn-primary group">
                 {t.home.ctaJoin}
                 <Icon name="arrowRight" size={16} className="transition-transform group-hover:translate-x-0.5" />
               </Link>
@@ -148,15 +170,7 @@ function Hero({ challengeCount }: { challengeCount: number }) {
                 className="absolute -inset-x-6 -inset-y-6 rounded-[28px] bg-[radial-gradient(ellipse_at_top,rgba(255,45,61,0.18),transparent_60%)] blur-xl"
               />
               <Terminal className="relative" />
-              <div className="mt-3 flex flex-wrap items-center justify-between gap-2 font-mono text-[10px] uppercase tracking-[0.16em] text-muted/60">
-                <span className="inline-flex items-center gap-1.5">
-                  <span className="h-1.5 w-1.5 rounded-full bg-jade" />
-                  {t.home.rangeOnline}
-                </span>
-                <span>
-                  {challengeCount} {t.home.armed}
-                </span>
-              </div>
+
             </div>
           </motion.div>
         </div>
@@ -241,10 +255,10 @@ function StatsBar({ challengeCount }: { challengeCount: number }) {
   return (
     <section className="border-b border-line/10">
       <div className="container-x">
-        <dl className="grid divide-line/10 sm:grid-cols-3 sm:divide-x">
+        <dl className="grid grid-cols-2 divide-line/10 lg:grid-cols-4 lg:divide-x">
           {items.map((item, i) => (
             <Reveal key={item.label} delay={i * 0.06}>
-              <div className={cn("px-2 py-8 sm:px-6", i > 0 && "border-t border-line/10 sm:border-t-0")}>
+              <div className={cn("px-2 py-8 sm:px-6", i > 1 && "border-t border-line/10 lg:border-t-0")}>
                 <dt className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted">{item.label}</dt>
                 <dd className="mt-2 font-display text-4xl font-semibold tracking-tight text-ink sm:text-5xl">
                   <Counter value={item.value} suffix={item.suffix} />
@@ -466,7 +480,7 @@ function UpcomingEvent({ event }: { event: EventItem }) {
                     {event.speakers.join(" · ")}
                   </p>
                   <Link
-                    href={event.registrationUrl ?? "/register"}
+                    href={event.registrationUrl ?? "/join"}
                     className="btn-primary mt-4 w-full !py-2.5 !text-[13px]"
                   >
                     {t.home.register}
@@ -577,7 +591,7 @@ function FinalCta() {
             {t.home.contactBody}
           </p>
           <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
-            <Link href="/register" className="btn-primary">
+            <Link href="/join" className="btn-primary">
               {t.nav.join}
               <Icon name="arrowRight" size={16} />
             </Link>
@@ -587,22 +601,37 @@ function FinalCta() {
           </div>
         </div>
 
-        <div className="mx-auto mt-16 flex max-w-3xl flex-col items-center gap-5 rounded-2xl border border-line/10 bg-elev/40 p-7 text-center sm:flex-row sm:justify-between sm:text-left">
-          <div>
-            <h3 className="font-display text-lg font-semibold text-ink">{t.home.joinCardTitle}</h3>
-            <p className="mt-1.5 text-[13px] leading-relaxed text-muted">{t.home.joinCardNote}</p>
-          </div>
-          <div className="flex shrink-0 flex-wrap justify-center gap-3">
-            <Link href="/register" className="btn-primary !px-5 !py-2.5 text-[13px]">
-              {t.nav.join}
-              <Icon name="arrowRight" size={15} />
-            </Link>
-            <Link href="/login" className="btn-ghost !px-5 !py-2.5 text-[13px]">
-              {t.auth.login}
-            </Link>
+        <div className="mx-auto mt-16 max-w-3xl rounded-2xl border border-line/10 bg-elev/40 p-6 sm:p-8">
+          <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <h3 className="font-display text-lg font-semibold text-ink">{t.home.newsletterTitle}</h3>
+              <p className="mt-1 text-[13px] text-muted">{t.home.newsletterBody}</p>
+            </div>
+            <div className="w-full sm:max-w-xs">
+              <NewsletterForm compact />
+            </div>
           </div>
         </div>
       </div>
     </section>
+  );
+}
+
+export function HomeSections({ challenges, featured, nextEvent, counts, announcements }: HomeProps) {
+  return (
+    <>
+      <Hero challengeCount={counts.total} />
+      <TrustStrip />
+      <NoticeBar items={announcements} />
+      <StatsBar challengeCount={counts.total} />
+      <Playground />
+      {nextEvent ? <UpcomingEvent event={nextEvent} /> : null}
+      <AboutPreview />
+      <FeaturedChallenges challenges={featured} />
+      <Values />
+      <PhotoWall />
+      <Partners />
+      <FinalCta />
+    </>
   );
 }
