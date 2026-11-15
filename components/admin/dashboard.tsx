@@ -23,7 +23,44 @@ import {
   type ActionResult,
 } from "@/app/admin/actions";
 
-type Tab = "overview" | "challenges" | "events" | "members" | "announcements" | "applications" | "players";
+type Tab = "overview" | "challenges" | "events" | "members" | "announcements" | "applications" | "players" | "activity";
+
+interface ActivityRow {
+  userId: string;
+  name: string;
+  email: string;
+  slug: string;
+  title: string;
+  points: number;
+  solvedAt: string;
+  startedAt: string | null;
+  seconds: number | null;
+  alerts: number;
+}
+
+/** Solves faster than this are flagged for review (reading + solving in under 2 min). */
+const FAST_SOLVE_SECONDS = 120;
+
+function formatDateTime(iso: string) {
+  const d = new Date(iso);
+  if (Number.isNaN(d.getTime())) return iso;
+  return new Intl.DateTimeFormat("fr-FR", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    timeZone: "Africa/Tunis",
+  }).format(d);
+}
+
+function formatDuration(seconds: number | null) {
+  if (seconds === null) return "—";
+  if (seconds < 60) return `${seconds} s`;
+  const m = Math.floor(seconds / 60);
+  if (m < 60) return `${m} min ${String(seconds % 60).padStart(2, "0")} s`;
+  return `${Math.floor(m / 60)} h ${String(m % 60).padStart(2, "0")} min`;
+}
 
 interface Announcement {
   id: string;
@@ -35,6 +72,7 @@ interface Announcement {
 
 interface Props {
   user: { name: string; email: string };
+  activity: ActivityRow[];
   players: {
     id: string;
     name: string;
@@ -52,11 +90,12 @@ interface Props {
   stats: { members: number; solves: number; applications: number };
 }
 
-export function AdminDashboard({ user, players, challenges, events, team, announcements, registrations, stats }: Props) {
+export function AdminDashboard({ user, players, activity, challenges, events, team, announcements, registrations, stats }: Props) {
   const { t } = useI18n();
   const router = useRouter();
   const [tab, setTab] = useState<Tab>("overview");
   const [toast, setToast] = useState<string | null>(null);
+  const [activityUser, setActivityUser] = useState("all");
 
   const [challengeDraft, setChallengeDraft] = useState<Partial<ChallengeRecord> | null>(null);
   const [eventDraft, setEventDraft] = useState<Partial<EventItem> | null>(null);
@@ -101,6 +140,7 @@ export function AdminDashboard({ user, players, challenges, events, team, announ
       icon: "trophy",
       count: players.filter((p) => p.role === "pending").length || undefined,
     },
+    { key: "activity", label: "Activity", icon: "clock", count: activity.length || undefined },
   ];
 
   return (
@@ -525,6 +565,88 @@ export function AdminDashboard({ user, players, challenges, events, team, announ
                         </td>
                       </tr>
                     ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          ) : null}
+
+          {tab === "activity" ? (
+            <div className="rounded-2xl border border-line/10 bg-elev/40">
+              <div className="flex flex-wrap items-center justify-between gap-3 border-b border-line/10 p-5">
+                <div>
+                  <h2 className="font-display text-lg font-semibold text-ink">Activity</h2>
+                  <p className="mt-1 text-[12.5px] text-muted">
+                    Every solve with its date, the time spent since the member opened the challenge, and
+                    suspicious actions detected (copy, screenshot or print attempts). Times are in Tunis time.
+                  </p>
+                </div>
+                <select
+                  value={activityUser}
+                  onChange={(e) => setActivityUser(e.target.value)}
+                  className="rounded-lg border border-line/10 bg-base/40 px-3 py-2 text-[12.5px] text-ink"
+                >
+                  <option value="all">All members</option>
+                  {players
+                    .filter((p) => activity.some((a) => a.userId === p.id))
+                    .map((p) => (
+                      <option key={p.id} value={p.id}>
+                        {p.name}
+                      </option>
+                    ))}
+                </select>
+              </div>
+              <div className="overflow-x-auto">
+                <table className="w-full min-w-[820px] text-left text-[12.5px]">
+                  <thead className="border-b border-line/10 font-mono text-[10px] uppercase tracking-[0.12em] text-muted">
+                    <tr>
+                      <th className="px-5 py-3">Member</th>
+                      <th className="px-3 py-3">Challenge</th>
+                      <th className="px-3 py-3">Points</th>
+                      <th className="px-3 py-3">Opened</th>
+                      <th className="px-3 py-3">Solved</th>
+                      <th className="px-3 py-3">Time spent</th>
+                      <th className="px-5 py-3">Alerts</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {activity
+                      .filter((a) => activityUser === "all" || a.userId === activityUser)
+                      .map((a) => {
+                        const fast = a.seconds !== null && a.seconds < FAST_SOLVE_SECONDS;
+                        return (
+                          <tr key={`${a.userId}:${a.slug}`} className="border-b border-line/5 last:border-0">
+                            <td className="px-5 py-3">
+                              <p className="font-medium text-ink">{a.name}</p>
+                              <p className="font-mono text-[10.5px] text-muted">{a.email}</p>
+                            </td>
+                            <td className="px-3 py-3 text-ink">{a.title}</td>
+                            <td className="px-3 py-3 font-mono">{a.points}</td>
+                            <td className="px-3 py-3 font-mono text-[11px] text-muted">
+                              {a.startedAt ? formatDateTime(a.startedAt) : "—"}
+                            </td>
+                            <td className="px-3 py-3 font-mono text-[11px] text-muted">{formatDateTime(a.solvedAt)}</td>
+                            <td className="px-3 py-3">
+                              <span className="font-mono">{formatDuration(a.seconds)}</span>
+                              {fast ? (
+                                <span className="ml-2 rounded-full bg-ember/15 px-2 py-0.5 font-mono text-[9.5px] uppercase tracking-[0.1em] text-ember">
+                                  very fast
+                                </span>
+                              ) : null}
+                            </td>
+                            <td className="px-5 py-3 font-mono">
+                              {a.alerts > 0 ? <span className="text-ember">{a.alerts}</span> : <span className="text-muted">0</span>}
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    {activity.length === 0 ? (
+                      <tr>
+                        <td colSpan={7} className="px-5 py-8 text-center text-muted">
+                          No solves yet.
+                        </td>
+                      </tr>
+                    ) : null}
                   </tbody>
                 </table>
               </div>

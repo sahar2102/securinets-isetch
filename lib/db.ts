@@ -13,7 +13,7 @@
 import { promises as fs } from "node:fs";
 import path from "node:path";
 import crypto from "node:crypto";
-import type { ContentRow, HintUnlock, Solve, User } from "./types";
+import type { ContentRow, HintUnlock, Solve, User, ChallengeStart, IntegrityEvent, IntegrityKind } from "./types";
 
 export const hasDatabase = Boolean(process.env.DATABASE_URL);
 
@@ -27,6 +27,8 @@ interface FileStore {
   content: ContentRow[];
   registrations: Record<string, unknown>[];
   resets: { userId: string; tokenHash: string; expiresAt: string; used: boolean }[];
+  starts: ChallengeStart[];
+  events: IntegrityEvent[];
   subscribers: { email: string; createdAt: string }[];
 }
 
@@ -37,6 +39,8 @@ const EMPTY: FileStore = {
   content: [],
   registrations: [],
   resets: [],
+  starts: [],
+  events: [],
   subscribers: [],
 };
 
@@ -122,6 +126,22 @@ CREATE TABLE IF NOT EXISTS password_resets (
   used BOOLEAN NOT NULL DEFAULT FALSE,
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
+
+CREATE TABLE IF NOT EXISTS challenge_starts (
+  user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  challenge_slug TEXT NOT NULL,
+  started_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  PRIMARY KEY (user_id, challenge_slug)
+);
+
+CREATE TABLE IF NOT EXISTS integrity_events (
+  id BIGSERIAL PRIMARY KEY,
+  user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  challenge_slug TEXT NOT NULL,
+  kind TEXT NOT NULL,
+  at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS integrity_events_user_idx ON integrity_events (user_id, challenge_slug);
 
 CREATE TABLE IF NOT EXISTS subscribers (
   email TEXT PRIMARY KEY,
@@ -579,4 +599,77 @@ export async function consumePasswordReset(tokenHash: string): Promise<string | 
     row.used = true;
     return row.userId;
   });
+}
+
+
+/* -------------------------------------------------------------------------- */
+/* Challenge activity (time-to-solve + integrity signals)                      */
+/* -------------------------------------------------------------------------- */
+
+/** Remember the first time a member opened a challenge. Later opens are ignored. */
+export async function recordChallengeStart(userId: string, challengeSlug: string): Promise<void> {
+  if (hasDatabase) {
+    await ready();
+    const p = await pool();
+    await p.query(
+      `INSERT INTO challenge_starts (user_id, challenge_slug) VALUES ($1,$2)
+       ON CONFLICT (user_id, challenge_slug) DO NOTHING`,
+      [userId, challengeSlug],
+    );
+    return;
+  }
+  await mutate((s) => {
+    if (!s.starts.some((x) => x.userId === userId && x.challengeSlug === challengeSlug)) {
+      s.starts.push({ userId, challengeSlug, startedAt: new Date().toISOString() });
+    }
+  });
+}
+
+export async function getAllStarts(): Promise<ChallengeStart[]> {
+  if (hasDatabase) {
+    await ready();
+    const p = await pool();
+    const { rows } = await p.query("SELECT * FROM challenge_starts");
+    return rows.map((r) => ({
+      userId: String(r.user_id),
+      challengeSlug: String(r.challenge_slug),
+      startedAt: iso(r.started_at),
+    }));
+  }
+  return (await readStore()).starts;
+}
+
+export async function recordIntegrityEvent(
+  userId: string,
+  challengeSlug: string,
+  kind: IntegrityKind,
+): Promise<void> {
+  if (hasDatabase) {
+    await ready();
+    const p = await pool();
+    await p.query("INSERT INTO integrity_events (user_id, challenge_slug, kind) VALUES ($1,$2,$3)", [
+      userId,
+      challengeSlug,
+      kind,
+    ]);
+    return;
+  }
+  await mutate((s) => {
+    s.events.push({ userId, challengeSlug, kind, at: new Date().toISOString() });
+  });
+}
+
+export async function getAllIntegrityEvents(): Promise<IntegrityEvent[]> {
+  if (hasDatabase) {
+    await ready();
+    const p = await pool();
+    const { rows } = await p.query("SELECT * FROM integrity_events ORDER BY at DESC LIMIT 5000");
+    return rows.map((r) => ({
+      userId: String(r.user_id),
+      challengeSlug: String(r.challenge_slug),
+      kind: String(r.kind) as IntegrityKind,
+      at: iso(r.at),
+    }));
+  }
+  return (await readStore()).events;
 }

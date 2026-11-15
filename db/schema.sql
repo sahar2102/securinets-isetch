@@ -68,6 +68,22 @@ CREATE TABLE IF NOT EXISTS subscribers (
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
+CREATE TABLE IF NOT EXISTS challenge_starts (
+  user_id        TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  challenge_slug TEXT NOT NULL,
+  started_at     TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  PRIMARY KEY (user_id, challenge_slug)
+);
+
+CREATE TABLE IF NOT EXISTS integrity_events (
+  id             BIGSERIAL PRIMARY KEY,
+  user_id        TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  challenge_slug TEXT NOT NULL,
+  kind           TEXT NOT NULL,
+  at             TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS integrity_events_user_idx ON integrity_events (user_id, challenge_slug);
+
 -- ---------------------------------------------------------------------------
 -- Supabase notes
 -- ---------------------------------------------------------------------------

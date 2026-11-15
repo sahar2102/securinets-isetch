@@ -9,6 +9,7 @@ import { useI18n, interpolate } from "@/lib/i18n";
 import { categoryBySlug, DifficultyBadge } from "@/components/ui/badges";
 import { Icon, type IconName } from "@/components/ui/icons";
 import { Markdown } from "@/components/markdown";
+import { Shield } from "@/components/challenges/shield";
 import { Confetti } from "@/components/effects/confetti";
 import { cn, formatDate } from "@/lib/utils";
 
@@ -174,6 +175,7 @@ export function ChallengeDetail({
       <section className="section !pt-10">
         <div className="container-x grid gap-8 lg:grid-cols-[1fr_340px]">
           <div className="min-w-0">
+            <Shield slug={challenge.slug}>
             <div className="rounded-2xl border border-line/10 bg-elev/40 p-6 sm:p-8">
               <h2 className="font-mono text-[10px] uppercase tracking-[0.24em] text-muted">
                 {t.challenges.detail.brief}
@@ -213,6 +215,7 @@ export function ChallengeDetail({
                 </div>
               ) : null}
             </div>
+            </Shield>
 
             {/* hints */}
             <div className="mt-4 rounded-2xl border border-line/10 bg-elev/40 p-6 sm:p-8">

@@ -32,6 +32,23 @@ export interface Solve {
   solvedAt: string;
 }
 
+/** First time a member opened a challenge (used to compute time-to-solve). */
+export interface ChallengeStart {
+  userId: string;
+  challengeSlug: string;
+  startedAt: string;
+}
+
+export type IntegrityKind = "copy" | "screenshot" | "print" | "menu";
+
+/** A suspicious action detected while a member was viewing a challenge. */
+export interface IntegrityEvent {
+  userId: string;
+  challengeSlug: string;
+  kind: IntegrityKind;
+  at: string;
+}
+
 export interface HintUnlock {
   userId: string;
   challengeSlug: string;
