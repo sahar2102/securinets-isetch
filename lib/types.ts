@@ -2,6 +2,14 @@ import type { CategorySlug, Difficulty } from "@/data/site";
 
 export type Role = "pending" | "member" | "admin";
 
+export interface MemberProfile {
+  university?: string;
+  year?: string;
+  field?: string;
+  interests?: string[];
+  motivation?: string;
+}
+
 export interface User {
   id: string;
   email: string;
@@ -9,6 +17,7 @@ export interface User {
   passwordHash: string;
   role: Role;
   createdAt: string;
+  profile?: MemberProfile;
 }
 
 export type PublicUser = Omit<User, "passwordHash">;

@@ -26,6 +26,7 @@ interface FileStore {
   hints: HintUnlock[];
   content: ContentRow[];
   registrations: Record<string, unknown>[];
+  resets: { userId: string; tokenHash: string; expiresAt: string; used: boolean }[];
   subscribers: { email: string; createdAt: string }[];
 }
 
@@ -35,6 +36,7 @@ const EMPTY: FileStore = {
   hints: [],
   content: [],
   registrations: [],
+  resets: [],
   subscribers: [],
 };
 
@@ -69,8 +71,10 @@ CREATE TABLE IF NOT EXISTS users (
   name TEXT NOT NULL,
   password_hash TEXT NOT NULL,
   role TEXT NOT NULL DEFAULT 'member',
+  profile JSONB NOT NULL DEFAULT '{}'::jsonb,
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
+ALTER TABLE users ADD COLUMN IF NOT EXISTS profile JSONB NOT NULL DEFAULT '{}'::jsonb;
 CREATE TABLE IF NOT EXISTS solves (
   user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
   challenge_slug TEXT NOT NULL,
@@ -107,6 +111,18 @@ CREATE TABLE IF NOT EXISTS registrations (
   intent TEXT,
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
+CREATE INDEX IF NOT EXISTS solves_challenge_idx ON solves (challenge_slug);
+CREATE INDEX IF NOT EXISTS solves_user_idx ON solves (user_id);
+
+CREATE TABLE IF NOT EXISTS password_resets (
+  id BIGSERIAL PRIMARY KEY,
+  user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  token_hash TEXT NOT NULL UNIQUE,
+  expires_at TIMESTAMPTZ NOT NULL,
+  used BOOLEAN NOT NULL DEFAULT FALSE,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
 CREATE TABLE IF NOT EXISTS subscribers (
   email TEXT PRIMARY KEY,
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
@@ -181,6 +197,7 @@ export async function findUserByEmail(email: string): Promise<User | null> {
       passwordHash: String(r.password_hash),
       role: r.role === "admin" ? "admin" : r.role === "pending" ? "pending" : "member",
       createdAt: iso(r.created_at),
+      profile: (r.profile ?? {}) as User["profile"],
     };
   }
   const store = await readStore();
@@ -201,6 +218,7 @@ export async function getUserById(id: string): Promise<User | null> {
       passwordHash: String(r.password_hash),
       role: r.role === "admin" ? "admin" : r.role === "pending" ? "pending" : "member",
       createdAt: iso(r.created_at),
+      profile: (r.profile ?? {}) as User["profile"],
     };
   }
   const store = await readStore();
@@ -219,9 +237,23 @@ export async function listUsers(): Promise<User[]> {
       passwordHash: String(r.password_hash),
       role: r.role === "admin" ? "admin" : r.role === "pending" ? "pending" : "member",
       createdAt: iso(r.created_at),
+      profile: (r.profile ?? {}) as User["profile"],
     }));
   }
   return (await readStore()).users;
+}
+
+export async function updateUserPassword(id: string, passwordHash: string): Promise<void> {
+  if (hasDatabase) {
+    await ready();
+    const p = await pool();
+    await p.query("UPDATE users SET password_hash = $1 WHERE id = $2", [passwordHash, id]);
+    return;
+  }
+  await mutate((store) => {
+    const user = store.users.find((u) => u.id === id);
+    if (user) user.passwordHash = passwordHash;
+  });
 }
 
 export async function updateUserRole(id: string, role: "pending" | "member" | "admin"): Promise<void> {
@@ -252,6 +284,7 @@ export async function createUser(input: {
   name: string;
   passwordHash: string;
   role?: "pending" | "member" | "admin";
+  profile?: User["profile"];
 }): Promise<User> {
   const user: User = {
     id: uuid(),
@@ -260,14 +293,15 @@ export async function createUser(input: {
     passwordHash: input.passwordHash,
     role: input.role ?? "member",
     createdAt: new Date().toISOString(),
+    profile: input.profile ?? {},
   };
 
   if (hasDatabase) {
     await ready();
     const p = await pool();
     await p.query(
-      "INSERT INTO users (id, email, name, password_hash, role) VALUES ($1,$2,$3,$4,$5)",
-      [user.id, user.email, user.name, user.passwordHash, user.role],
+      "INSERT INTO users (id, email, name, password_hash, role, profile) VALUES ($1,$2,$3,$4,$5,$6)",
+      [user.id, user.email, user.name, user.passwordHash, user.role, JSON.stringify(user.profile ?? {})],
     );
     return user;
   }
@@ -502,4 +536,47 @@ export async function countRegistrations(): Promise<number> {
     return Number(rows[0]?.n ?? 0);
   }
   return (await readStore()).registrations.length;
+}
+
+// ---------------------------------------------------------------- password resets
+
+export async function createPasswordReset(
+  userId: string,
+  tokenHash: string,
+  expiresAt: string,
+): Promise<void> {
+  if (hasDatabase) {
+    await ready();
+    const p = await pool();
+    await p.query(
+      "INSERT INTO password_resets (user_id, token_hash, expires_at) VALUES ($1, $2, $3)",
+      [userId, tokenHash, expiresAt],
+    );
+    return;
+  }
+  await mutate((store) => {
+    store.resets = store.resets.filter((r) => r.userId !== userId);
+    store.resets.push({ userId, tokenHash, expiresAt, used: false });
+  });
+}
+
+/** Returns the user id for a valid, unused, unexpired token and burns it. */
+export async function consumePasswordReset(tokenHash: string): Promise<string | null> {
+  if (hasDatabase) {
+    await ready();
+    const p = await pool();
+    const { rows } = await p.query(
+      `UPDATE password_resets SET used = TRUE
+       WHERE token_hash = $1 AND used = FALSE AND expires_at > NOW()
+       RETURNING user_id`,
+      [tokenHash],
+    );
+    return rows[0] ? String(rows[0].user_id) : null;
+  }
+  return mutate((store) => {
+    const row = store.resets.find((r) => r.tokenHash === tokenHash);
+    if (!row || row.used || new Date(row.expiresAt).getTime() < Date.now()) return null;
+    row.used = true;
+    return row.userId;
+  });
 }
