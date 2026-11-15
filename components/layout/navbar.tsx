@@ -191,6 +191,16 @@ export function Navbar() {
                         <p className="truncate text-[12px] text-ink">{user.name}</p>
                         <p className="truncate font-mono text-[9.5px] text-muted">{user.email}</p>
                       </div>
+                      {user.role === "pending" ? (
+                        <Link
+                          href="/pending"
+                          role="menuitem"
+                          className="flex items-center gap-2 rounded-lg px-3 py-2 text-[12.5px] text-amber-300 hover:bg-line/5"
+                        >
+                          <Icon name="clock" size={14} />
+                          {t.auth.pendingCheck}
+                        </Link>
+                      ) : null}
                       <Link
                         href="/challenges"
                         role="menuitem"

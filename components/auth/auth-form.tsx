@@ -8,12 +8,13 @@ import { useI18n } from "@/lib/i18n";
 import { useAppStore } from "@/lib/client-store";
 import { Seal } from "@/components/ui/brand";
 import { Icon } from "@/components/ui/icons";
+import { SessionNotice } from "@/components/auth/session-notice";
 
 export function AuthForm({ mode }: { mode: "login" | "register" }) {
   const { t } = useI18n();
   const router = useRouter();
   const params = useSearchParams();
-  const { refresh } = useAppStore();
+  const { refresh, user, loading: sessionLoading } = useAppStore();
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -65,9 +66,27 @@ export function AuthForm({ mode }: { mode: "login" | "register" }) {
         });
         const data = await res.json().catch(() => ({}));
         if (!res.ok) {
-          setError(data.error === "email_taken" ? t.auth.emailTaken : t.auth.genericError);
+          setError(
+            data.error === "email_taken"
+              ? t.auth.emailTaken
+              : data.error === "already_signed_in"
+                ? t.auth.signedInBody
+                : t.auth.genericError,
+          );
           return;
         }
+
+        const result = await signIn("credentials", { email, password, redirect: false });
+        if (!result || result.error) {
+          setError(t.auth.invalid);
+          return;
+        }
+        await refresh();
+        // A fresh account is not a member yet: send it straight to the status
+        // page instead of opening a range it cannot use.
+        router.push(data.pending ? "/pending" : next);
+        router.refresh();
+        return;
       }
 
       const result = await signIn("credentials", { email, password, redirect: false });
@@ -84,6 +103,13 @@ export function AuthForm({ mode }: { mode: "login" | "register" }) {
       setLoading(false);
     }
   };
+
+  // Client-side safety net: if the session is already known (for example the
+  // page was restored from the router cache right after signing in), never show
+  // the form again — render the same status panel the server would have.
+  if (!sessionLoading && user) {
+    return <SessionNotice viewer={user} mode={mode} />;
+  }
 
   return (
     <section className="relative flex min-h-[calc(100svh-68px)] items-center overflow-hidden py-14">

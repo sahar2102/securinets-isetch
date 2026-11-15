@@ -4,6 +4,7 @@ import { z } from "zod";
 import { createUser, findUserByEmail } from "@/lib/db";
 import { clientIp, hit } from "@/lib/rate-limit";
 import { ensureSeed } from "@/lib/seed";
+import { getViewer } from "@/lib/access";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -20,6 +21,13 @@ const schema = z.object({
 });
 
 export async function POST(req: Request) {
+  // One session at a time: an authenticated visitor never creates a second
+  // account from the browser. They see the status panel instead of this form.
+  const viewer = await getViewer().catch(() => null);
+  if (viewer) {
+    return NextResponse.json({ error: "already_signed_in" }, { status: 409 });
+  }
+
   if (!hit(`register:${clientIp(req)}`, { limit: 5, windowMs: 60 * 60_000, blockMs: 30 * 60_000 }).ok) {
     return NextResponse.json({ error: "rate_limited" }, { status: 429 });
   }
