@@ -370,6 +370,7 @@ export const en = {
     demoNote: "Includes seeded demo players so the board is never empty in preview.",
     joinCta: "Create an account and climb",
     topThree: "Podium",
+    tiebreak: "Ties go to whoever reached the score first",
     seasonNote: "Season resets every September. All-time scores never reset.",
   },
   join: {

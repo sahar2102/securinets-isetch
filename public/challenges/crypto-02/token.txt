@@ -1,0 +1,4 @@
+# Token captured from the portal after login.
+# Sent as `Authorization: Bearer <token>`.
+
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJzdHVkZW50LTEwNDIiLCJyb2xlIjoidXNlciIsInNjb3BlIjoicG9ydGFsIiwiaWF0IjoxNzYzMDAwMDAwLCJmbGFnIjoiU05Ue2I0czM2NHVybF8xc19zdDFsbF9uMHRfM25jcnlwdDEwbn0ifQ.61ac5228dc39acc96e6ad0cf76a9ee7c5986bd0360a

@@ -55,6 +55,10 @@ export function LeaderboardPage() {
               <Icon name="flame" size={13} className="text-ember" />
               {t.leaderboard.seasonNote}
             </span>
+            <span className="inline-flex items-center gap-1.5">
+              <Icon name="flag" size={13} className="text-ember" />
+              {t.leaderboard.tiebreak}
+            </span>
           </>
         }
       />

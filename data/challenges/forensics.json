@@ -7,8 +7,7 @@
       "category": "forensics",
       "difficulty": "beginner",
       "points": 60,
-      "solves": 164,
-      "author": "Salma Ferchichi",
+      "solves": 0,
       "tags": [
         "exif",
         "metadata",
@@ -16,7 +15,7 @@
       ],
       "date": "2026-10-03",
       "featured": true,
-      "description": "A \"proof of attendance\" photo was posted in the club group chat. It was taken on a phone that still tags everything.\n\nNo pixel analysis required — the file knows more than the photographer.\n\n**Goal:** recover the coordinates embedded in the image and use them to find the flag stored in the location field of the note.",
+      "description": "A \"proof of attendance\" photo was posted in the club group chat. It was taken on a phone that still tags everything.\n\nNo pixel analysis required — the file knows more than the photographer.\n\n**Goal:** read the metadata and submit the flag. The flag sits verbatim in the `UserComment` tag; the GPS coordinates only tell you where the photo was taken — they are not part of the flag and nothing is hidden at that location.",
       "files": [
         {
           "name": "attendance-exif.txt",
@@ -43,8 +42,7 @@
       "category": "forensics",
       "difficulty": "beginner",
       "points": 90,
-      "solves": 98,
-      "author": "Salma Ferchichi",
+      "solves": 0,
       "tags": [
         "carving",
         "fat32",
@@ -79,8 +77,7 @@
       "category": "forensics",
       "difficulty": "intermediate",
       "points": 180,
-      "solves": 71,
-      "author": "Mehdi Khelifi",
+      "solves": 0,
       "tags": [
         "file signatures",
         "hex",
@@ -88,7 +85,7 @@
       ],
       "date": "2026-10-15",
       "featured": true,
-      "description": "The archive downloaded from the club drive refuses to open: `End-of-central-directory signature not found`.\n\nIt is not encrypted. It is not corrupt beyond repair. The first four bytes were overwritten by an over-eager transfer script.\n\n**Goal:** restore the magic bytes and extract the flag.",
+      "description": "The archive downloaded from the club drive will not extract. The download script overwrote the first four bytes, which now read `FF D8 FF E0` — the start of a JPEG, not a ZIP.\n\nThe central directory is untouched, so `unzip -l` still lists the two members — but extraction of the first one is refused: `bad zipfile offset (local header sig)` from `unzip`, `zipfile.BadZipFile: Bad magic number for file header` from Python.\n\n**Goal:** restore the four magic bytes and extract the flag.",
       "files": [
         {
           "name": "evidence.zip",
@@ -102,7 +99,7 @@
           "cost": 25
         },
         {
-          "text": "Fix the first four bytes only. `zip -FF` can rebuild the central directory afterwards.",
+          "text": "Patch those four bytes only — `printf 'PK\\003\\004' | dd of=evidence.zip bs=1 seek=0 conv=notrunc`. The central directory is fine, so no rebuild is needed.",
           "cost": 45
         }
       ],
@@ -115,8 +112,7 @@
       "category": "forensics",
       "difficulty": "intermediate",
       "points": 200,
-      "solves": 55,
-      "author": "Farah Zouari",
+      "solves": 0,
       "tags": [
         "memory",
         "volatility",
@@ -151,8 +147,7 @@
       "category": "forensics",
       "difficulty": "advanced",
       "points": 340,
-      "solves": 23,
-      "author": "Farah Zouari",
+      "solves": 0,
       "tags": [
         "logs",
         "timeline",
@@ -160,7 +155,7 @@
       ],
       "date": "2026-10-25",
       "featured": false,
-      "description": "Three log sources, three timezones, one incident. The web server logs in UTC, the firewall in local Tunis time, and the VPN in whatever the vendor felt like.\n\n**Goal:** build a single timeline and identify the exact minute the attacker moved laterally. The flag is the timestamp of that event, in ISO-8601 UTC, wrapped as `SNT{...}`.",
+      "description": "Three log sources, three timezones, one incident. The web server logs in UTC, the firewall in local Tunis time, and the VPN in whatever the vendor felt like.\n\n**Goal:** build a single timeline and identify the exact second the attacker moved laterally — the first SMB connection coming from a VPN-assigned address.\n\nSubmit that moment in ISO-8601 UTC: `SNT{YYYY-MM-DDTHH:MM:SSZ}`.",
       "files": [
         {
           "name": "access.log",
@@ -188,7 +183,7 @@
           "cost": 80
         }
       ],
-      "flag": "SNT{t1m3z0n3s_4r3_4_w34p0n}"
+      "flag": "SNT{2026-11-13T09:14:22Z}"
     },
     {
       "id": "forensics-06",
@@ -197,8 +192,7 @@
       "category": "forensics",
       "difficulty": "expert",
       "points": 500,
-      "solves": 11,
-      "author": "Wael Hammami",
+      "solves": 0,
       "tags": [
         "malware",
         "string analysis",

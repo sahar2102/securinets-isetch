@@ -7,8 +7,7 @@
       "category": "crypto",
       "difficulty": "beginner",
       "points": 50,
-      "solves": 231,
-      "author": "Salma Ferchichi",
+      "solves": 0,
       "tags": [
         "classical",
         "rot13",
@@ -16,7 +15,7 @@
       ],
       "date": "2026-10-02",
       "featured": true,
-      "description": "A retired professor left one encrypted sentence on the club whiteboard before disappearing into the Tunisian summer.\n\n```\nFAG{p4r4g0n_0f_...}\n```\n\nIt looks almost like a flag, which is the point: classical ciphers preserve shape. Shift it back.",
+      "description": "A retired professor left one encrypted sentence on the club whiteboard before disappearing into the Tunisian summer.\n\n```\nFAG{p4rf4e_j0hyq_o3_ce0hq}\n```\n\nIt looks almost like a flag, which is the point: classical ciphers preserve shape. Shift it back.",
       "files": [
         {
           "name": "cipher.txt",
@@ -43,35 +42,33 @@
       "category": "crypto",
       "difficulty": "beginner",
       "points": 60,
-      "solves": 176,
-      "author": "Salma Ferchichi",
+      "solves": 0,
       "tags": [
-        "encoding",
-        "base64",
-        "base32",
-        "hex"
+        "base64url",
+        "token",
+        "encoding"
       ],
       "date": "2026-10-05",
       "featured": false,
-      "description": "Encoding is not encryption. The club treasurer keeps forgetting this, and now the flag is wrapped in three layers of \"not encryption\".\n\nPeel them in the right order. CyberChef's Magic mode is allowed, but you'll learn more doing it by hand.",
+      "description": "Encoding is not encryption, and the portal proves it twice a minute.\n\nAfter login the API returns a bearer token: three dot-separated segments, no signature anyone verifies. The middle segment is just JSON wearing a different alphabet.\n\n**Goal:** decode the token payload and submit the value it leaks.\n\nCareful: this is `base64url`, not `base64` — no padding, and `-`/`_` replace `+`/`/`.",
       "files": [
         {
-          "name": "layers.txt",
-          "size": "247 B",
-          "href": "/challenges/crypto-02/layers.txt"
+          "name": "token.txt",
+          "size": "330 B",
+          "href": "/challenges/crypto-02/token.txt"
         }
       ],
       "hints": [
         {
-          "text": "Look at the character set and the padding to identify each layer.",
+          "text": "Three segments: header, payload, signature. Only one of them carries data.",
           "cost": 10
         },
         {
-          "text": "Base32 uses A–Z and 2–7. Hex uses 0–9A–F. Base64 uses mixed case plus + and /.",
+          "text": "Base64url drops the `=` padding and swaps `+`/`/` for `-`/`_`. Add the padding back before decoding.",
           "cost": 20
         }
       ],
-      "flag": "SNT{b4s3_15_n0t_3ncrypt10n}"
+      "flag": "SNT{b4s364url_1s_st1ll_n0t_3ncrypt10n}"
     },
     {
       "id": "crypto-03",
@@ -80,8 +77,7 @@
       "category": "crypto",
       "difficulty": "beginner",
       "points": 80,
-      "solves": 121,
-      "author": "Mehdi Khelifi",
+      "solves": 0,
       "tags": [
         "xor",
         "single-byte",
@@ -116,8 +112,7 @@
       "category": "crypto",
       "difficulty": "intermediate",
       "points": 220,
-      "solves": 48,
-      "author": "Salma Ferchichi",
+      "solves": 0,
       "tags": [
         "AES-CTR",
         "nonce reuse",
@@ -157,8 +152,7 @@
       "category": "crypto",
       "difficulty": "advanced",
       "points": 320,
-      "solves": 27,
-      "author": "Mehdi Khelifi",
+      "solves": 0,
       "tags": [
         "RSA",
         "small exponent",
@@ -166,7 +160,7 @@
       ],
       "date": "2026-10-22",
       "featured": false,
-      "description": "A home-made licence server signs with RSA and chose `e = 3` because \"smaller is faster\". Messages are short and unpadded.\n\nYou have the public key and one ciphertext. The math does not need a quantum computer.\n\n**Goal:** recover the plaintext without factoring the modulus.",
+      "description": "A home-made licence server encrypts its licence blobs with RSA and chose `e = 3` because \"smaller is faster\". Messages are short and unpadded.\n\nYou have the public key and one ciphertext. The math does not need a quantum computer.\n\n**Goal:** recover the plaintext without factoring the modulus.",
       "files": [
         {
           "name": "public-key.txt",
@@ -193,8 +187,7 @@
       "category": "crypto",
       "difficulty": "expert",
       "points": 520,
-      "solves": 9,
-      "author": "Wael Hammami",
+      "solves": 0,
       "tags": [
         "AES-CBC",
         "padding oracle",

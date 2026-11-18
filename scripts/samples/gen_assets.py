@@ -9,6 +9,7 @@ import binascii
 import hashlib
 import io
 import json
+import math
 import os
 import random
 import struct
@@ -155,14 +156,22 @@ def gen_crypto():
         + "\n\nPS: the shift is older than the university.\n",
     )
 
-    inner = base64.b32encode(flag.encode()).decode()
-    middle = binascii.hexlify(inner.encode()).decode()
-    outer = base64.b64encode(middle.encode()).decode()
+    # crypto-02: base64url JWT-shaped bearer token, payload leaks the flag.
+    def b64u(raw):
+        return base64.urlsafe_b64encode(raw).decode().rstrip("=")
+
+    jwt_header = b64u(b'{"alg":"HS256","typ":"JWT"}')
+    jwt_payload = b64u(
+        b'{"sub":"student-1042","role":"user","scope":"portal","iat":1763000000,'
+        b'"flag":"SNT{b4s364url_1s_st1ll_n0t_3ncrypt10n}"}'
+    )
+    jwt_sig = "61ac5228dc39acc96e6ad0cf76a9ee7c5986bd0360a"  # nobody verifies it
     w(
         "crypto-02",
-        "layers.txt",
-        "# Layer 1 (base64) -> Layer 2 (hex) -> Layer 3 (base32)\n"
-        "# Peel in that order. Do not trust the order of the comment.\n\n" + outer + "\n",
+        "token.txt",
+        "# Token captured from the portal after login.\n"
+        "# Sent as `Authorization: Bearer <token>`.\n\n"
+        + jwt_header + "." + jwt_payload + "." + jwt_sig + "\n",
     )
 
     key = 0x5A
@@ -253,16 +262,24 @@ Software                        : S26-Exif-Proof
     img[pos:pos + len(marker)] = marker
     w("forensics-02", "laptop.img", bytes(img))
 
-    # corrupted zip with a text flag
+    # corrupted zip with a text flag.
+    # The flag is the FIRST archive member and its local header signature is
+    # destroyed, so `unzip`/zipfile refuse it until the magic bytes are restored.
+    # The central directory is intact, which is why `unzip -l` still lists both.
     buf = io.BytesIO()
     with zipfile.ZipFile(buf, "w", zipfile.ZIP_DEFLATED) as z:
-        z.writestr("readme.txt", "Nothing to see here. Move along.\n")
-        z.writestr(
-            "evidence/flag.txt",
-            "Recovered from the archive after repairing the header.\nSNT{ffd8_1s_n0t_4_z1p}\n",
-        )
+        for name, text in (
+            (
+                "evidence/flag.txt",
+                "Recovered from the archive after repairing the header.\nSNT{ffd8_1s_n0t_4_z1p}\n",
+            ),
+            ("readme.txt", "Nothing to see here. Move along.\n"),
+        ):
+            zi = zipfile.ZipInfo(name, date_time=(2026, 11, 14, 18, 1, 0))
+            zi.compress_type = zipfile.ZIP_DEFLATED
+            z.writestr(zi, text)
     data = bytearray(buf.getvalue())
-    data[0:4] = b"\x89PNG"
+    data[0:4] = b"\xff\xd8\xff\xe0"  # JPEG SOI + APP0, as stated in the description
     w("forensics-03", "evidence.zip", bytes(data))
 
     # memory image with a fake process list
@@ -418,7 +435,9 @@ def gen_stego():
     w("stego-02", "poster.png", gradient_png(512, 512, px))
 
     # Morse audio
-    flag3 = "SNT{s0und_1n_th3_n01s3}"
+    # The audio spells the prefix and the four tokens separately, so the solver
+    # formats the flag instead of decoding custom morse for { } and _.
+    flag3_words = ["SNT", "S0UND", "1N", "TH3", "N01S3"]
     morse_map = {
         "A": ".-", "B": "-...", "C": "-.-.", "D": "-..", "E": ".", "F": "..-.",
         "G": "--.", "H": "....", "I": "..", "J": ".---", "K": "-.-", "L": ".-..",
@@ -433,18 +452,22 @@ def gen_stego():
 
     def tone(freq, dur, amp=9000):
         n = int(rate * dur)
-        return [
-            int(amp * (1 if (i // 40) % 2 == 0 else 0.6) * (1 if i < n - 80 else 0))
-            for i in range(n)
-        ]
+        fade = int(rate * 0.005)  # 5 ms ramps avoid clicks
+        out = []
+        for i in range(n):
+            env = min(1.0, i / fade, (n - 1 - i) / fade)
+            out.append(int(amp * env * math.sin(2 * math.pi * freq * i / rate)))
+        return out
 
     samples = []
-    for ch in flag3:
-        code = morse_map.get(ch.upper(), "")
-        for sym in code:
-            samples += tone(880 if sym == "-" else 660, unit * (3 if sym == "-" else 1))
-            samples += [0] * int(rate * unit)
-        samples += [0] * int(rate * unit * 2)
+    for word in flag3_words:
+        for ch in word:
+            code = morse_map.get(ch.upper(), "")
+            for sym in code:
+                samples += tone(880 if sym == "-" else 660, unit * (3 if sym == "-" else 1))
+                samples += [0] * int(rate * unit)
+            samples += [0] * int(rate * unit * 2)   # letter gap (3 units)
+        samples += [0] * int(rate * unit * 4)       # word gap (7 units)
     os.makedirs(os.path.join(OUT, "stego-03"), exist_ok=True)
     with wave.open(os.path.join(OUT, "stego-03", "transmission.wav"), "wb") as wf:
         wf.setnchannels(1)

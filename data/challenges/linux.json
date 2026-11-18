@@ -7,8 +7,7 @@
       "category": "linux",
       "difficulty": "beginner",
       "points": 60,
-      "solves": 183,
-      "author": "Mehdi Khelifi",
+      "solves": 0,
       "tags": [
         "permissions",
         "chmod",
@@ -43,8 +42,7 @@
       "category": "linux",
       "difficulty": "beginner",
       "points": 70,
-      "solves": 147,
-      "author": "Mehdi Khelifi",
+      "solves": 0,
       "tags": [
         "pipes",
         "grep",
@@ -79,8 +77,7 @@
       "category": "linux",
       "difficulty": "beginner",
       "points": 80,
-      "solves": 134,
-      "author": "Rania Chaabane",
+      "solves": 0,
       "tags": [
         "cron",
         "privesc",
@@ -115,8 +112,7 @@
       "category": "linux",
       "difficulty": "intermediate",
       "points": 200,
-      "solves": 62,
-      "author": "Mehdi Khelifi",
+      "solves": 0,
       "tags": [
         "suid",
         "gtfobins",
@@ -151,8 +147,7 @@
       "category": "linux",
       "difficulty": "expert",
       "points": 560,
-      "solves": 7,
-      "author": "Wael Hammami",
+      "solves": 0,
       "tags": [
         "tar",
         "wildcards",
@@ -179,7 +174,7 @@
           "cost": 80
         },
         {
-          "text": "`--checkpoint=1` plus `--checkpoint-action=exec=sh shell.sh` gives you execution.",
+          "text": "tar reads options from the filenames it expands. Read the `--checkpoint` section of the man page: it has an action flag that runs a command.",
           "cost": 150
         }
       ],

@@ -5,36 +5,35 @@
       "slug": "strings-attached",
       "title": "Strings Attached",
       "category": "reverse",
-      "difficulty": "beginner",
-      "points": 60,
-      "solves": 198,
-      "author": "Mehdi Khelifi",
+      "difficulty": "intermediate",
+      "points": 130,
+      "solves": 0,
       "tags": [
         "strings",
-        "static analysis",
-        "ELF"
+        "xor",
+        "disassembly"
       ],
       "date": "2026-10-04",
       "featured": true,
-      "description": "A tiny licensing binary asks for a key. The author was proud of the obfuscation, which consisted of compiling with `-O0` and hoping nobody would look inside.\n\n**Goal:** recover the key without running the binary.",
+      "description": "A tiny licensing binary asks for a key. The author \"hardened\" it: debug build, a decoy string, and a single-byte XOR over both the key and the flag so nothing useful shows up in `strings`.\n\nA flag-shaped string *is* in there. It is bait — it sits in a variable no code path ever prints.\n\n**Goal:** find the real key and the real flag. `objdump -d`, Ghidra or `radare2` will do; you only need to run it to confirm.",
       "files": [
         {
           "name": "license_check",
-          "size": "15.8 KB",
+          "size": "15.9 KB",
           "href": "/challenges/reverse-01/license_check"
         }
       ],
       "hints": [
         {
-          "text": "`strings` is not cheating. It is the first five minutes of every reverse challenge.",
-          "cost": 10
+          "text": "Start with `strings`, then ask yourself which of those strings is ever referenced by code.",
+          "cost": 15
         },
         {
-          "text": "Filter for the `SNT{` prefix directly.",
-          "cost": 15
+          "text": "The comparison key is built at runtime: a byte array XORed with a constant. Find the constant, decode it, then the flag array decodes the same way.",
+          "cost": 35
         }
       ],
-      "flag": "SNT{str1ng5_4r3_ch34p}"
+      "flag": "SNT{n3v3r_7ru5t_str1ngs}"
     },
     {
       "id": "reverse-02",
@@ -43,8 +42,7 @@
       "category": "reverse",
       "difficulty": "beginner",
       "points": 90,
-      "solves": 112,
-      "author": "Mehdi Khelifi",
+      "solves": 0,
       "tags": [
         "objdump",
         "gdb",
@@ -84,8 +82,7 @@
       "category": "reverse",
       "difficulty": "intermediate",
       "points": 200,
-      "solves": 52,
-      "author": "Wael Hammami",
+      "solves": 0,
       "tags": [
         "rolling xor",
         "ghidra",
@@ -120,8 +117,7 @@
       "category": "reverse",
       "difficulty": "expert",
       "points": 600,
-      "solves": 7,
-      "author": "Wael Hammami",
+      "solves": 0,
       "tags": [
         "ptrace",
         "self-modifying",

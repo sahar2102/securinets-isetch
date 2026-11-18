@@ -7,8 +7,7 @@
       "category": "misc",
       "difficulty": "beginner",
       "points": 50,
-      "solves": 204,
-      "author": "Ines Jaziri",
+      "solves": 0,
       "tags": [
         "encoding",
         "binary",
@@ -30,7 +29,7 @@
           "cost": 10
         },
         {
-          "text": "CyberChef's Magic can detect the whole chain in one click.",
+          "text": "Every layer has a fingerprint: fixed block lengths, `=` padding, a restricted alphabet. Identify one, decode, repeat.",
           "cost": 15
         }
       ],
@@ -43,8 +42,7 @@
       "category": "misc",
       "difficulty": "beginner",
       "points": 80,
-      "solves": 128,
-      "author": "Salma Ferchichi",
+      "solves": 0,
       "tags": [
         "python",
         "logic",
@@ -79,8 +77,7 @@
       "category": "misc",
       "difficulty": "intermediate",
       "points": 160,
-      "solves": 74,
-      "author": "Salma Ferchichi",
+      "solves": 0,
       "tags": [
         "regex",
         "log parsing",
@@ -120,8 +117,7 @@
       "category": "misc",
       "difficulty": "intermediate",
       "points": 190,
-      "solves": 66,
-      "author": "Mehdi Khelifi",
+      "solves": 0,
       "tags": [
         "hashing",
         "brute force",
@@ -156,8 +152,7 @@
       "category": "misc",
       "difficulty": "advanced",
       "points": 320,
-      "solves": 24,
-      "author": "Aziz Trabelsi",
+      "solves": 0,
       "tags": [
         "brainfuck",
         "esolang",

@@ -7,8 +7,7 @@
       "category": "web",
       "difficulty": "beginner",
       "points": 50,
-      "solves": 214,
-      "author": "Aziz Trabelsi",
+      "solves": 0,
       "tags": [
         "recon",
         "robots.txt",
@@ -43,8 +42,7 @@
       "category": "web",
       "difficulty": "beginner",
       "points": 60,
-      "solves": 187,
-      "author": "Omar Ben Amor",
+      "solves": 0,
       "tags": [
         "html",
         "comments",
@@ -68,8 +66,7 @@
       "category": "web",
       "difficulty": "beginner",
       "points": 75,
-      "solves": 142,
-      "author": "Aziz Trabelsi",
+      "solves": 0,
       "tags": [
         "cookies",
         "base64",
@@ -104,8 +101,7 @@
       "category": "web",
       "difficulty": "intermediate",
       "points": 200,
-      "solves": 64,
-      "author": "Aziz Trabelsi",
+      "solves": 0,
       "tags": [
         "SQLi",
         "auth bypass",
@@ -133,8 +129,7 @@
       "category": "web",
       "difficulty": "advanced",
       "points": 350,
-      "solves": 19,
-      "author": "Mehdi Khelifi",
+      "solves": 0,
       "tags": [
         "JWT",
         "alg none",
@@ -156,7 +151,7 @@
           "cost": 30
         },
         {
-          "text": "If the server accepts unsigned tokens, the signature segment can be empty.",
+          "text": "Try deleting the signature segment entirely, trailing dot included, and watch which error message disappears.",
           "cost": 60
         }
       ],

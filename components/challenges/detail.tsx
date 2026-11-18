@@ -161,10 +161,6 @@ export function ChallengeDetail({
               {interpolate(t.challenges.detail.solveCount, { count: challenge.solves + (solved ? 1 : 0) })}
             </span>
             <span className="inline-flex items-center gap-1.5">
-              <Icon name="badge" size={13} className="text-ember" />
-              {challenge.author}
-            </span>
-            <span className="inline-flex items-center gap-1.5">
               <Icon name="calendar" size={13} className="text-ember" />
               {formatDate(challenge.date)}
             </span>
@@ -372,7 +368,7 @@ export function ChallengeDetail({
 
           {/* sidebar */}
           <aside className="space-y-4">
-            <div className="rounded-2xl border border-line/10 bg-elev/40 p-5 lg:sticky lg:top-24">
+            <div className="rounded-2xl border border-line/10 bg-elev/40 p-5">
               <div className="flex items-center justify-between">
                 <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted">status</span>
                 <span
@@ -387,10 +383,6 @@ export function ChallengeDetail({
               </p>
 
               <dl className="mt-5 space-y-3 border-t border-line/10 pt-4 font-mono text-[11px]">
-                <div className="flex justify-between gap-3">
-                  <dt className="text-muted">{t.challenges.detail.author}</dt>
-                  <dd className="text-end text-ink">{challenge.author}</dd>
-                </div>
                 <div className="flex justify-between gap-3">
                   <dt className="text-muted">{t.challenges.detail.released}</dt>
                   <dd className="text-ink">{formatDate(challenge.date, locale === "fr" ? "fr-FR" : "en-GB")}</dd>

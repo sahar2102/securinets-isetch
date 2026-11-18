@@ -44,7 +44,7 @@ const challengeSchema = z.object({
   category: z.enum(categories.map((c) => c.slug) as [string, ...string[]]),
   difficulty: z.enum(Object.keys(difficulties) as [string, ...string[]]),
   points: z.coerce.number().int().min(10).max(2000),
-  author: z.string().min(2).max(80),
+  author: z.string().max(80).optional().default(""),
   date: z.string().min(4),
   description: z.string().min(10).max(20000),
   tags: z.array(z.string().max(30)).max(8).default([]),

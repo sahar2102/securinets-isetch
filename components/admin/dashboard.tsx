@@ -808,7 +808,6 @@ function ChallengeForm({
     category: initial.category ?? "web",
     difficulty: initial.difficulty ?? "beginner",
     points: initial.points ?? 50,
-    author: initial.author ?? "",
     date: initial.date ?? new Date().toISOString().slice(0, 10),
     description: initial.description ?? "",
     tags: (initial.tags ?? []).join(", "),
@@ -872,9 +871,6 @@ function ChallengeForm({
         </Field>
         <Field label="Points">
           <input type="number" className="input" value={form.points} onChange={(e) => set("points", Number(e.target.value))} />
-        </Field>
-        <Field label="Author">
-          <input className="input" value={form.author} onChange={(e) => set("author", e.target.value)} />
         </Field>
         <Field label="Release date">
           <input type="date" className="input" value={form.date} onChange={(e) => set("date", e.target.value)} />

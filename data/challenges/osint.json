@@ -7,8 +7,7 @@
       "category": "osint",
       "difficulty": "beginner",
       "points": 60,
-      "solves": 151,
-      "author": "Nour Gharbi",
+      "solves": 0,
       "tags": [
         "username",
         "enumeration",
@@ -43,8 +42,7 @@
       "category": "osint",
       "difficulty": "beginner",
       "points": 80,
-      "solves": 103,
-      "author": "Omar Ben Amor",
+      "solves": 0,
       "tags": [
         "geolocation",
         "landmarks",
@@ -79,8 +77,7 @@
       "category": "osint",
       "difficulty": "intermediate",
       "points": 170,
-      "solves": 68,
-      "author": "Nour Gharbi",
+      "solves": 0,
       "tags": [
         "wayback",
         "archives",
@@ -115,8 +112,7 @@
       "category": "osint",
       "difficulty": "advanced",
       "points": 330,
-      "solves": 21,
-      "author": "Nour Gharbi",
+      "solves": 0,
       "tags": [
         "pivoting",
         "correlation",

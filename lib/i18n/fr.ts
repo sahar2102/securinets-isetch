@@ -372,6 +372,7 @@ export const fr: Dictionary = {
     demoNote: "Inclut des joueurs de démonstration pour que le classement ne soit jamais vide.",
     joinCta: "Créer un compte et grimper",
     topThree: "Podium",
+    tiebreak: "En cas d'égalité, la première personne à atteindre le score gagne",
     seasonNote: "La saison repart chaque septembre. Les scores all-time ne sont jamais réinitialisés.",
   },
   join: {

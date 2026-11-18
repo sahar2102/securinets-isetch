@@ -7,8 +7,7 @@
       "category": "stego",
       "difficulty": "beginner",
       "points": 50,
-      "solves": 172,
-      "author": "Ines Jaziri",
+      "solves": 0,
       "tags": [
         "zero-width",
         "unicode",
@@ -16,7 +15,7 @@
       ],
       "date": "2026-10-04",
       "featured": true,
-      "description": "A message that looks completely empty. It is not.\n\nThe file contains only invisible characters: zero-width spaces and zero-width joiners, encoding bits in pairs.\n\n**Goal:** decode the hidden text. A hex editor and patience are enough.",
+      "description": "A message that looks completely empty. It is not.\n\nThe file contains only invisible characters: zero-width spaces (U+200B) and zero-width non-joiners (U+200C), one bit per character.\n\n**Goal:** decode the hidden text. A hex editor and patience are enough.",
       "files": [
         {
           "name": "message.txt",
@@ -43,8 +42,7 @@
       "category": "stego",
       "difficulty": "beginner",
       "points": 80,
-      "solves": 119,
-      "author": "Ines Jaziri",
+      "solves": 0,
       "tags": [
         "png",
         "lsb",
@@ -79,8 +77,7 @@
       "category": "stego",
       "difficulty": "intermediate",
       "points": 190,
-      "solves": 57,
-      "author": "Omar Ben Amor",
+      "solves": 0,
       "tags": [
         "audio",
         "morse",
@@ -88,11 +85,11 @@
       ],
       "date": "2026-10-16",
       "featured": true,
-      "description": "A 40-second recording of what sounds like a modem having a bad day. It is not a modem — it is Morse code, sent with two different tones.\n\n**Goal:** decode the transmission. Listen, or analyse the waveform and measure pulse lengths.",
+      "description": "A 21-second recording of what sounds like a modem having a bad day. It is not a modem — it is Morse code, sent with two different tones.\n\n**Goal:** decode the transmission. Listen, or analyse the waveform and measure pulse lengths.",
       "files": [
         {
           "name": "transmission.wav",
-          "size": "441.6 KB",
+          "size": "329.1 KB",
           "href": "/challenges/stego-03/transmission.wav"
         }
       ],
@@ -102,7 +99,7 @@
           "cost": 25
         },
         {
-          "text": "The decoded text is already in the flag format — wrap the words in `SNT{...}` with underscores.",
+          "text": "Decode the tones: a dot is one unit long, a dash three. You get `SNT` followed by four tokens — submit `SNT{token_token_token_token}` in lowercase, with the digits kept as they are.",
           "cost": 45
         }
       ],
@@ -115,8 +112,7 @@
       "category": "stego",
       "difficulty": "advanced",
       "points": 330,
-      "solves": 28,
-      "author": "Mehdi Khelifi",
+      "solves": 0,
       "tags": [
         "polyglot",
         "zip",
@@ -151,8 +147,7 @@
       "category": "stego",
       "difficulty": "expert",
       "points": 520,
-      "solves": 8,
-      "author": "Mehdi Khelifi",
+      "solves": 0,
       "tags": [
         "bit planes",
         "png",

@@ -80,7 +80,7 @@ export interface ChallengeRecord {
   difficulty: Difficulty;
   points: number;
   solves: number;
-  author: string;
+  author?: string;
   tags: string[];
   date: string;
   featured?: boolean;

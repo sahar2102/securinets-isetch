@@ -33,7 +33,7 @@ export function ChallengeExplorer({ challenges }: { challenges: PublicChallenge[
       if (status === "solved" && !solvedSet.has(c.slug)) return false;
       if (status === "unsolved" && solvedSet.has(c.slug)) return false;
       if (!q) return true;
-      return [c.title, c.author, c.category, ...c.tags].join(" ").toLowerCase().includes(q);
+      return [c.title, c.category, ...c.tags].join(" ").toLowerCase().includes(q);
     });
 
     return rows.sort((a, b) => {
@@ -81,7 +81,7 @@ export function ChallengeExplorer({ challenges }: { challenges: PublicChallenge[
           <div className="grid min-w-0 gap-8 xl:grid-cols-[minmax(0,1fr)_320px]">
             <div className="min-w-0">
               {/* filters */}
-              <div className="z-30 -mx-1 rounded-2xl border border-line/10 bg-canvas/85 p-3 backdrop-blur-xl sm:p-4 lg:sticky lg:top-[68px]">
+              <div className="z-30 -mx-1 rounded-2xl border border-line/10 bg-canvas/85 p-3 backdrop-blur-xl sm:p-4">
                 <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
                   <div className="relative flex-1">
                     <Icon

@@ -7,8 +7,7 @@
       "category": "pwn",
       "difficulty": "beginner",
       "points": 100,
-      "solves": 84,
-      "author": "Wael Hammami",
+      "solves": 0,
       "tags": [
         "stack layout",
         "variables",
@@ -16,7 +15,7 @@
       ],
       "date": "2026-10-07",
       "featured": true,
-      "description": "Your first look at how local variables sit next to each other in memory.\n\nThe program reads your name into a 32-byte buffer, then checks a separate integer. Overflow the buffer just enough to overwrite that integer and the program prints the flag.\n\n**Goal:** make the check pass. Source and binary are provided; run it locally.",
+      "description": "Your first look at how local variables sit next to each other in memory.\n\nThe program reads your name into a 32-byte buffer, then checks a separate integer. Overflow the buffer just enough to overwrite that integer and the program prints the flag.\n\n**Goal:** make the check pass. Source and binary are provided; run it locally.\n\n**Environment:** x86-64, built against glibc ≥ 2.34 (Kali 2023+, Ubuntu 22.04+). On an older distro use the container in `docs/PWN-SETUP.md`.",
       "files": [
         {
           "name": "stack_peek",
@@ -48,16 +47,15 @@
       "category": "pwn",
       "difficulty": "intermediate",
       "points": 180,
-      "solves": 61,
-      "author": "Wael Hammami",
+      "solves": 0,
       "tags": [
         "ret2win",
-        "eip control",
+        "rip control",
         "cyclic pattern"
       ],
       "date": "2026-10-13",
       "featured": true,
-      "description": "No canary, no PIE, NX enabled, and a `win()` function that prints the flag but is never called.\n\nClassic setup: find the offset to the saved return address, then point it at `win`.\n\n**Goal:** redirect execution. `pwntools` recommended.",
+      "description": "No canary, no PIE, NX enabled, and a `win()` function that prints the flag but is never called.\n\n64-bit ELF (`x86-64`), so the saved return address is `rip`: 8-byte little-endian pointers. `win()` writes with a raw syscall, so you do not need a stack-alignment gadget.\n\nClassic setup: find the offset to `rip`, then point it at `win`.\n\n**Goal:** redirect execution. `pwntools` recommended.\n\n**Environment:** x86-64, built against glibc ≥ 2.34 (Kali 2023+, Ubuntu 22.04+). On an older distro use the container in `docs/PWN-SETUP.md`.",
       "files": [
         {
           "name": "baby",
@@ -89,8 +87,7 @@
       "category": "pwn",
       "difficulty": "intermediate",
       "points": 220,
-      "solves": 47,
-      "author": "Salma Ferchichi",
+      "solves": 0,
       "tags": [
         "format string",
         "leak",
@@ -98,7 +95,7 @@
       ],
       "date": "2026-10-17",
       "featured": false,
-      "description": "The program does `printf(user_input)` with no format constant. The flag is loaded into a local buffer that never gets printed.\n\n**Goal:** use `%p` and positional specifiers to walk the stack until you find the flag, then make `printf` print it as a string.",
+      "description": "The program does `printf(user_input)` with no format constant. The flag is loaded into a local buffer that never gets printed.\n\n**Goal:** use `%p` and positional specifiers to walk the stack until you find the flag, then make `printf` print it as a string.\n\n**Environment:** x86-64, built against glibc ≥ 2.34 (Kali 2023+, Ubuntu 22.04+). On an older distro use the container in `docs/PWN-SETUP.md`.",
       "files": [
         {
           "name": "fmt",
@@ -130,8 +127,7 @@
       "category": "pwn",
       "difficulty": "advanced",
       "points": 320,
-      "solves": 26,
-      "author": "Wael Hammami",
+      "solves": 0,
       "tags": [
         "rop",
         "stack alignment",
@@ -139,7 +135,7 @@
       ],
       "date": "2026-10-24",
       "featured": false,
-      "description": "`win()` now takes two arguments, and the binary has exactly one usable gadget: `pop rdi; pop rsi; ret`. PIE is off, NX is on, and there is still no canary.\n\n**Goal:** build a ROP chain that calls `win(0x1337, 0x2026)` and prints the flag.",
+      "description": "`win()` now takes two arguments, and the binary has exactly one usable gadget: `pop rdi; pop rsi; ret`. PIE is off, NX is on, and there is still no canary.\n\n**Goal:** build a ROP chain that calls `win(0x1337, 0x2026)` and prints the flag.\n\n**Environment:** x86-64, built against glibc ≥ 2.34 (Kali 2023+, Ubuntu 22.04+). On an older distro use the container in `docs/PWN-SETUP.md`.",
       "files": [
         {
           "name": "twist",
@@ -171,8 +167,7 @@
       "category": "pwn",
       "difficulty": "expert",
       "points": 650,
-      "solves": 6,
-      "author": "Wael Hammami",
+      "solves": 0,
       "tags": [
         "timing",
         "oracle",
