@@ -15,12 +15,17 @@
       ],
       "date": "2026-10-12",
       "featured": true,
-      "description": "A student project went to production with the staging notes still attached.\n\nThe developers were kind enough to publish a `robots.txt` asking crawlers to stay away from the interesting parts. Search engines listen. You don't have to.\n\n**Target:** a local mirror is provided as an attachment — no live host is involved.",
+      "description": "A student project went to production with the staging notes still attached.\n\nThe developers published a `robots.txt` asking crawlers to stay away from the interesting parts. Search engines listen. You don't have to.\n\n**Target:** the same site is attached as `mirror.zip` — unzip it, read `robots.txt`, then open the path it hides. No network access, no live host.",
       "files": [
         {
           "name": "robots.txt",
           "size": "215 B",
           "href": "/challenges/web-01/robots.txt"
+        },
+        {
+          "name": "mirror.zip",
+          "size": "747 B",
+          "href": "/challenges/web-01/mirror.zip"
         }
       ],
       "hints": [
@@ -50,14 +55,21 @@
       ],
       "date": "2026-10-12",
       "featured": false,
-      "description": "The club's first landing page shipped in a hurry. The developer left a note for a colleague, then forgot it existed.\n\nBrowsers render what you see. They ship what you don't. Find the note.",
+      "description": "The club's first landing page shipped in a hurry. The developer left a note for a colleague, then forgot it existed.\n\nBrowsers render what you see. They ship what you don't.\n\n**Target:** `landing.html` is attached — open it and read the source (`Ctrl+U`, or `cat`). No live host.",
       "hints": [
         {
           "text": "Ctrl+U is a tool, not a cheat.",
           "cost": 10
         }
       ],
-      "flag": "SNT{comm3nts_4r3_publ1c}"
+      "flag": "SNT{comm3nts_4r3_publ1c}",
+      "files": [
+        {
+          "name": "landing.html",
+          "size": "318 B",
+          "href": "/challenges/web-02/landing.html"
+        }
+      ]
     },
     {
       "id": "web-03",
@@ -74,12 +86,17 @@
       ],
       "date": "2026-10-14",
       "featured": true,
-      "description": "The dashboard decides who you are by reading a cookie it wrote itself:\n\n```\nsession=eyJ1c2VyIjoic3R1ZGVudCIsInJvbGUiOiJ1c2VyIn0=\n```\n\nThe admin panel is at `/admin`. The app trusts the cookie completely — which is the whole problem.\n\n**Goal:** reconstruct a cookie that gets you the admin view and read the flag rendered there.",
+      "description": "The dashboard decides who you are by reading a cookie it wrote itself:\n\n```\nsession=eyJ1c2VyIjoic3R1ZGVudCIsInJvbGUiOiJ1c2VyIn0=\n```\n\nThe app trusts the cookie completely — it only base64-decodes it.\n\n**Target:** `app.py` is a local stand-in for the dashboard. Run `python3 app.py`, then request `/admin` with a cookie you control. No live host, no internet.",
       "files": [
         {
           "name": "session.txt",
           "size": "273 B",
           "href": "/challenges/web-03/session.txt"
+        },
+        {
+          "name": "app.py",
+          "size": "1.8 KB",
+          "href": "/challenges/web-03/app.py"
         }
       ],
       "hints": [

@@ -15,7 +15,7 @@
       ],
       "date": "2026-10-02",
       "featured": true,
-      "description": "A doll inside a doll inside a doll. Six layers, all of them reversible encodings, none of them encryption.\n\nThe file tells you which layer comes next if you look at the alphabet.\n\n**Goal:** unwrap all six layers.",
+      "description": "A doll inside a doll inside a doll. Three layers, all of them reversible encodings, none of them encryption.\n\nThe file tells you which layer comes next if you look at the alphabet.\n\n**Goal:** unwrap all three layers.",
       "files": [
         {
           "name": "matryoshka.txt",

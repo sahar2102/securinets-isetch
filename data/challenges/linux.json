@@ -15,22 +15,27 @@
       ],
       "date": "2026-10-03",
       "featured": true,
-      "description": "You are `student` on a shared lab machine. The flag is in `/srv/backup/flag.txt` and you are told it is readable — but `cat` says otherwise.\n\nThe attached archive contains the directory listing and the lab's setup script.\n\n**Goal:** find the permission mistake and read the file without becoming root.",
+      "description": "You are `student` on a shared lab machine. The flag is in `/srv/backup/flag.txt` — `0640 root:backup`, and you are not in the `backup` group. `sudo` is closed.\n\nThe attached listing includes the bootstrap script that built the volume. Read it the way an attacker would: what else did that script touch?\n\n**Goal:** read the flag without becoming root.",
       "files": [
         {
           "name": "lab-listing.txt",
-          "size": "524 B",
+          "size": "993 B",
           "href": "/challenges/linux-01/lab-listing.txt"
+        },
+        {
+          "name": "setup.sh",
+          "size": "366 B",
+          "href": "/challenges/linux-01/setup.sh"
         }
       ],
       "hints": [
         {
-          "text": "Check the directory permissions, not just the file's.",
-          "cost": 15
+          "cost": 10,
+          "text": "Permissions are a property of the file, but copies inherit nothing. Look for what the script copied."
         },
         {
-          "text": "The backup group has read access to the directory. Are you in it?",
-          "cost": 25
+          "cost": 20,
+          "text": "`chmod 777` on a copy in `/tmp` leaves it readable by everyone. The TODO comment never got done."
         }
       ],
       "flag": "SNT{chm0d_777_1s_n0t_s3cur3}"

